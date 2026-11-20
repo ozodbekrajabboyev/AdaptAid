@@ -59,7 +59,8 @@ def task_personas(db: Session) -> tuple[dict, bytes | None]:
     counts: dict[str, int] = defaultdict(int)
     for lab in result.labels:
         counts[result.names[lab]] += 1
-    return {"k": result.k, "silhouette": result.silhouette, "stability_ari": result.stability_ari,
+    return {"k": result.k, "silhouette": result.silhouette, "silhouette_by_k": result.silhouette_by_k,
+            "stability_ari": result.stability_ari,
             "learners": len(active), "sizes": dict(counts), "centroids": result.centroids, "names": result.names}, None
 
 

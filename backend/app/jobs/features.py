@@ -58,6 +58,7 @@ def compute(db: Session, users: list[User], now: datetime, window_days: int = 28
         mean_before = mastery_at(now - timedelta(days=14))
         n = len(us)
         types = [aids[u.aid_id].aid_type for u in us if u.aid_id in aids]
+        gains = [u.gain for u in us if u.gain is not None]
         out[user.id] = {
             "active_days": float(len(days)),
             "aid_uses": float(n),
@@ -65,6 +66,9 @@ def compute(db: Session, users: list[User], now: datetime, window_days: int = 28
             "completion_rate": (sum(1 for u in us if u.completed_at) / n) if n else 0.0,
             "check_accuracy": (sum(r.correct for r in checks) / len(checks)) if checks else 0.0,
             "n_answers": float(len(checks)),
+            # Residual gain: quick-check result minus what BKT expected at the learner's level.
+            "mean_gain": round(sum(gains) / len(gains), 4) if gains else 0.0,
+            "n_checked": float(len(gains)),
             "mean_mastery": round(mean_now, 4),
             "mastery_slope": round((mean_now - mean_before) / 14.0, 5),
             "days_since_active": round(max(0.0, (now - last).total_seconds() / 86400), 2),

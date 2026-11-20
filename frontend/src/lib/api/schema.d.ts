@@ -1378,6 +1378,8 @@ export interface components {
         OnboardingStatus: {
             /** Consent Needed */
             consent_needed: boolean;
+            /** Consent Text */
+            consent_text?: string | null;
             /** Diagnostic Done */
             diagnostic_done: boolean;
             /** In Class */

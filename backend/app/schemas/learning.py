@@ -168,3 +168,4 @@ class OnboardingStatus(BaseModel):
     questionnaire_done: bool
     diagnostic_done: bool
     next_step: Literal["join", "consent", "pretest", "questionnaire", "diagnostic", "done"]
+    consent_text: str | None = None

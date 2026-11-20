@@ -196,10 +196,12 @@ def test_personas_find_separated_groups():
 
 
 def test_risk_rules_give_reasons():
-    r = risk({"days_since_active": 9, "n_answers": 10, "check_accuracy": 0.3, "mastery_slope": 0.0})
+    r = risk({"days_since_active": 9, "n_checked": 6, "mean_gain": -0.2, "mastery_slope": 0.0})
     assert r.level == "high"
-    assert "Inactive for 9 days" in r.reasons and any("accuracy" in x for x in r.reasons)
-    assert risk({"days_since_active": 1, "check_accuracy": 0.9, "n_answers": 10}).level == "low"
+    assert "Inactive for 9 days" in r.reasons and any("below expectation" in x for x in r.reasons)
+    # Low raw accuracy alone is normal (checks follow unfamiliar material): not flagged.
+    assert risk({"days_since_active": 1, "check_accuracy": 0.35, "n_answers": 12, "n_checked": 4, "mean_gain": 0.02}).level == "low"
+    assert risk({"days_since_active": 1, "check_accuracy": 0.15, "n_answers": 12}).reasons == ["Most quick-check answers wrong (15% correct)"]
 
 
 # ------------------------------------------------------------------ policies + simulator

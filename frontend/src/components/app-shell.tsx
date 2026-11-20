@@ -4,7 +4,7 @@ import type { LucideIcon } from "lucide-react";
 import { LogOutIcon, MenuIcon } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { type ReactNode, useEffect, useState } from "react";
+import { type ReactNode, Suspense, useEffect, useState } from "react";
 
 import { Brand } from "@/components/brand";
 import { ThemeToggle } from "@/components/theme-toggle";
@@ -28,8 +28,21 @@ function isActive(pathname: string, item: NavItem) {
   return item.exact ? pathname === item.href : pathname === item.href || pathname.startsWith(`${item.href}/`);
 }
 
-function NavList({ items, onNavigate }: { items: NavItem[]; onNavigate?: () => void }) {
+function NavList(props: { items: NavItem[]; onNavigate?: () => void }) {
+  // usePathname is request data on dynamic routes; Suspense lets the shell prerender.
+  return (
+    <Suspense fallback={<NavLinks {...props} pathname="" />}>
+      <ActiveNavList {...props} />
+    </Suspense>
+  );
+}
+
+function ActiveNavList(props: { items: NavItem[]; onNavigate?: () => void }) {
   const pathname = usePathname();
+  return <NavLinks {...props} pathname={pathname} />;
+}
+
+function NavLinks({ items, onNavigate, pathname }: { items: NavItem[]; onNavigate?: () => void; pathname: string }) {
   return (
     <nav className="grid gap-0.5" aria-label="Main">
       {items.map((item) => {

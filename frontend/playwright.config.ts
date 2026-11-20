@@ -27,7 +27,7 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: `cd ../backend && .venv/bin/python -m app.cli reset-db --force && .venv/bin/uvicorn app.main:app --port ${API_PORT}`,
+      command: `cd ../backend && .venv/bin/python -m app.cli reset-db --force && .venv/bin/python -m app.cli seed && .venv/bin/python -m app.cli create-admin --email admin@e2e.test --full-name "E2E Admin" --password e2e-admin-pass && .venv/bin/uvicorn app.main:app --port ${API_PORT}`,
       url: `http://localhost:${API_PORT}/api/health`,
       env: {
         DATABASE_URL: E2E_DB,
@@ -37,7 +37,7 @@ export default defineConfig({
         TEACHER_INVITE_CODE: "TEACH-E2E",
       },
       reuseExistingServer: !process.env.CI,
-      timeout: 60_000,
+      timeout: 120_000,
     },
     {
       command: process.env.PW_WEB_CMD ?? `npm run build && PORT=${WEB_PORT} npm run start:standalone`,

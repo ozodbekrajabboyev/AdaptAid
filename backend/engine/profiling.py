@@ -1,8 +1,9 @@
 """Learner profiling: engagement personas (K-Means) and a rule-based risk score.
 
 Personas are learned with K-Means on standardised engagement features. The number of
-clusters is chosen by silhouette score, and stability across random seeds is reported
-with the adjusted Rand index (ARI). Clusters are then named from their centroids.
+clusters (at least 3, so personas are actionable rather than "active vs inactive") is
+chosen by silhouette score; the silhouette for every k is reported, and stability across
+random seeds with the adjusted Rand index (ARI). Clusters are named from their centroids.
 
 The live risk score is rule-based on purpose: each flag comes with a reason a teacher
 can act on. The OULAD-trained classifier is evaluated separately, offline.
@@ -37,6 +38,7 @@ class PersonaResult:
     stability_ari: float
     centroids: dict[str, dict[str, float]]  # persona key -> feature means (original units)
     names: dict[str, str]  # persona key -> human label
+    silhouette_by_k: dict[int, float] | None = None
 
 
 def _name(z: Mapping[str, float]) -> str:
@@ -59,7 +61,7 @@ def _name(z: Mapping[str, float]) -> str:
 def personas(
     rows: Sequence[Mapping[str, float]],
     *,
-    k_range: Sequence[int] = (2, 3, 4, 5, 6),
+    k_range: Sequence[int] = (3, 4, 5, 6),
     seeds: Sequence[int] = (0, 1, 2, 3, 4),
 ) -> PersonaResult | None:
     from sklearn.cluster import KMeans
@@ -73,6 +75,7 @@ def personas(
     Z = scaler.transform(X)
 
     best = None
+    by_k: dict[int, float] = {}
     for k in k_range:
         if k >= len(rows):
             break
@@ -80,6 +83,7 @@ def personas(
         if len(set(km.labels_)) < 2:
             continue
         sil = float(silhouette_score(Z, km.labels_))
+        by_k[k] = round(sil, 4)
         if best is None or sil > best[1]:
             best = (k, sil, km)
     if best is None:
@@ -105,7 +109,7 @@ def personas(
         centroids[key] = {f: round(float(v), 3) for f, v in zip(FEATURES, orig, strict=True)}
         keys.append(key)
     labels = [keys[int(c)] for c in km.labels_]
-    return PersonaResult(labels, k, round(sil, 4), round(stability, 4), centroids, names)
+    return PersonaResult(labels, k, round(sil, 4), round(stability, 4), centroids, names, by_k)
 
 
 @dataclass
@@ -126,9 +130,14 @@ def risk(f: Mapping[str, float]) -> Risk:
     elif days >= 4:
         score += 0.15
         reasons.append(f"No activity for {int(days)} days")
-    if f.get("n_answers", 0) >= 6 and f.get("check_accuracy", 1.0) < 0.45:
+    # Quick checks follow study of concepts not yet known, so low raw accuracy is normal.
+    # What signals trouble is doing consistently worse than BKT expected for the learner's level.
+    if f.get("n_checked", 0) >= 4 and f.get("mean_gain", 0.0) < -0.12:
         score += 0.3
-        reasons.append(f"Quick-check accuracy {f.get('check_accuracy', 0):.0%}")
+        reasons.append(f"Quick checks below expectation (average {f.get('mean_gain', 0):+.0%} vs expected)")
+    elif f.get("n_answers", 0) >= 9 and f.get("check_accuracy", 1.0) < 0.25:
+        score += 0.25
+        reasons.append(f"Most quick-check answers wrong ({f.get('check_accuracy', 0):.0%} correct)")
     if f.get("mastery_slope", 0.0) < -0.01:
         score += 0.2
         reasons.append("Mastery falling over the last two weeks")

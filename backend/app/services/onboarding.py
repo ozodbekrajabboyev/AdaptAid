@@ -37,8 +37,10 @@ def status_for(db: Session, user: User) -> OnboardingStatus:
         step = "diagnostic"
     else:
         step = "done"
+    consent_text = study_svc.study_settings(db).get("consent_text") if consent_needed else None
     return OnboardingStatus(in_class=in_class, consent_needed=consent_needed, pretest_needed=pretest_needed,
-                            questionnaire_done=q_done, diagnostic_done=diag_done, next_step=step)
+                            questionnaire_done=q_done, diagnostic_done=diag_done, next_step=step,
+                            consent_text=consent_text)
 
 
 def questionnaire(db: Session) -> QuestionnaireOut:

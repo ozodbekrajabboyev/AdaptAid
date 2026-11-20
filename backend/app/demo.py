@@ -72,15 +72,18 @@ class Session_:
     """One synthetic learner's behaviour inside the real platform."""
 
     def __init__(self, db: Session, sim: SimLearner, user: User, cfg: WorldConfig, rng: np.random.Generator,
-                 question_concept: dict[int, int], catalogue_fn: Callable):
+                 question_concept: dict[int, int], catalogue_fn: Callable, hard: set[int] | None = None):
         self.db, self.sim, self.user, self.cfg, self.rng = db, sim, user, cfg, rng
         self.qc = question_concept
         self.catalogue_fn = catalogue_fn
+        self.hard = hard or set()  # concepts this learner keeps getting wrong (the hero's recursion)
 
     def answer_question(self, qid: int, correct_index: int) -> int:
         concept = self.qc[qid]
         knows = self.sim.known.get(concept, False)
         p = 1 - self.cfg.slip if knows else self.cfg.guess
+        if concept in self.hard:
+            p = 0.12
         if self.rng.random() < p:
             return correct_index
         return int((correct_index + 1 + self.rng.integers(0, 3)) % 4)
@@ -193,7 +196,8 @@ def seed_demo(n_students: int = 60, days: int = 28, seed: int = 2026, password: 
             hero_sim.known[cid] = s in ("complexity", "arrays", "linked-lists", "stacks")
         hero = _user(db, f"student@{DOMAIN}", "Diya Kapoor", Role.student, password)
         db.add(Enrollment(class_id=klass.id, user_id=hero.id, joined_at=clock.now()))
-        hero_actor = Session_(db, hero_sim, hero, cfg, rng, qc, lambda: learner_svc.load_catalogue(db, course.id))
+        hero_actor = Session_(db, hero_sim, hero, cfg, rng, qc, lambda: learner_svc.load_catalogue(db, course.id),
+                              hard={recursion} if recursion else None)
         db.commit()
 
         everyone = [*actors, hero_actor]
@@ -218,7 +222,7 @@ def seed_demo(n_students: int = 60, days: int = 28, seed: int = 2026, password: 
                     engagement *= 0.15  # dropouts go quiet in the last ten days
                 if rng.random() > engagement:
                     continue
-                n = 3 if actor is hero_actor else int(rng.integers(1, 4))
+                n = 2 if actor is hero_actor else int(rng.integers(1, 4))
                 for s in range(n):
                     sim_clock.set(at + timedelta(minutes=25 * s))
                     blocked = {recursion} if actor is hero_actor and recursion else None
