@@ -3,9 +3,13 @@
 Run inside the pinned pyBKT venv (see research/pybkt/requirements.txt):
     research/.venv-pybkt/bin/python -I research/pybkt/make_reference_fixture.py backend/tests/fixtures/pybkt_reference.json
 """
-import json, sys
-import numpy as np, pandas as pd
+import json
+import sys
+
+import numpy as np
+import pandas as pd
 from pyBKT.models import Model
+
 
 def main():
     params = {"prior": 0.3, "learn": 0.2, "guess": 0.15, "slip": 0.12}
@@ -30,7 +34,8 @@ def main():
     out = {"params": params, "sequences": {str(u): s for u, s in seqs.items()},
            "correct_predictions": {str(u): pred[pred.user_id == u]["correct_predictions"].round(10).tolist() for u in seqs},
            "state_predictions": {str(u): pred[pred.user_id == u]["state_predictions"].round(10).tolist() for u in seqs}}
-    json.dump(out, open(sys.argv[1], "w"), indent=1)
+    with open(sys.argv[1], "w") as fh:
+        json.dump(out, fh, indent=1)
     print("written", {u: out["correct_predictions"][u][:3] for u in out["correct_predictions"]})
 
 if __name__ == "__main__":

@@ -132,6 +132,11 @@ def next_concept_static(
         done = mastery.get(c, 0.0) >= MASTERED or c in passed_check or aids_used.get(c, 0) >= aids_to_advance
         if not done:
             return c
+    # End of the plan: a fair course plan does a revision pass over what is not yet mastered,
+    # in syllabus order, instead of stopping.
+    for c in syllabus:
+        if mastery.get(c, 0.0) < MASTERED:
+            return c
     return None
 
 

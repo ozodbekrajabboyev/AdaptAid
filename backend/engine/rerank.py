@@ -30,9 +30,15 @@ def mmr(scored: Sequence[Scored], k: int, lam: float = 0.7) -> list[Scored]:
 
 
 def with_explore_slot(
-    picked: list[Scored], pool: Sequence[Scored], format_counts: Mapping[str, int], k: int
+    picked: list[Scored],
+    pool: Sequence[Scored],
+    format_counts: Mapping[str, int],
+    k: int,
+    position: int | None = None,
 ) -> list[Scored]:
-    """Put the best aid of the learner's least-used format (absent from the list) in the last slot.
+    """Add the best aid of the learner's least-used format (absent from the list) to the list.
+
+    It replaces the last pick and is placed at `position` (0-based; default: last card).
 
     Without this the system would only ever show formats it already believes in, and the
     learning-preference model could never discover that its prior was wrong.
@@ -49,4 +55,5 @@ def with_explore_slot(
     choice.is_explore = True
     if len(picked) >= k:
         picked = picked[: k - 1]
-    return [*picked, choice]
+    pos = len(picked) if position is None else max(0, min(position, len(picked)))
+    return [*picked[:pos], choice, *picked[pos:]]

@@ -43,6 +43,7 @@ class AdaptivePolicy:
     enabled: tuple[str, ...] = SIGNALS
     thresholds: tuple[int, int] = PHASE_THRESHOLDS
     explore: bool = True
+    explore_position: int | None = 1  # second card; chosen in research/src/simulation.py
     lam: float = 0.7
 
     def focus(self, learner: LearnerView, cat: Catalogue) -> int | None:
@@ -63,7 +64,7 @@ class AdaptivePolicy:
             s.reoffer = (s.aid.id, s.concept_id) in reoffer
         picked = mmr(scored, k, self.lam)
         if self.explore:
-            picked = with_explore_slot(picked, scored, learner.format_counts, k)
+            picked = with_explore_slot(picked, scored, learner.format_counts, k, self.explore_position)
         return RecList(self.name, phase, focus, picked, weights)
 
 

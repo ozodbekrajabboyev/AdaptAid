@@ -6,10 +6,13 @@ A learner's preference is a vector in [-1, 1]^4:
     vv: +1 visual      / -1 verbal
     sg: +1 sequential  / -1 global
 
-The questionnaire gives a *prior*. After each aid and its quick check the vector moves
-toward the aid's style if the learner gained more than usual, and away if less. A
-decaying learning rate, a per-step cap and a gentle pull back to the prior keep a few
-noisy checks from swinging the profile.
+The questionnaire gives a *prior*. After each aid and its quick check the vector is
+nudged along the aid's style direction: forward if the learner gained more than their
+usual, backward if less. This is one step of online least squares for the model
+"gain ~ s . s_aid", so a bad outcome on an aid that *matches* the current profile
+weakens that preference (a difference-based rule, s_aid - s, would not move at all in
+that case and could never correct a wrong questionnaire). A decaying learning rate, a
+per-step cap and a gentle pull back to the prior keep noisy checks from swinging it.
 """
 
 from __future__ import annotations
@@ -118,8 +121,10 @@ class StyleState:
 
 @dataclass(frozen=True)
 class UpdateConfig:
-    lr: float = 0.6
-    max_step: float = 0.12
+    # Tuned in research/src/simulation.py under a "do no harm" rule: learning from outcomes
+    # may not degrade an accurate questionnaire by more than 0.03 cosine.
+    lr: float = 1.0
+    max_step: float = 0.2
     prior_pull: float = 0.02
     ema_alpha: float = 0.2
 
@@ -127,7 +132,7 @@ class UpdateConfig:
 def update(state: StyleState, aid_style: Sequence[float], gain: float, cfg: UpdateConfig | None = None) -> StyleState:
     """Move the preference vector after one aid + quick check.
 
-    s <- clip(s + lr_n * (gain - EMA_gain) * (s_aid - s) + pull * (prior - s), -1, 1)
+    s <- clip(s + lr_n * (gain - EMA_gain) * s_aid + pull * (prior - s), -1, 1)
     with lr_n = lr / sqrt(1 + n) and each component's step capped at max_step.
     """
     cfg = cfg or UpdateConfig()
@@ -135,7 +140,7 @@ def update(state: StyleState, aid_style: Sequence[float], gain: float, cfg: Upda
     prior = _vec(state.prior)
     a = _vec(aid_style)
     lr_n = cfg.lr / math.sqrt(1 + state.n_updates)
-    step = lr_n * (gain - state.ema_gain) * (a - s)
+    step = lr_n * (gain - state.ema_gain) * a
     step = np.clip(step, -cfg.max_step, cfg.max_step)
     new = np.clip(s + step + cfg.prior_pull * (prior - s), -1.0, 1.0)
     ema = (1 - cfg.ema_alpha) * state.ema_gain + cfg.ema_alpha * gain

@@ -59,6 +59,10 @@ def test_static_next_concept_follows_the_syllabus():
     assert next_concept_static(syllabus, {1: 0.97}, set(), {}) == 2
     assert next_concept_static(syllabus, {}, {1}, {}) == 2  # passed a check on 1
     assert next_concept_static(syllabus, {}, set(), {1: 3, 2: 1}) == 2  # used 3 aids on 1
+    # after the whole plan: revise the first concept that is still not mastered
+    finished = {c: 3 for c in syllabus}
+    assert next_concept_static(syllabus, {1: 0.97, 2: 0.5}, set(), finished) == 2
+    assert next_concept_static(syllabus, {c: 0.99 for c in syllabus}, set(), finished) is None
 
 
 def test_projected_route():
