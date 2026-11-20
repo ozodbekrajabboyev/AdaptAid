@@ -1,0 +1,531 @@
+{
+ "components": {
+  "schemas": {
+   "ClassCreate": {
+    "properties": {
+     "course_id": {
+      "title": "Course Id",
+      "type": "integer"
+     },
+     "name": {
+      "maxLength": 120,
+      "minLength": 2,
+      "title": "Name",
+      "type": "string"
+     }
+    },
+    "required": [
+     "name",
+     "course_id"
+    ],
+    "title": "ClassCreate",
+    "type": "object"
+   },
+   "ClassOut": {
+    "properties": {
+     "course_id": {
+      "title": "Course Id",
+      "type": "integer"
+     },
+     "course_title": {
+      "title": "Course Title",
+      "type": "string"
+     },
+     "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+     },
+     "id": {
+      "title": "Id",
+      "type": "integer"
+     },
+     "join_code": {
+      "title": "Join Code",
+      "type": "string"
+     },
+     "n_students": {
+      "title": "N Students",
+      "type": "integer"
+     },
+     "name": {
+      "title": "Name",
+      "type": "string"
+     },
+     "teacher_id": {
+      "title": "Teacher Id",
+      "type": "integer"
+     },
+     "teacher_name": {
+      "title": "Teacher Name",
+      "type": "string"
+     }
+    },
+    "required": [
+     "id",
+     "name",
+     "course_id",
+     "course_title",
+     "teacher_id",
+     "teacher_name",
+     "join_code",
+     "n_students",
+     "created_at"
+    ],
+    "title": "ClassOut",
+    "type": "object"
+   },
+   "HTTPValidationError": {
+    "properties": {
+     "detail": {
+      "items": {
+       "$ref": "#/components/schemas/ValidationError"
+      },
+      "title": "Detail",
+      "type": "array"
+     }
+    },
+    "title": "HTTPValidationError",
+    "type": "object"
+   },
+   "JoinIn": {
+    "properties": {
+     "code": {
+      "maxLength": 12,
+      "minLength": 4,
+      "title": "Code",
+      "type": "string"
+     }
+    },
+    "required": [
+     "code"
+    ],
+    "title": "JoinIn",
+    "type": "object"
+   },
+   "LoginIn": {
+    "properties": {
+     "email": {
+      "format": "email",
+      "title": "Email",
+      "type": "string"
+     },
+     "password": {
+      "title": "Password",
+      "type": "string"
+     }
+    },
+    "required": [
+     "email",
+     "password"
+    ],
+    "title": "LoginIn",
+    "type": "object"
+   },
+   "RegisterIn": {
+    "properties": {
+     "email": {
+      "format": "email",
+      "title": "Email",
+      "type": "string"
+     },
+     "full_name": {
+      "maxLength": 120,
+      "minLength": 2,
+      "title": "Full Name",
+      "type": "string"
+     },
+     "invite_code": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Invite Code"
+     },
+     "join_code": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "Optional class code to join right away",
+      "title": "Join Code"
+     },
+     "password": {
+      "maxLength": 128,
+      "minLength": 8,
+      "title": "Password",
+      "type": "string"
+     },
+     "role": {
+      "default": "student",
+      "enum": [
+       "student",
+       "teacher"
+      ],
+      "title": "Role",
+      "type": "string"
+     }
+    },
+    "required": [
+     "email",
+     "password",
+     "full_name"
+    ],
+    "title": "RegisterIn",
+    "type": "object"
+   },
+   "Role": {
+    "enum": [
+     "student",
+     "teacher",
+     "admin"
+    ],
+    "title": "Role",
+    "type": "string"
+   },
+   "UserOut": {
+    "properties": {
+     "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+     },
+     "email": {
+      "title": "Email",
+      "type": "string"
+     },
+     "full_name": {
+      "title": "Full Name",
+      "type": "string"
+     },
+     "id": {
+      "title": "Id",
+      "type": "integer"
+     },
+     "is_synthetic": {
+      "title": "Is Synthetic",
+      "type": "boolean"
+     },
+     "role": {
+      "$ref": "#/components/schemas/Role"
+     }
+    },
+    "required": [
+     "id",
+     "email",
+     "full_name",
+     "role",
+     "is_synthetic",
+     "created_at"
+    ],
+    "title": "UserOut",
+    "type": "object"
+   },
+   "ValidationError": {
+    "properties": {
+     "ctx": {
+      "title": "Context",
+      "type": "object"
+     },
+     "input": {
+      "title": "Input"
+     },
+     "loc": {
+      "items": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "integer"
+        }
+       ]
+      },
+      "title": "Location",
+      "type": "array"
+     },
+     "msg": {
+      "title": "Message",
+      "type": "string"
+     },
+     "type": {
+      "title": "Error Type",
+      "type": "string"
+     }
+    },
+    "required": [
+     "loc",
+     "msg",
+     "type"
+    ],
+    "title": "ValidationError",
+    "type": "object"
+   }
+  }
+ },
+ "info": {
+  "description": "Adaptive teaching-aid recommendation platform (NTCC minor project).",
+  "title": "AdaptAid API",
+  "version": "0.1.0"
+ },
+ "openapi": "3.1.0",
+ "paths": {
+  "/api/auth/login": {
+   "post": {
+    "operationId": "login_api_auth_login_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/LoginIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/UserOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Login",
+    "tags": [
+     "auth"
+    ]
+   }
+  },
+  "/api/auth/logout": {
+   "post": {
+    "operationId": "logout_api_auth_logout_post",
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Logout",
+    "tags": [
+     "auth"
+    ]
+   }
+  },
+  "/api/auth/me": {
+   "get": {
+    "operationId": "me_api_auth_me_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/UserOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Me",
+    "tags": [
+     "auth"
+    ]
+   }
+  },
+  "/api/auth/register": {
+   "post": {
+    "operationId": "register_api_auth_register_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/RegisterIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/UserOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Register",
+    "tags": [
+     "auth"
+    ]
+   }
+  },
+  "/api/classes": {
+   "post": {
+    "operationId": "create_class_api_classes_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ClassCreate"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ClassOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Create Class",
+    "tags": [
+     "classes"
+    ]
+   }
+  },
+  "/api/classes/join": {
+   "post": {
+    "operationId": "join_api_classes_join_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/JoinIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ClassOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Join",
+    "tags": [
+     "classes"
+    ]
+   }
+  },
+  "/api/classes/mine": {
+   "get": {
+    "operationId": "my_classes_api_classes_mine_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/ClassOut"
+         },
+         "title": "Response My Classes Api Classes Mine Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "My Classes",
+    "tags": [
+     "classes"
+    ]
+   }
+  },
+  "/api/health": {
+   "get": {
+    "operationId": "health_api_health_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": {
+          "type": "string"
+         },
+         "title": "Response Health Api Health Get",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Health",
+    "tags": [
+     "health"
+    ]
+   }
+  }
+ }
+}

@@ -4,7 +4,7 @@ PY    := backend/.venv/bin
 API_PORT ?= 8000
 WEB_PORT ?= 3000
 
-.PHONY: help install db db-down api web dev migrate test lint typecheck contract e2e gen-api ci clean
+.PHONY: help install db db-down api web dev migrate test lint typecheck contract e2e gen-api check-api check-migrations ci
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-14s %s\n", $$1, $$2}'
@@ -50,5 +50,14 @@ gen-api: ## Regenerate the typed API client from FastAPI's OpenAPI schema
 	cd backend && .venv/bin/python -c "import json; from app.main import app; print(json.dumps(app.openapi(), indent=1, sort_keys=True))" > openapi.json
 	cd frontend && npm run gen:api
 
-ci: lint typecheck test ## Everything CI runs
+check-api: gen-api ## Fail if the committed OpenAPI schema / TS client is stale
+	git diff --exit-code -- backend/openapi.json frontend/src/lib/api/schema.d.ts
+
+check-migrations: ## Fail if models and Alembic migrations disagree
+	cd backend && .venv/bin/alembic check
+
+migrate: ## Apply database migrations
+	cd backend && .venv/bin/python -m app.cli migrate
+
+ci: lint typecheck test check-migrations check-api ## Everything CI runs
 	cd frontend && npm run build

@@ -27,13 +27,14 @@ export default defineConfig({
   ],
   webServer: [
     {
-      command: `../backend/.venv/bin/uvicorn app.main:app --app-dir ../backend --port ${API_PORT}`,
+      command: `cd ../backend && .venv/bin/python -m app.cli reset-db --force && .venv/bin/uvicorn app.main:app --port ${API_PORT}`,
       url: `http://localhost:${API_PORT}/api/health`,
       env: {
         DATABASE_URL: E2E_DB,
         ENABLE_CONTRACT_ROUTES: "true",
         APP_ENV: "test",
         COOKIE_SECURE: "false",
+        TEACHER_INVITE_CODE: "TEACH-E2E",
       },
       reuseExistingServer: !process.env.CI,
       timeout: 60_000,
