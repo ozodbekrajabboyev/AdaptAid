@@ -29,3 +29,6 @@ research/.venv-pybkt/
 .DS_Store
 .idea/
 .vscode/
+
+# Scratch logs from research runs
+research/outputs/run_all_log.txt

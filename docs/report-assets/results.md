@@ -128,16 +128,15 @@ Checks: hybrid_ge_static_every_level = True, hybrid_gt_static_when_style_matters
 
 ## Knowledge tracing on ASSISTments 2009
 
-ASSISTments 2009 skill builder, 5 skills with the most students, 67443 answers. 5-fold cross-validation by student; parameters fitted on training folds only; one-step-ahead predictions.
+ASSISTments 2009 skill builder, 40 skills with the most students, 205546 answers. 5-fold cross-validation by student; parameters fitted on training folds only; one-step-ahead predictions. pyBKT is compared head to head on the largest skills (its EM is slow), with our BKT scored on exactly the same predictions.
 
-| model | auc | rmse | predictions |
-|---|---|---|---|
-| Global mean | 0.4828 | 0.4767 | 67443 |
-| Per-skill mean | 0.54 | 0.475 | 67443 |
-| BKT, brute force (ours) | 0.6869 | 0.4488 | 67443 |
-| BKT, EM (pyBKT) | 0.6933 | 0.448 | 67443 |
+| model | scope | auc | rmse | predictions |
+|---|---|---|---|---|
+| Global mean | 40 skills | 0.4901 | 0.4714 | 205546 |
+| Per-skill mean | 40 skills | 0.604 | 0.4641 | 205546 |
+| BKT, brute force (ours) | 40 skills | 0.7111 | 0.4381 | 205546 |
 
-Median fitted parameters: {'prior': 0.7333, 'learn': 0.04, 'guess': 0.3, 'slip': 0.2067}. Cleaning: {'raw_rows': 525534, 'after_original': 449220, 'final_rows': 251405}.
+Median fitted parameters: {'prior': 0.7167, 'learn': 0.11, 'guess': 0.2192, 'slip': 0.1983}. Cleaning: {'raw_rows': 525534, 'after_original': 449220, 'final_rows': 251405}.
 
 ## At-risk classifier on OULAD
 

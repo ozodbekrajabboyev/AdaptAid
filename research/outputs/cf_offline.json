@@ -1,0 +1,50 @@
+{
+ "note": "OULAD CCC 2014J: 2084 students, 220 course materials. Per-student time split (first 80% of materials opened = training, last 20% = target); training items excluded from candidates. This validates the CF methods on implicit clicks; the app's CF learns from outcome gain instead.",
+ "table": [
+  {
+   "model": "Random",
+   "precision_at_5": 0.0697,
+   "recall_at_5": 0.0291,
+   "ndcg_at_5": 0.0709,
+   "hit_rate_at_5": 0.2812,
+   "coverage": 0.9955
+  },
+  {
+   "model": "Most popular",
+   "precision_at_5": 0.2143,
+   "recall_at_5": 0.1554,
+   "ndcg_at_5": 0.2414,
+   "hit_rate_at_5": 0.6204,
+   "coverage": 0.3773
+  },
+  {
+   "model": "Item-kNN (ours)",
+   "precision_at_5": 0.2584,
+   "recall_at_5": 0.1762,
+   "ndcg_at_5": 0.2965,
+   "hit_rate_at_5": 0.7183,
+   "coverage": 0.4318
+  },
+  {
+   "model": "ALS (ours, implicit)",
+   "precision_at_5": 0.2313,
+   "recall_at_5": 0.1461,
+   "ndcg_at_5": 0.2464,
+   "hit_rate_at_5": 0.6847,
+   "coverage": 0.7273
+  },
+  {
+   "model": "LightFM hybrid (WARP + item type)",
+   "precision_at_5": 0.2671,
+   "recall_at_5": 0.1701,
+   "ndcg_at_5": 0.286,
+   "hit_rate_at_5": 0.7817,
+   "coverage": 0.7
+  }
+ ],
+ "tripwires": {
+  "risk_auc_below_0.95": true,
+  "risk_beats_chance": true,
+  "cf_beats_random": true
+ }
+}

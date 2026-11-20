@@ -1,0 +1,293 @@
+{
+ "note": "ASSISTments 2009 skill builder, 40 skills with the most students, 205546 answers. 5-fold cross-validation by student; parameters fitted on training folds only; one-step-ahead predictions. pyBKT is compared head to head on the largest skills (its EM is slow), with our BKT scored on exactly the same predictions.",
+ "table": [
+  {
+   "model": "Global mean",
+   "scope": "40 skills",
+   "auc": 0.4901,
+   "rmse": 0.4714,
+   "predictions": 205546
+  },
+  {
+   "model": "Per-skill mean",
+   "scope": "40 skills",
+   "auc": 0.604,
+   "rmse": 0.4641,
+   "predictions": 205546
+  },
+  {
+   "model": "BKT, brute force (ours)",
+   "scope": "40 skills",
+   "auc": 0.7111,
+   "rmse": 0.4381,
+   "predictions": 205546
+  }
+ ],
+ "per_skill": [
+  {
+   "skill": "Addition and Subtraction Fractions",
+   "students": 1353,
+   "answers": 11334,
+   "auc_bkt": 0.7365
+  },
+  {
+   "skill": "Addition and Subtraction Integers",
+   "students": 1226,
+   "answers": 12741,
+   "auc_bkt": 0.6864
+  },
+  {
+   "skill": "Conversion of Fraction Decimals Percents",
+   "students": 1225,
+   "answers": 18740,
+   "auc_bkt": 0.6464
+  },
+  {
+   "skill": "Equation Solving Two or Fewer Steps",
+   "students": 961,
+   "answers": 17311,
+   "auc_bkt": 0.6582
+  },
+  {
+   "skill": "Ordering Positive Decimals",
+   "students": 942,
+   "answers": 7317,
+   "auc_bkt": 0.6932
+  },
+  {
+   "skill": "Subtraction Whole Numbers",
+   "students": 903,
+   "answers": 5770,
+   "auc_bkt": 0.7108
+  },
+  {
+   "skill": "Multiplication and Division Integers",
+   "students": 900,
+   "answers": 6874,
+   "auc_bkt": 0.6691
+  },
+  {
+   "skill": "Probability of a Single Event",
+   "students": 885,
+   "answers": 6148,
+   "auc_bkt": 0.6519
+  },
+  {
+   "skill": "Percent Of",
+   "students": 874,
+   "answers": 4240,
+   "auc_bkt": 0.6923
+  },
+  {
+   "skill": "Addition Whole Numbers",
+   "students": 861,
+   "answers": 3875,
+   "auc_bkt": 0.673
+  },
+  {
+   "skill": "Ordering Fractions",
+   "students": 838,
+   "answers": 6117,
+   "auc_bkt": 0.7051
+  },
+  {
+   "skill": "Multiplication Fractions",
+   "students": 783,
+   "answers": 5547,
+   "auc_bkt": 0.647
+  },
+  {
+   "skill": "Division Fractions",
+   "students": 724,
+   "answers": 4029,
+   "auc_bkt": 0.7037
+  },
+  {
+   "skill": "Table",
+   "students": 713,
+   "answers": 6834,
+   "auc_bkt": 0.6167
+  },
+  {
+   "skill": "Finding Percents",
+   "students": 676,
+   "answers": 6055,
+   "auc_bkt": 0.8058
+  },
+  {
+   "skill": "Proportion",
+   "students": 671,
+   "answers": 8063,
+   "auc_bkt": 0.6864
+  },
+  {
+   "skill": "Addition and Subtraction Positive Decimals",
+   "students": 665,
+   "answers": 4320,
+   "auc_bkt": 0.7764
+  },
+  {
+   "skill": "Order of Operations +,-,/,* () positive reals",
+   "students": 664,
+   "answers": 2339,
+   "auc_bkt": 0.6437
+  },
+  {
+   "skill": "Order of Operations All",
+   "students": 651,
+   "answers": 3338,
+   "auc_bkt": 0.6477
+  },
+  {
+   "skill": "Exponents",
+   "students": 619,
+   "answers": 2947,
+   "auc_bkt": 0.6464
+  },
+  {
+   "skill": "Circle Graph",
+   "students": 616,
+   "answers": 6208,
+   "auc_bkt": 0.7143
+  },
+  {
+   "skill": "Absolute Value",
+   "students": 613,
+   "answers": 3113,
+   "auc_bkt": 0.7202
+  },
+  {
+   "skill": "Unit Rate",
+   "students": 602,
+   "answers": 3183,
+   "auc_bkt": 0.6288
+  },
+  {
+   "skill": "Venn Diagram",
+   "students": 552,
+   "answers": 5809,
+   "auc_bkt": 0.5752
+  },
+  {
+   "skill": "Box and Whisker",
+   "students": 505,
+   "answers": 3957,
+   "auc_bkt": 0.6293
+  },
+  {
+   "skill": "Ordering Integers",
+   "students": 490,
+   "answers": 3532,
+   "auc_bkt": 0.6092
+  },
+  {
+   "skill": "Stem and Leaf Plot",
+   "students": 467,
+   "answers": 3828,
+   "auc_bkt": 0.6606
+  },
+  {
+   "skill": "Median",
+   "students": 462,
+   "answers": 1451,
+   "auc_bkt": 0.6306
+  },
+  {
+   "skill": "Complementary and Supplementary Angles",
+   "students": 458,
+   "answers": 1524,
+   "auc_bkt": 0.68
+  },
+  {
+   "skill": "Counting Methods",
+   "students": 444,
+   "answers": 4867,
+   "auc_bkt": 0.5717
+  },
+  {
+   "skill": "Probability of Two Distinct Events",
+   "students": 418,
+   "answers": 3380,
+   "auc_bkt": 0.6701
+  },
+  {
+   "skill": "Pattern Finding ",
+   "students": 415,
+   "answers": 1682,
+   "auc_bkt": 0.7148
+  },
+  {
+   "skill": "Equation Solving More Than Two Steps",
+   "students": 412,
+   "answers": 4772,
+   "auc_bkt": 0.6749
+  },
+  {
+   "skill": "Calculations with Similar Figures",
+   "students": 374,
+   "answers": 4423,
+   "auc_bkt": 0.6249
+  },
+  {
+   "skill": "Least Common Multiple",
+   "students": 367,
+   "answers": 3256,
+   "auc_bkt": 0.6363
+  },
+  {
+   "skill": "Congruence",
+   "students": 364,
+   "answers": 587,
+   "auc_bkt": 0.5276
+  },
+  {
+   "skill": "Range",
+   "students": 363,
+   "answers": 729,
+   "auc_bkt": 0.6198
+  },
+  {
+   "skill": "Unit Conversion Within a System",
+   "students": 361,
+   "answers": 1477,
+   "auc_bkt": 0.5937
+  },
+  {
+   "skill": "Scatter Plot",
+   "students": 354,
+   "answers": 1859,
+   "auc_bkt": 0.7164
+  },
+  {
+   "skill": "Multiplication and Division Positive Decimals",
+   "students": 348,
+   "answers": 1970,
+   "auc_bkt": 0.7385
+  }
+ ],
+ "median_params": {
+  "prior": 0.7167,
+  "learn": 0.11,
+  "guess": 0.2192,
+  "slip": 0.1983
+ },
+ "cleaning": {
+  "raw_rows": 525534,
+  "after_original": 449220,
+  "final_rows": 251405
+ },
+ "config": {
+  "skills": 40,
+  "folds": 5,
+  "max_fit_len": 50,
+  "pybkt": false,
+  "pybkt_scope": null,
+  "pybkt_source": null
+ },
+ "tripwires": {
+  "bkt_auc_in_plausible_range_0.6_0.8": true,
+  "no_model_above_0.9": true,
+  "bkt_beats_per_skill_mean": true
+ },
+ "runtime_s": 100.1
+}

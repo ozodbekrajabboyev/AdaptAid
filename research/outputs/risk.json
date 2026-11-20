@@ -1,0 +1,42 @@
+{
+ "note": "OULAD, features from the first 42 days only; trained on 2013 presentations (11620 students), tested on 2014 (15404 students). At-risk = Withdrawn or Fail (43% of the test set). Students who withdrew before day 42 are excluded.",
+ "table": [
+  {
+   "model": "Logistic regression",
+   "roc_auc": 0.7284,
+   "pr_auc": 0.7027,
+   "f1": 0.6365,
+   "recall_at_risk": 0.7532
+  },
+  {
+   "model": "Random forest",
+   "roc_auc": 0.7686,
+   "pr_auc": 0.7478,
+   "f1": 0.6583,
+   "recall_at_risk": 0.6852
+  },
+  {
+   "model": "Gradient boosting",
+   "roc_auc": 0.766,
+   "pr_auc": 0.7365,
+   "f1": 0.6609,
+   "recall_at_risk": 0.6962
+  }
+ ],
+ "base_rate": 0.4277,
+ "top_features_random_forest": {
+  "mean_score": 0.179,
+  "clicks_last2w": 0.1252,
+  "active_days": 0.0794,
+  "clicks_total": 0.0782,
+  "clicks_homepage": 0.0773,
+  "clicks_content": 0.0772,
+  "clicks_forum": 0.0765,
+  "n_missing": 0.0644
+ },
+ "tripwires": {
+  "risk_auc_below_0.95": true,
+  "risk_beats_chance": true,
+  "cf_beats_random": true
+ }
+}

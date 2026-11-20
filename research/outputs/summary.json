@@ -1,0 +1,40 @@
+{
+ "generated_at": "2026-11-20T20:01:06",
+ "checks": {
+  "bkt_eval": {
+   "bkt_auc_in_plausible_range_0.6_0.8": true,
+   "no_model_above_0.9": true,
+   "bkt_beats_per_skill_mean": true
+  },
+  "cf_offline": {
+   "risk_auc_below_0.95": true,
+   "risk_beats_chance": true,
+   "cf_beats_random": true
+  },
+  "personas": {
+   "risk_auc_below_0.95": true,
+   "risk_beats_chance": true,
+   "cf_beats_random": true
+  },
+  "risk": {
+   "risk_auc_below_0.95": true,
+   "risk_beats_chance": true,
+   "cf_beats_random": true
+  },
+  "simulation": {
+   "hybrid_ge_static_every_level": true,
+   "hybrid_gt_static_when_style_matters": true,
+   "learned_style_beats_no_questionnaire": true,
+   "learned_style_recovers_from_wrong_questionnaire": true,
+   "aids_beat_checks_alone": true
+  },
+  "simulation_dsa": {
+   "hybrid_ge_static_every_level": true,
+   "hybrid_gt_static_when_style_matters": true,
+   "learned_style_beats_no_questionnaire": true,
+   "learned_style_recovers_from_wrong_questionnaire": true,
+   "aids_beat_checks_alone": true
+  }
+ },
+ "failed": []
+}

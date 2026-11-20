@@ -58,21 +58,25 @@ def main() -> None:
     ap.add_argument("--no-pybkt", action="store_true")
     ap.add_argument("--pybkt-skills", type=int, default=10,
                     help="run the pyBKT comparison on the N largest skills (its EM is slow)")
+    ap.add_argument("--pybkt-csv", type=Path, default=None,
+                    help="merge pyBKT predictions computed elsewhere (research/notebooks/pybkt_colab.ipynb) "
+                         "instead of running pyBKT locally; columns fold, order_id, pybkt")
     ap.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2) - 1))
     args = ap.parse_args()
     t0 = time.time()
 
     df = assistments()
     cleaning = df.attrs["cleaning"]
-    counts = df.groupby("skill_name")["user_id"].nunique().sort_values(ascending=False)
-    skills = list(counts.index[: args.skills])
+    counts = df.groupby("skill_name")["user_id"].nunique()
+    # Deterministic order (ties broken by name) so the Colab notebook selects identical skills.
+    skills = sorted(counts.index, key=lambda s: (-int(counts[s]), s))[: args.skills]
     df = df[df["skill_name"].isin(skills)].copy()
     users = np.array(sorted(df["user_id"].unique()))
     kf = KFold(n_splits=FOLDS, shuffle=True, random_state=42)
 
     rows: list[dict] = []  # one per test prediction
     params_all: list[dict] = []
-    use_pybkt = not args.no_pybkt and PYBKT_PY.exists()
+    use_pybkt = not args.no_pybkt and args.pybkt_csv is None and PYBKT_PY.exists()
 
     for fold, (tr_idx, te_idx) in enumerate(kf.split(users)):
         tr_users, te_users = set(users[tr_idx]), set(users[te_idx])
@@ -117,6 +121,15 @@ def main() -> None:
         print(f"fold {fold + 1}/{FOLDS} done ({time.time() - t0:.0f}s)", flush=True)
 
     res = pd.DataFrame(rows)
+    pybkt_scope = f"{args.pybkt_skills} largest skills"
+    if args.pybkt_csv is not None:
+        ext = pd.read_csv(args.pybkt_csv)
+        lookup = {(int(f), int(o)): float(p) for f, o, p in ext[["fold", "order_id", "pybkt"]].itertuples(index=False)}
+        res["pybkt"] = [lookup.get((int(f), int(o)), np.nan) for f, o in zip(res["fold"], res["order_id"], strict=True)]
+        pybkt_scope = f"{ext['skill_name'].nunique()} largest skills"
+        missing = res.loc[res["skill"].isin(set(ext["skill_name"])), "pybkt"].isna().sum()
+        print(f"merged {res['pybkt'].notna().sum()} pyBKT predictions from {args.pybkt_csv.name} ({missing} unmatched)")
+        use_pybkt = True
 
     def score(name: str, col: str, frame: pd.DataFrame, scope: str) -> dict:
         sub = frame.dropna(subset=[col])
@@ -129,7 +142,7 @@ def main() -> None:
              score("BKT, brute force (ours)", "bkt", res, scope_all)]
     if use_pybkt and "pybkt" in res:
         head = res.dropna(subset=["pybkt"])
-        scope_sub = f"{args.pybkt_skills} largest skills"
+        scope_sub = pybkt_scope
         table += [score("BKT, brute force (ours)", "bkt", head, scope_sub), score("BKT, EM (pyBKT)", "pybkt", head, scope_sub)]
 
     per_skill = []
@@ -159,7 +172,9 @@ def main() -> None:
         "median_params": median,
         "cleaning": cleaning,
         "config": {"skills": len(skills), "folds": FOLDS, "max_fit_len": MAX_FIT_LEN, "pybkt": use_pybkt,
-                   "pybkt_skills": args.pybkt_skills if use_pybkt else 0},
+                   "pybkt_scope": pybkt_scope if use_pybkt else None,
+                   "pybkt_source": ("Colab (Linux, C++ extension)" if args.pybkt_csv is not None
+                                    else "local" if use_pybkt else None)},
         "tripwires": tripwires,
         "runtime_s": round(time.time() - t0, 1),
     }
