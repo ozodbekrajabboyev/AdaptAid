@@ -1,6 +1,529 @@
 {
  "components": {
   "schemas": {
+   "AidDetail": {
+    "properties": {
+     "aid_type": {
+      "$ref": "#/components/schemas/AidType"
+     },
+     "body_md": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Body Md"
+     },
+     "component_key": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Component Key"
+     },
+     "concept_id": {
+      "title": "Concept Id",
+      "type": "integer"
+     },
+     "concept_name": {
+      "title": "Concept Name",
+      "type": "string"
+     },
+     "default_order": {
+      "title": "Default Order",
+      "type": "integer"
+     },
+     "delivery": {
+      "$ref": "#/components/schemas/Delivery"
+     },
+     "description": {
+      "title": "Description",
+      "type": "string"
+     },
+     "difficulty": {
+      "title": "Difficulty",
+      "type": "integer"
+     },
+     "duration_min": {
+      "title": "Duration Min",
+      "type": "integer"
+     },
+     "id": {
+      "title": "Id",
+      "type": "integer"
+     },
+     "interactivity": {
+      "$ref": "#/components/schemas/Interactivity"
+     },
+     "is_active": {
+      "title": "Is Active",
+      "type": "boolean"
+     },
+     "n_drill_questions": {
+      "title": "N Drill Questions",
+      "type": "integer"
+     },
+     "slug": {
+      "title": "Slug",
+      "type": "string"
+     },
+     "source": {
+      "title": "Source",
+      "type": "string"
+     },
+     "style": {
+      "items": {
+       "type": "number"
+      },
+      "title": "Style",
+      "type": "array"
+     },
+     "title": {
+      "title": "Title",
+      "type": "string"
+     },
+     "url": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Url"
+     }
+    },
+    "required": [
+     "id",
+     "slug",
+     "title",
+     "description",
+     "aid_type",
+     "delivery",
+     "source",
+     "difficulty",
+     "duration_min",
+     "concept_id",
+     "concept_name",
+     "style",
+     "interactivity",
+     "default_order",
+     "is_active",
+     "url",
+     "body_md",
+     "component_key",
+     "n_drill_questions"
+    ],
+    "title": "AidDetail",
+    "type": "object"
+   },
+   "AidIn": {
+    "properties": {
+     "aid_type": {
+      "$ref": "#/components/schemas/AidType"
+     },
+     "body_md": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Body Md"
+     },
+     "component_key": {
+      "anyOf": [
+       {
+        "enum": [
+         "sorting-stepper",
+         "recursion-stack",
+         "bst-builder"
+        ],
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Component Key"
+     },
+     "concept_id": {
+      "title": "Concept Id",
+      "type": "integer"
+     },
+     "default_order": {
+      "default": 0,
+      "title": "Default Order",
+      "type": "integer"
+     },
+     "delivery": {
+      "$ref": "#/components/schemas/Delivery"
+     },
+     "description": {
+      "maxLength": 500,
+      "minLength": 3,
+      "title": "Description",
+      "type": "string"
+     },
+     "difficulty": {
+      "default": 2,
+      "maximum": 5.0,
+      "minimum": 1.0,
+      "title": "Difficulty",
+      "type": "integer"
+     },
+     "duration_min": {
+      "default": 10,
+      "maximum": 240.0,
+      "minimum": 1.0,
+      "title": "Duration Min",
+      "type": "integer"
+     },
+     "interactivity": {
+      "$ref": "#/components/schemas/Interactivity",
+      "default": "expositive"
+     },
+     "slug": {
+      "maxLength": 96,
+      "minLength": 3,
+      "pattern": "^[a-z0-9-]+$",
+      "title": "Slug",
+      "type": "string"
+     },
+     "source": {
+      "default": "AdaptAid",
+      "title": "Source",
+      "type": "string"
+     },
+     "style_ar": {
+      "maximum": 1.0,
+      "minimum": -1.0,
+      "title": "Style Ar",
+      "type": "number"
+     },
+     "style_sg": {
+      "maximum": 1.0,
+      "minimum": -1.0,
+      "title": "Style Sg",
+      "type": "number"
+     },
+     "style_si": {
+      "maximum": 1.0,
+      "minimum": -1.0,
+      "title": "Style Si",
+      "type": "number"
+     },
+     "style_vv": {
+      "maximum": 1.0,
+      "minimum": -1.0,
+      "title": "Style Vv",
+      "type": "number"
+     },
+     "title": {
+      "maxLength": 200,
+      "minLength": 3,
+      "title": "Title",
+      "type": "string"
+     },
+     "url": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Url"
+     }
+    },
+    "required": [
+     "slug",
+     "title",
+     "description",
+     "concept_id",
+     "aid_type",
+     "delivery",
+     "style_ar",
+     "style_si",
+     "style_vv",
+     "style_sg"
+    ],
+    "title": "AidIn",
+    "type": "object"
+   },
+   "AidSummary": {
+    "properties": {
+     "aid_type": {
+      "$ref": "#/components/schemas/AidType"
+     },
+     "concept_id": {
+      "title": "Concept Id",
+      "type": "integer"
+     },
+     "concept_name": {
+      "title": "Concept Name",
+      "type": "string"
+     },
+     "default_order": {
+      "title": "Default Order",
+      "type": "integer"
+     },
+     "delivery": {
+      "$ref": "#/components/schemas/Delivery"
+     },
+     "description": {
+      "title": "Description",
+      "type": "string"
+     },
+     "difficulty": {
+      "title": "Difficulty",
+      "type": "integer"
+     },
+     "duration_min": {
+      "title": "Duration Min",
+      "type": "integer"
+     },
+     "id": {
+      "title": "Id",
+      "type": "integer"
+     },
+     "interactivity": {
+      "$ref": "#/components/schemas/Interactivity"
+     },
+     "is_active": {
+      "title": "Is Active",
+      "type": "boolean"
+     },
+     "slug": {
+      "title": "Slug",
+      "type": "string"
+     },
+     "source": {
+      "title": "Source",
+      "type": "string"
+     },
+     "style": {
+      "items": {
+       "type": "number"
+      },
+      "title": "Style",
+      "type": "array"
+     },
+     "title": {
+      "title": "Title",
+      "type": "string"
+     }
+    },
+    "required": [
+     "id",
+     "slug",
+     "title",
+     "description",
+     "aid_type",
+     "delivery",
+     "source",
+     "difficulty",
+     "duration_min",
+     "concept_id",
+     "concept_name",
+     "style",
+     "interactivity",
+     "default_order",
+     "is_active"
+    ],
+    "title": "AidSummary",
+    "type": "object"
+   },
+   "AidType": {
+    "enum": [
+     "video",
+     "animation",
+     "interactive",
+     "notes",
+     "worked_example",
+     "cheat_sheet",
+     "concept_map",
+     "practice",
+     "article"
+    ],
+    "title": "AidType",
+    "type": "string"
+   },
+   "AnswerIn": {
+    "properties": {
+     "chosen_index": {
+      "maximum": 3.0,
+      "minimum": 0.0,
+      "title": "Chosen Index",
+      "type": "integer"
+     },
+     "question_id": {
+      "title": "Question Id",
+      "type": "integer"
+     },
+     "time_ms": {
+      "anyOf": [
+       {
+        "minimum": 0.0,
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Time Ms"
+     }
+    },
+    "required": [
+     "question_id",
+     "chosen_index"
+    ],
+    "title": "AnswerIn",
+    "type": "object"
+   },
+   "AnswerOut": {
+    "properties": {
+     "concept_id": {
+      "title": "Concept Id",
+      "type": "integer"
+     },
+     "correct": {
+      "title": "Correct",
+      "type": "boolean"
+     },
+     "correct_index": {
+      "title": "Correct Index",
+      "type": "integer"
+     },
+     "explanation": {
+      "title": "Explanation",
+      "type": "string"
+     },
+     "is_repeat": {
+      "title": "Is Repeat",
+      "type": "boolean"
+     },
+     "p_after": {
+      "title": "P After",
+      "type": "number"
+     },
+     "p_before": {
+      "title": "P Before",
+      "type": "number"
+     },
+     "question_id": {
+      "title": "Question Id",
+      "type": "integer"
+     }
+    },
+    "required": [
+     "question_id",
+     "correct",
+     "correct_index",
+     "explanation",
+     "concept_id",
+     "p_before",
+     "p_after",
+     "is_repeat"
+    ],
+    "title": "AnswerOut",
+    "type": "object"
+   },
+   "AttemptKind": {
+    "enum": [
+     "diagnostic",
+     "check",
+     "drill",
+     "pretest",
+     "posttest"
+    ],
+    "title": "AttemptKind",
+    "type": "string"
+   },
+   "AttemptOut": {
+    "properties": {
+     "answered": {
+      "additionalProperties": {
+       "type": "integer"
+      },
+      "title": "Answered",
+      "type": "object"
+     },
+     "concept_id": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Concept Id"
+     },
+     "id": {
+      "title": "Id",
+      "type": "integer"
+     },
+     "kind": {
+      "$ref": "#/components/schemas/AttemptKind"
+     },
+     "questions": {
+      "items": {
+       "$ref": "#/components/schemas/QuizQuestion"
+      },
+      "title": "Questions",
+      "type": "array"
+     }
+    },
+    "required": [
+     "id",
+     "kind",
+     "concept_id",
+     "questions",
+     "answered"
+    ],
+    "title": "AttemptOut",
+    "type": "object"
+   },
+   "Body_import_aids_api_content_import_aids_post": {
+    "properties": {
+     "file": {
+      "contentMediaType": "application/octet-stream",
+      "title": "File",
+      "type": "string"
+     }
+    },
+    "required": [
+     "file"
+    ],
+    "title": "Body_import_aids_api_content_import_aids_post",
+    "type": "object"
+   },
+   "Body_import_questions_api_content_import_questions_post": {
+    "properties": {
+     "file": {
+      "contentMediaType": "application/octet-stream",
+      "title": "File",
+      "type": "string"
+     }
+    },
+    "required": [
+     "file"
+    ],
+    "title": "Body_import_questions_api_content_import_questions_post",
+    "type": "object"
+   },
    "ClassCreate": {
     "properties": {
      "course_id": {
@@ -75,6 +598,378 @@
     "title": "ClassOut",
     "type": "object"
    },
+   "ConceptChange": {
+    "properties": {
+     "after": {
+      "title": "After",
+      "type": "number"
+     },
+     "before": {
+      "title": "Before",
+      "type": "number"
+     },
+     "concept_id": {
+      "title": "Concept Id",
+      "type": "integer"
+     },
+     "name": {
+      "title": "Name",
+      "type": "string"
+     }
+    },
+    "required": [
+     "concept_id",
+     "name",
+     "before",
+     "after"
+    ],
+    "title": "ConceptChange",
+    "type": "object"
+   },
+   "ConceptOut": {
+    "properties": {
+     "bkt": {
+      "additionalProperties": {
+       "type": "number"
+      },
+      "title": "Bkt",
+      "type": "object"
+     },
+     "description": {
+      "title": "Description",
+      "type": "string"
+     },
+     "id": {
+      "title": "Id",
+      "type": "integer"
+     },
+     "is_study": {
+      "title": "Is Study",
+      "type": "boolean"
+     },
+     "n_aids": {
+      "title": "N Aids",
+      "type": "integer"
+     },
+     "name": {
+      "title": "Name",
+      "type": "string"
+     },
+     "order_index": {
+      "title": "Order Index",
+      "type": "integer"
+     },
+     "params_source": {
+      "title": "Params Source",
+      "type": "string"
+     },
+     "prerequisites": {
+      "items": {
+       "type": "integer"
+      },
+      "title": "Prerequisites",
+      "type": "array"
+     },
+     "slug": {
+      "title": "Slug",
+      "type": "string"
+     }
+    },
+    "required": [
+     "id",
+     "slug",
+     "name",
+     "description",
+     "order_index",
+     "is_study",
+     "prerequisites",
+     "bkt",
+     "params_source",
+     "n_aids"
+    ],
+    "title": "ConceptOut",
+    "type": "object"
+   },
+   "CourseOut": {
+    "properties": {
+     "code": {
+      "title": "Code",
+      "type": "string"
+     },
+     "description": {
+      "title": "Description",
+      "type": "string"
+     },
+     "id": {
+      "title": "Id",
+      "type": "integer"
+     },
+     "title": {
+      "title": "Title",
+      "type": "string"
+     }
+    },
+    "required": [
+     "id",
+     "code",
+     "title",
+     "description"
+    ],
+    "title": "CourseOut",
+    "type": "object"
+   },
+   "DailyPoint": {
+    "properties": {
+     "answers": {
+      "title": "Answers",
+      "type": "integer"
+     },
+     "date": {
+      "title": "Date",
+      "type": "string"
+     },
+     "mean_mastery": {
+      "title": "Mean Mastery",
+      "type": "number"
+     }
+    },
+    "required": [
+     "date",
+     "mean_mastery",
+     "answers"
+    ],
+    "title": "DailyPoint",
+    "type": "object"
+   },
+   "Delivery": {
+    "enum": [
+     "native_md",
+     "external_url",
+     "interactive_component"
+    ],
+    "title": "Delivery",
+    "type": "string"
+   },
+   "EventIn": {
+    "properties": {
+     "aid_id": {
+      "title": "Aid Id",
+      "type": "integer"
+     },
+     "event": {
+      "$ref": "#/components/schemas/EventType"
+     },
+     "item_id": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Item Id"
+     },
+     "rating": {
+      "anyOf": [
+       {
+        "maximum": 5.0,
+        "minimum": 1.0,
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Rating"
+     },
+     "seconds": {
+      "anyOf": [
+       {
+        "maximum": 3600.0,
+        "minimum": 0.0,
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Seconds"
+     },
+     "source": {
+      "$ref": "#/components/schemas/EventSource",
+      "default": "direct"
+     },
+     "use_id": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Use Id"
+     }
+    },
+    "required": [
+     "aid_id",
+     "event"
+    ],
+    "title": "EventIn",
+    "type": "object"
+   },
+   "EventOut": {
+    "properties": {
+     "p_open": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "P Open"
+     },
+     "use_id": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Use Id"
+     }
+    },
+    "required": [
+     "use_id"
+    ],
+    "title": "EventOut",
+    "type": "object"
+   },
+   "EventSource": {
+    "enum": [
+     "rec",
+     "library",
+     "path",
+     "direct"
+    ],
+    "title": "EventSource",
+    "type": "string"
+   },
+   "EventType": {
+    "enum": [
+     "open",
+     "heartbeat",
+     "complete",
+     "rate",
+     "skip"
+    ],
+    "title": "EventType",
+    "type": "string"
+   },
+   "FinishOut": {
+    "properties": {
+     "attempt_id": {
+      "title": "Attempt Id",
+      "type": "integer"
+     },
+     "changes": {
+      "items": {
+       "$ref": "#/components/schemas/ConceptChange"
+      },
+      "title": "Changes",
+      "type": "array"
+     },
+     "gain": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Gain"
+     },
+     "kind": {
+      "$ref": "#/components/schemas/AttemptKind"
+     },
+     "n_correct": {
+      "title": "N Correct",
+      "type": "integer"
+     },
+     "n_total": {
+      "title": "N Total",
+      "type": "integer"
+     },
+     "next_list_id": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Next List Id"
+     },
+     "passed": {
+      "anyOf": [
+       {
+        "type": "boolean"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Passed"
+     }
+    },
+    "required": [
+     "attempt_id",
+     "kind",
+     "n_correct",
+     "n_total",
+     "changes",
+     "gain",
+     "passed",
+     "next_list_id"
+    ],
+    "title": "FinishOut",
+    "type": "object"
+   },
+   "FocusOut": {
+    "properties": {
+     "concept_id": {
+      "title": "Concept Id",
+      "type": "integer"
+     },
+     "mastery": {
+      "title": "Mastery",
+      "type": "number"
+     },
+     "minutes": {
+      "title": "Minutes",
+      "type": "integer"
+     },
+     "name": {
+      "title": "Name",
+      "type": "string"
+     }
+    },
+    "required": [
+     "concept_id",
+     "name",
+     "mastery",
+     "minutes"
+    ],
+    "title": "FocusOut",
+    "type": "object"
+   },
    "HTTPValidationError": {
     "properties": {
      "detail": {
@@ -87,6 +982,210 @@
     },
     "title": "HTTPValidationError",
     "type": "object"
+   },
+   "HistoryItem": {
+    "properties": {
+     "aid_id": {
+      "title": "Aid Id",
+      "type": "integer"
+     },
+     "aid_type": {
+      "title": "Aid Type",
+      "type": "string"
+     },
+     "check_status": {
+      "title": "Check Status",
+      "type": "string"
+     },
+     "completed": {
+      "title": "Completed",
+      "type": "boolean"
+     },
+     "concept_name": {
+      "title": "Concept Name",
+      "type": "string"
+     },
+     "gain": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Gain"
+     },
+     "opened_at": {
+      "title": "Opened At",
+      "type": "string"
+     },
+     "rating": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Rating"
+     },
+     "title": {
+      "title": "Title",
+      "type": "string"
+     },
+     "use_id": {
+      "title": "Use Id",
+      "type": "integer"
+     }
+    },
+    "required": [
+     "use_id",
+     "aid_id",
+     "title",
+     "aid_type",
+     "concept_name",
+     "opened_at",
+     "completed",
+     "rating",
+     "gain",
+     "check_status"
+    ],
+    "title": "HistoryItem",
+    "type": "object"
+   },
+   "IlsIn": {
+    "properties": {
+     "ar": {
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+       {
+        "type": "integer"
+       },
+       {
+        "enum": [
+         "active",
+         "reflective"
+        ],
+        "type": "string"
+       }
+      ],
+      "title": "Ar",
+      "type": "array"
+     },
+     "sg": {
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+       {
+        "type": "integer"
+       },
+       {
+        "enum": [
+         "sequential",
+         "global"
+        ],
+        "type": "string"
+       }
+      ],
+      "title": "Sg",
+      "type": "array"
+     },
+     "si": {
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+       {
+        "type": "integer"
+       },
+       {
+        "enum": [
+         "sensing",
+         "intuitive"
+        ],
+        "type": "string"
+       }
+      ],
+      "title": "Si",
+      "type": "array"
+     },
+     "vv": {
+      "maxItems": 2,
+      "minItems": 2,
+      "prefixItems": [
+       {
+        "type": "integer"
+       },
+       {
+        "enum": [
+         "visual",
+         "verbal"
+        ],
+        "type": "string"
+       }
+      ],
+      "title": "Vv",
+      "type": "array"
+     }
+    },
+    "required": [
+     "ar",
+     "si",
+     "vv",
+     "sg"
+    ],
+    "title": "IlsIn",
+    "type": "object"
+   },
+   "ImportResult": {
+    "properties": {
+     "created": {
+      "title": "Created",
+      "type": "integer"
+     },
+     "errors": {
+      "items": {
+       "type": "string"
+      },
+      "title": "Errors",
+      "type": "array"
+     },
+     "updated": {
+      "title": "Updated",
+      "type": "integer"
+     }
+    },
+    "required": [
+     "created",
+     "updated",
+     "errors"
+    ],
+    "title": "ImportResult",
+    "type": "object"
+   },
+   "ImpressionIn": {
+    "properties": {
+     "list_id": {
+      "title": "List Id",
+      "type": "integer"
+     }
+    },
+    "required": [
+     "list_id"
+    ],
+    "title": "ImpressionIn",
+    "type": "object"
+   },
+   "Interactivity": {
+    "enum": [
+     "active",
+     "expositive",
+     "mixed"
+    ],
+    "title": "Interactivity",
+    "type": "string"
    },
    "JoinIn": {
     "properties": {
@@ -120,6 +1219,797 @@
      "password"
     ],
     "title": "LoginIn",
+    "type": "object"
+   },
+   "MasteryOut": {
+    "properties": {
+     "concept_id": {
+      "title": "Concept Id",
+      "type": "integer"
+     },
+     "name": {
+      "title": "Name",
+      "type": "string"
+     },
+     "order": {
+      "title": "Order",
+      "type": "integer"
+     },
+     "p": {
+      "title": "P",
+      "type": "number"
+     },
+     "slug": {
+      "title": "Slug",
+      "type": "string"
+     },
+     "status": {
+      "title": "Status",
+      "type": "string"
+     }
+    },
+    "required": [
+     "concept_id",
+     "slug",
+     "name",
+     "p",
+     "status",
+     "order"
+    ],
+    "title": "MasteryOut",
+    "type": "object"
+   },
+   "OnboardingStatus": {
+    "properties": {
+     "consent_needed": {
+      "title": "Consent Needed",
+      "type": "boolean"
+     },
+     "diagnostic_done": {
+      "title": "Diagnostic Done",
+      "type": "boolean"
+     },
+     "in_class": {
+      "title": "In Class",
+      "type": "boolean"
+     },
+     "next_step": {
+      "enum": [
+       "join",
+       "consent",
+       "pretest",
+       "questionnaire",
+       "diagnostic",
+       "done"
+      ],
+      "title": "Next Step",
+      "type": "string"
+     },
+     "pretest_needed": {
+      "title": "Pretest Needed",
+      "type": "boolean"
+     },
+     "questionnaire_done": {
+      "title": "Questionnaire Done",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "in_class",
+     "consent_needed",
+     "pretest_needed",
+     "questionnaire_done",
+     "diagnostic_done",
+     "next_step"
+    ],
+    "title": "OnboardingStatus",
+    "type": "object"
+   },
+   "PathNode": {
+    "properties": {
+     "id": {
+      "title": "Id",
+      "type": "integer"
+     },
+     "layer": {
+      "title": "Layer",
+      "type": "integer"
+     },
+     "name": {
+      "title": "Name",
+      "type": "string"
+     },
+     "order": {
+      "title": "Order",
+      "type": "integer"
+     },
+     "p": {
+      "title": "P",
+      "type": "number"
+     },
+     "projected_rank": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Projected Rank"
+     },
+     "slug": {
+      "title": "Slug",
+      "type": "string"
+     },
+     "status": {
+      "title": "Status",
+      "type": "string"
+     },
+     "visited": {
+      "title": "Visited",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "id",
+     "slug",
+     "name",
+     "p",
+     "status",
+     "layer",
+     "order",
+     "visited",
+     "projected_rank"
+    ],
+    "title": "PathNode",
+    "type": "object"
+   },
+   "PathOut": {
+    "properties": {
+     "edges": {
+      "items": {
+       "maxItems": 2,
+       "minItems": 2,
+       "prefixItems": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "integer"
+        }
+       ],
+       "type": "array"
+      },
+      "title": "Edges",
+      "type": "array"
+     },
+     "nodes": {
+      "items": {
+       "$ref": "#/components/schemas/PathNode"
+      },
+      "title": "Nodes",
+      "type": "array"
+     },
+     "projected": {
+      "items": {
+       "type": "integer"
+      },
+      "title": "Projected",
+      "type": "array"
+     },
+     "route": {
+      "items": {
+       "type": "integer"
+      },
+      "title": "Route",
+      "type": "array"
+     }
+    },
+    "required": [
+     "nodes",
+     "edges",
+     "route",
+     "projected"
+    ],
+    "title": "PathOut",
+    "type": "object"
+   },
+   "ProgressOut": {
+    "properties": {
+     "daily": {
+      "items": {
+       "$ref": "#/components/schemas/DailyPoint"
+      },
+      "title": "Daily",
+      "type": "array"
+     },
+     "series": {
+      "items": {
+       "$ref": "#/components/schemas/ProgressSeries"
+      },
+      "title": "Series",
+      "type": "array"
+     }
+    },
+    "required": [
+     "series",
+     "daily"
+    ],
+    "title": "ProgressOut",
+    "type": "object"
+   },
+   "ProgressPoint": {
+    "properties": {
+     "p": {
+      "title": "P",
+      "type": "number"
+     },
+     "t": {
+      "title": "T",
+      "type": "string"
+     }
+    },
+    "required": [
+     "t",
+     "p"
+    ],
+    "title": "ProgressPoint",
+    "type": "object"
+   },
+   "ProgressSeries": {
+    "properties": {
+     "concept_id": {
+      "title": "Concept Id",
+      "type": "integer"
+     },
+     "name": {
+      "title": "Name",
+      "type": "string"
+     },
+     "points": {
+      "items": {
+       "$ref": "#/components/schemas/ProgressPoint"
+      },
+      "title": "Points",
+      "type": "array"
+     }
+    },
+    "required": [
+     "concept_id",
+     "name",
+     "points"
+    ],
+    "title": "ProgressSeries",
+    "type": "object"
+   },
+   "QuestionIn": {
+    "properties": {
+     "aid_id": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Aid Id"
+     },
+     "concept_id": {
+      "title": "Concept Id",
+      "type": "integer"
+     },
+     "correct_index": {
+      "maximum": 3.0,
+      "minimum": 0.0,
+      "title": "Correct Index",
+      "type": "integer"
+     },
+     "difficulty": {
+      "default": 2,
+      "maximum": 3.0,
+      "minimum": 1.0,
+      "title": "Difficulty",
+      "type": "integer"
+     },
+     "explanation": {
+      "minLength": 3,
+      "title": "Explanation",
+      "type": "string"
+     },
+     "form": {
+      "anyOf": [
+       {
+        "enum": [
+         "A",
+         "B"
+        ],
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Form"
+     },
+     "key": {
+      "maxLength": 64,
+      "minLength": 3,
+      "pattern": "^[a-z0-9-]+$",
+      "title": "Key",
+      "type": "string"
+     },
+     "options": {
+      "items": {
+       "type": "string"
+      },
+      "maxItems": 4,
+      "minItems": 4,
+      "title": "Options",
+      "type": "array"
+     },
+     "pool": {
+      "$ref": "#/components/schemas/QuestionPool",
+      "default": "check"
+     },
+     "stem": {
+      "minLength": 5,
+      "title": "Stem",
+      "type": "string"
+     }
+    },
+    "required": [
+     "key",
+     "concept_id",
+     "stem",
+     "options",
+     "correct_index",
+     "explanation"
+    ],
+    "title": "QuestionIn",
+    "type": "object"
+   },
+   "QuestionOut": {
+    "properties": {
+     "aid_id": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Aid Id"
+     },
+     "concept_id": {
+      "title": "Concept Id",
+      "type": "integer"
+     },
+     "correct_index": {
+      "title": "Correct Index",
+      "type": "integer"
+     },
+     "difficulty": {
+      "title": "Difficulty",
+      "type": "integer"
+     },
+     "explanation": {
+      "title": "Explanation",
+      "type": "string"
+     },
+     "form": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Form"
+     },
+     "id": {
+      "title": "Id",
+      "type": "integer"
+     },
+     "is_active": {
+      "title": "Is Active",
+      "type": "boolean"
+     },
+     "key": {
+      "title": "Key",
+      "type": "string"
+     },
+     "options": {
+      "items": {
+       "type": "string"
+      },
+      "title": "Options",
+      "type": "array"
+     },
+     "pool": {
+      "$ref": "#/components/schemas/QuestionPool"
+     },
+     "stem": {
+      "title": "Stem",
+      "type": "string"
+     }
+    },
+    "required": [
+     "id",
+     "key",
+     "concept_id",
+     "stem",
+     "options",
+     "correct_index",
+     "explanation",
+     "difficulty",
+     "pool",
+     "form",
+     "aid_id",
+     "is_active"
+    ],
+    "title": "QuestionOut",
+    "type": "object"
+   },
+   "QuestionPool": {
+    "enum": [
+     "diagnostic",
+     "check",
+     "drill",
+     "study"
+    ],
+    "title": "QuestionPool",
+    "type": "string"
+   },
+   "QuestionnaireIn": {
+    "properties": {
+     "answers": {
+      "additionalProperties": {
+       "enum": [
+        "a",
+        "b"
+       ],
+       "type": "string"
+      },
+      "title": "Answers",
+      "type": "object"
+     }
+    },
+    "required": [
+     "answers"
+    ],
+    "title": "QuestionnaireIn",
+    "type": "object"
+   },
+   "QuestionnaireItemOut": {
+    "properties": {
+     "a": {
+      "title": "A",
+      "type": "string"
+     },
+     "b": {
+      "title": "B",
+      "type": "string"
+     },
+     "key": {
+      "title": "Key",
+      "type": "string"
+     },
+     "prompt": {
+      "title": "Prompt",
+      "type": "string"
+     }
+    },
+    "required": [
+     "key",
+     "prompt",
+     "a",
+     "b"
+    ],
+    "title": "QuestionnaireItemOut",
+    "type": "object"
+   },
+   "QuestionnaireOut": {
+    "properties": {
+     "intro": {
+      "title": "Intro",
+      "type": "string"
+     },
+     "items": {
+      "items": {
+       "$ref": "#/components/schemas/QuestionnaireItemOut"
+      },
+      "title": "Items",
+      "type": "array"
+     },
+     "note": {
+      "title": "Note",
+      "type": "string"
+     },
+     "title": {
+      "title": "Title",
+      "type": "string"
+     }
+    },
+    "required": [
+     "title",
+     "intro",
+     "note",
+     "items"
+    ],
+    "title": "QuestionnaireOut",
+    "type": "object"
+   },
+   "QuizQuestion": {
+    "properties": {
+     "concept_id": {
+      "title": "Concept Id",
+      "type": "integer"
+     },
+     "concept_name": {
+      "title": "Concept Name",
+      "type": "string"
+     },
+     "id": {
+      "title": "Id",
+      "type": "integer"
+     },
+     "options": {
+      "items": {
+       "type": "string"
+      },
+      "title": "Options",
+      "type": "array"
+     },
+     "stem": {
+      "title": "Stem",
+      "type": "string"
+     }
+    },
+    "required": [
+     "id",
+     "concept_id",
+     "concept_name",
+     "stem",
+     "options"
+    ],
+    "title": "QuizQuestion",
+    "type": "object"
+   },
+   "QuizStartIn": {
+    "properties": {
+     "aid_id": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Aid Id"
+     },
+     "concept_id": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Concept Id"
+     },
+     "kind": {
+      "$ref": "#/components/schemas/AttemptKind"
+     },
+     "use_id": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Use Id"
+     }
+    },
+    "required": [
+     "kind"
+    ],
+    "title": "QuizStartIn",
+    "type": "object"
+   },
+   "RecAid": {
+    "properties": {
+     "aid_type": {
+      "$ref": "#/components/schemas/AidType"
+     },
+     "description": {
+      "title": "Description",
+      "type": "string"
+     },
+     "difficulty": {
+      "title": "Difficulty",
+      "type": "integer"
+     },
+     "duration_min": {
+      "title": "Duration Min",
+      "type": "integer"
+     },
+     "id": {
+      "title": "Id",
+      "type": "integer"
+     },
+     "source": {
+      "title": "Source",
+      "type": "string"
+     },
+     "title": {
+      "title": "Title",
+      "type": "string"
+     }
+    },
+    "required": [
+     "id",
+     "title",
+     "description",
+     "aid_type",
+     "source",
+     "duration_min",
+     "difficulty"
+    ],
+    "title": "RecAid",
+    "type": "object"
+   },
+   "RecItemOut": {
+    "properties": {
+     "aid": {
+      "$ref": "#/components/schemas/RecAid"
+     },
+     "completed": {
+      "title": "Completed",
+      "type": "boolean"
+     },
+     "concept_id": {
+      "title": "Concept Id",
+      "type": "integer"
+     },
+     "concept_name": {
+      "title": "Concept Name",
+      "type": "string"
+     },
+     "explanation": {
+      "title": "Explanation",
+      "type": "string"
+     },
+     "id": {
+      "title": "Id",
+      "type": "integer"
+     },
+     "is_explore": {
+      "title": "Is Explore",
+      "type": "boolean"
+     },
+     "mastery": {
+      "title": "Mastery",
+      "type": "number"
+     },
+     "match": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "description": "0-100; hidden in study mode and for the course-plan arm",
+      "title": "Match"
+     },
+     "opened": {
+      "title": "Opened",
+      "type": "boolean"
+     },
+     "rank": {
+      "title": "Rank",
+      "type": "integer"
+     }
+    },
+    "required": [
+     "id",
+     "rank",
+     "aid",
+     "concept_id",
+     "concept_name",
+     "mastery",
+     "match",
+     "explanation",
+     "is_explore",
+     "opened",
+     "completed"
+    ],
+    "title": "RecItemOut",
+    "type": "object"
+   },
+   "RecListOut": {
+    "properties": {
+     "created_at": {
+      "format": "date-time",
+      "title": "Created At",
+      "type": "string"
+     },
+     "focus": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/FocusOut"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "id": {
+      "title": "Id",
+      "type": "integer"
+     },
+     "items": {
+      "items": {
+       "$ref": "#/components/schemas/RecItemOut"
+      },
+      "title": "Items",
+      "type": "array"
+     },
+     "message": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Message"
+     },
+     "phase": {
+      "title": "Phase",
+      "type": "string"
+     },
+     "scope": {
+      "title": "Scope",
+      "type": "string"
+     }
+    },
+    "required": [
+     "id",
+     "scope",
+     "phase",
+     "focus",
+     "items",
+     "created_at"
+    ],
+    "title": "RecListOut",
+    "type": "object"
+   },
+   "RefreshIn": {
+    "properties": {
+     "concept_id": {
+      "anyOf": [
+       {
+        "type": "integer"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Concept Id"
+     }
+    },
+    "title": "RefreshIn",
     "type": "object"
    },
    "RegisterIn": {
@@ -190,6 +2080,133 @@
     ],
     "title": "Role",
     "type": "string"
+   },
+   "StyleOut": {
+    "properties": {
+     "dominant": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Dominant"
+     },
+     "labels": {
+      "items": {
+       "items": {
+        "type": "string"
+       },
+       "type": "array"
+      },
+      "title": "Labels",
+      "type": "array"
+     },
+     "n_updates": {
+      "title": "N Updates",
+      "type": "integer"
+     },
+     "prior": {
+      "items": {
+       "type": "number"
+      },
+      "title": "Prior",
+      "type": "array"
+     },
+     "vector": {
+      "items": {
+       "type": "number"
+      },
+      "title": "Vector",
+      "type": "array"
+     }
+    },
+    "required": [
+     "vector",
+     "prior",
+     "n_updates",
+     "dominant",
+     "labels"
+    ],
+    "title": "StyleOut",
+    "type": "object"
+   },
+   "SummaryOut": {
+    "properties": {
+     "course_id": {
+      "title": "Course Id",
+      "type": "integer"
+     },
+     "course_title": {
+      "title": "Course Title",
+      "type": "string"
+     },
+     "focus": {
+      "anyOf": [
+       {
+        "$ref": "#/components/schemas/FocusOut"
+       },
+       {
+        "type": "null"
+       }
+      ]
+     },
+     "mastered": {
+      "title": "Mastered",
+      "type": "integer"
+     },
+     "mastery": {
+      "items": {
+       "$ref": "#/components/schemas/MasteryOut"
+      },
+      "title": "Mastery",
+      "type": "array"
+     },
+     "n_checks": {
+      "title": "N Checks",
+      "type": "integer"
+     },
+     "n_uses": {
+      "title": "N Uses",
+      "type": "integer"
+     },
+     "onboarding": {
+      "$ref": "#/components/schemas/OnboardingStatus"
+     },
+     "phase": {
+      "title": "Phase",
+      "type": "string"
+     },
+     "streak_days": {
+      "title": "Streak Days",
+      "type": "integer"
+     },
+     "style": {
+      "$ref": "#/components/schemas/StyleOut"
+     },
+     "total_concepts": {
+      "title": "Total Concepts",
+      "type": "integer"
+     }
+    },
+    "required": [
+     "course_id",
+     "course_title",
+     "mastery",
+     "style",
+     "focus",
+     "streak_days",
+     "n_uses",
+     "n_checks",
+     "phase",
+     "mastered",
+     "total_concepts",
+     "onboarding"
+    ],
+    "title": "SummaryOut",
+    "type": "object"
    },
    "UserOut": {
     "properties": {
@@ -278,6 +2295,271 @@
  },
  "openapi": "3.1.0",
  "paths": {
+  "/api/aids": {
+   "get": {
+    "operationId": "aids_api_aids_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "course_id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Course Id"
+      }
+     },
+     {
+      "in": "query",
+      "name": "concept_id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Concept Id"
+      }
+     },
+     {
+      "in": "query",
+      "name": "type",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Type"
+      }
+     },
+     {
+      "in": "query",
+      "name": "q",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Q"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/AidSummary"
+         },
+         "title": "Response Aids Api Aids Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Aids",
+    "tags": [
+     "content"
+    ]
+   },
+   "post": {
+    "operationId": "create_aid_api_aids_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/AidIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AidDetail"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Create Aid",
+    "tags": [
+     "content"
+    ]
+   }
+  },
+  "/api/aids/{aid_id}": {
+   "delete": {
+    "operationId": "archive_aid_api_aids__aid_id__delete",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "aid_id",
+      "required": true,
+      "schema": {
+       "title": "Aid Id",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Archive Aid",
+    "tags": [
+     "content"
+    ]
+   },
+   "get": {
+    "operationId": "aid_api_aids__aid_id__get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "aid_id",
+      "required": true,
+      "schema": {
+       "title": "Aid Id",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AidDetail"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Aid",
+    "tags": [
+     "content"
+    ]
+   },
+   "put": {
+    "operationId": "update_aid_api_aids__aid_id__put",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "aid_id",
+      "required": true,
+      "schema": {
+       "title": "Aid Id",
+       "type": "integer"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/AidIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AidDetail"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Update Aid",
+    "tags": [
+     "content"
+    ]
+   }
+  },
   "/api/auth/login": {
    "post": {
     "operationId": "login_api_auth_login_post",
@@ -502,6 +2784,334 @@
     ]
    }
   },
+  "/api/content/export/aids.csv": {
+   "get": {
+    "operationId": "export_aids_api_content_export_aids_csv_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "course_id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Course Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "text/plain": {
+        "schema": {
+         "type": "string"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Export Aids",
+    "tags": [
+     "content"
+    ]
+   }
+  },
+  "/api/content/export/questions.csv": {
+   "get": {
+    "operationId": "export_questions_api_content_export_questions_csv_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "course_id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Course Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "text/plain": {
+        "schema": {
+         "type": "string"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Export Questions",
+    "tags": [
+     "content"
+    ]
+   }
+  },
+  "/api/content/import/aids": {
+   "post": {
+    "operationId": "import_aids_api_content_import_aids_post",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "course_id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Course Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "multipart/form-data": {
+       "schema": {
+        "$ref": "#/components/schemas/Body_import_aids_api_content_import_aids_post"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ImportResult"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Import Aids",
+    "tags": [
+     "content"
+    ]
+   }
+  },
+  "/api/content/import/questions": {
+   "post": {
+    "operationId": "import_questions_api_content_import_questions_post",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "course_id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Course Id"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "multipart/form-data": {
+       "schema": {
+        "$ref": "#/components/schemas/Body_import_questions_api_content_import_questions_post"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ImportResult"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Import Questions",
+    "tags": [
+     "content"
+    ]
+   }
+  },
+  "/api/courses": {
+   "get": {
+    "operationId": "courses_api_courses_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/CourseOut"
+         },
+         "title": "Response Courses Api Courses Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Courses",
+    "tags": [
+     "content"
+    ]
+   }
+  },
+  "/api/courses/{course_id}/concepts": {
+   "get": {
+    "operationId": "concepts_api_courses__course_id__concepts_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "course_id",
+      "required": true,
+      "schema": {
+       "title": "Course Id",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/ConceptOut"
+         },
+         "title": "Response Concepts Api Courses  Course Id  Concepts Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Concepts",
+    "tags": [
+     "content"
+    ]
+   }
+  },
+  "/api/events": {
+   "post": {
+    "operationId": "event_api_events_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/EventIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/EventOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Event",
+    "tags": [
+     "learning"
+    ]
+   }
+  },
   "/api/health": {
    "get": {
     "operationId": "health_api_health_get",
@@ -524,6 +3134,724 @@
     "summary": "Health",
     "tags": [
      "health"
+    ]
+   }
+  },
+  "/api/me/history": {
+   "get": {
+    "operationId": "my_history_api_me_history_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/HistoryItem"
+         },
+         "title": "Response My History Api Me History Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "My History",
+    "tags": [
+     "learning"
+    ]
+   }
+  },
+  "/api/me/path": {
+   "get": {
+    "operationId": "my_path_api_me_path_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/PathOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "My Path",
+    "tags": [
+     "learning"
+    ]
+   }
+  },
+  "/api/me/progress": {
+   "get": {
+    "operationId": "my_progress_api_me_progress_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/ProgressOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "My Progress",
+    "tags": [
+     "learning"
+    ]
+   }
+  },
+  "/api/me/summary": {
+   "get": {
+    "operationId": "my_summary_api_me_summary_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/SummaryOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "My Summary",
+    "tags": [
+     "learning"
+    ]
+   }
+  },
+  "/api/onboarding/consent": {
+   "post": {
+    "operationId": "consent_api_onboarding_consent_post",
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Consent",
+    "tags": [
+     "learning"
+    ]
+   }
+  },
+  "/api/onboarding/ils": {
+   "post": {
+    "operationId": "submit_ils_api_onboarding_ils_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/IlsIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/StyleOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Submit Ils",
+    "tags": [
+     "learning"
+    ]
+   }
+  },
+  "/api/onboarding/questionnaire": {
+   "get": {
+    "operationId": "questionnaire_api_onboarding_questionnaire_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/QuestionnaireOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Questionnaire",
+    "tags": [
+     "learning"
+    ]
+   },
+   "post": {
+    "operationId": "submit_questionnaire_api_onboarding_questionnaire_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/QuestionnaireIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/StyleOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Submit Questionnaire",
+    "tags": [
+     "learning"
+    ]
+   }
+  },
+  "/api/onboarding/status": {
+   "get": {
+    "operationId": "onboarding_status_api_onboarding_status_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OnboardingStatus"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Onboarding Status",
+    "tags": [
+     "learning"
+    ]
+   }
+  },
+  "/api/questions": {
+   "get": {
+    "operationId": "questions_api_questions_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "concept_id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Concept Id"
+      }
+     },
+     {
+      "in": "query",
+      "name": "pool",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "$ref": "#/components/schemas/QuestionPool"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Pool"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/QuestionOut"
+         },
+         "title": "Response Questions Api Questions Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Questions",
+    "tags": [
+     "content"
+    ]
+   },
+   "post": {
+    "operationId": "create_question_api_questions_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/QuestionIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/QuestionOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Create Question",
+    "tags": [
+     "content"
+    ]
+   }
+  },
+  "/api/questions/{question_id}": {
+   "delete": {
+    "operationId": "archive_question_api_questions__question_id__delete",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "question_id",
+      "required": true,
+      "schema": {
+       "title": "Question Id",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Archive Question",
+    "tags": [
+     "content"
+    ]
+   },
+   "put": {
+    "operationId": "update_question_api_questions__question_id__put",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "question_id",
+      "required": true,
+      "schema": {
+       "title": "Question Id",
+       "type": "integer"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/QuestionIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/QuestionOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Update Question",
+    "tags": [
+     "content"
+    ]
+   }
+  },
+  "/api/quiz/attempts/{attempt_id}": {
+   "get": {
+    "operationId": "quiz_get_api_quiz_attempts__attempt_id__get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "attempt_id",
+      "required": true,
+      "schema": {
+       "title": "Attempt Id",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AttemptOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Quiz Get",
+    "tags": [
+     "learning"
+    ]
+   }
+  },
+  "/api/quiz/attempts/{attempt_id}/answer": {
+   "post": {
+    "operationId": "quiz_answer_api_quiz_attempts__attempt_id__answer_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "attempt_id",
+      "required": true,
+      "schema": {
+       "title": "Attempt Id",
+       "type": "integer"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/AnswerIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AnswerOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Quiz Answer",
+    "tags": [
+     "learning"
+    ]
+   }
+  },
+  "/api/quiz/attempts/{attempt_id}/finish": {
+   "post": {
+    "operationId": "quiz_finish_api_quiz_attempts__attempt_id__finish_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "attempt_id",
+      "required": true,
+      "schema": {
+       "title": "Attempt Id",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/FinishOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Quiz Finish",
+    "tags": [
+     "learning"
+    ]
+   }
+  },
+  "/api/quiz/start": {
+   "post": {
+    "operationId": "quiz_start_api_quiz_start_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/QuizStartIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AttemptOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Quiz Start",
+    "tags": [
+     "learning"
+    ]
+   }
+  },
+  "/api/recommendations/current": {
+   "get": {
+    "operationId": "current_list_api_recommendations_current_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "concept_id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Concept Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/RecListOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Current List",
+    "tags": [
+     "learning"
+    ]
+   }
+  },
+  "/api/recommendations/impression": {
+   "post": {
+    "operationId": "impression_api_recommendations_impression_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ImpressionIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Impression",
+    "tags": [
+     "learning"
+    ]
+   }
+  },
+  "/api/recommendations/refresh": {
+   "post": {
+    "operationId": "refresh_api_recommendations_refresh_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/RefreshIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/RecListOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Refresh",
+    "tags": [
+     "learning"
     ]
    }
   }

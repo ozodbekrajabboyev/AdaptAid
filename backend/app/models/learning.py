@@ -71,6 +71,7 @@ class Attempt(Base):
     concept_id: Mapped[int | None] = mapped_column(ForeignKey("concepts.id", ondelete="CASCADE"))
     aid_id: Mapped[int | None] = mapped_column(ForeignKey("teaching_aids.id", ondelete="SET NULL"))
     rec_item_id: Mapped[int | None] = mapped_column(ForeignKey("recommendation_items.id", ondelete="SET NULL"))
+    use_id: Mapped[int | None] = mapped_column(ForeignKey("aid_uses.id", ondelete="SET NULL"))
     question_ids: Mapped[list[int]] = mapped_column(JSONB)
     form: Mapped[str | None] = mapped_column(String(1))
     started_at: Mapped[datetime] = created_at_col()
@@ -151,6 +152,33 @@ class RecommendationItem(Base):
     gain: Mapped[float | None] = mapped_column(Float)
     check_status: Mapped[CheckStatus | None] = mapped_column(str_enum(CheckStatus))
     rating: Mapped[int | None] = mapped_column(Integer)
+
+
+class AidUse(Base):
+    """One use of a teaching aid by a learner: the unit every outcome statistic is built from.
+
+    Created when the aid is opened (from a recommendation card, the library or the path).
+    `p_open` is the learner's mastery at that moment; the quick check that follows gives
+    the residual gain. Opening another aid before checking marks this one `no_check`.
+    """
+
+    __tablename__ = "aid_uses"
+
+    id: Mapped[int] = mapped_column(primary_key=True)
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id", ondelete="CASCADE"), index=True)
+    aid_id: Mapped[int] = mapped_column(ForeignKey("teaching_aids.id", ondelete="CASCADE"), index=True)
+    concept_id: Mapped[int] = mapped_column(ForeignKey("concepts.id", ondelete="CASCADE"))
+    rec_item_id: Mapped[int | None] = mapped_column(ForeignKey("recommendation_items.id", ondelete="SET NULL"))
+    source: Mapped[EventSource] = mapped_column(str_enum(EventSource), default=EventSource.direct)
+    opened_at: Mapped[datetime] = created_at_col()
+    completed_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    dwell_sec: Mapped[int] = mapped_column(Integer, default=0)
+    rating: Mapped[int | None] = mapped_column(Integer)
+    p_open: Mapped[float] = mapped_column(Float)
+    check_status: Mapped[CheckStatus] = mapped_column(str_enum(CheckStatus), default=CheckStatus.pending)
+    checked_at: Mapped[datetime | None] = mapped_column(DateTime(timezone=True))
+    gain: Mapped[float | None] = mapped_column(Float)
+    persona: Mapped[str | None] = mapped_column(String(40))
 
 
 class Interaction(Base):

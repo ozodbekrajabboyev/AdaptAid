@@ -5,7 +5,7 @@ from contextlib import asynccontextmanager
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.gzip import GZipMiddleware
 
-from app.api.routes import auth, classes, contract, health
+from app.api.routes import auth, classes, content, contract, health, learning
 from app.core.config import get_settings
 
 
@@ -32,6 +32,8 @@ def create_app() -> FastAPI:
     api.include_router(health.router)
     api.include_router(auth.router)
     api.include_router(classes.router)
+    api.include_router(content.router)
+    api.include_router(learning.router)
     if settings.enable_contract_routes:
         api.include_router(contract.router)
     app.include_router(api)

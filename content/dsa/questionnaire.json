@@ -1,0 +1,168 @@
+{
+ "version": "1.0",
+ "title": "How do you like to learn?",
+ "intro": "Twenty quick either/or questions. There are no right answers; pick the option closer to you. AdaptAid uses your answers as a starting point and adjusts as it sees what actually works for you.",
+ "note": "Written for AdaptAid on the four Felder–Silverman dimensions. It is not the official Index of Learning Styles; students who have taken the ILS can enter their scores instead.",
+ "items": [
+  {
+   "key": "q01",
+   "dim": "ar",
+   "a_pole": 1,
+   "prompt": "When I learn a new algorithm, I'd rather…",
+   "a": "try coding it straight away",
+   "b": "read it through and think about how it works first"
+  },
+  {
+   "key": "q02",
+   "dim": "ar",
+   "a_pole": -1,
+   "prompt": "In a study group I usually…",
+   "a": "listen and think before I say anything",
+   "b": "jump in and try ideas out loud"
+  },
+  {
+   "key": "q03",
+   "dim": "ar",
+   "a_pole": 1,
+   "prompt": "When I get stuck on a problem, I tend to…",
+   "a": "try different things until something works",
+   "b": "stop and think it through carefully"
+  },
+  {
+   "key": "q04",
+   "dim": "ar",
+   "a_pole": -1,
+   "prompt": "I remember things better when I…",
+   "a": "have thought them over on my own",
+   "b": "have done something with them"
+  },
+  {
+   "key": "q05",
+   "dim": "ar",
+   "a_pole": 1,
+   "prompt": "Practice exercises are most useful to me…",
+   "a": "as soon as I've seen the idea once",
+   "b": "after I understand the theory well"
+  },
+  {
+   "key": "q06",
+   "dim": "si",
+   "a_pole": 1,
+   "prompt": "I prefer explanations that…",
+   "a": "start from a concrete example",
+   "b": "start from the general principle"
+  },
+  {
+   "key": "q07",
+   "dim": "si",
+   "a_pole": -1,
+   "prompt": "I find it more interesting to learn…",
+   "a": "the theory of why something works",
+   "b": "how to use it to solve real problems"
+  },
+  {
+   "key": "q08",
+   "dim": "si",
+   "a_pole": 1,
+   "prompt": "When I read a proof or derivation, I…",
+   "a": "check each step carefully against an example",
+   "b": "look for the key insight"
+  },
+  {
+   "key": "q09",
+   "dim": "si",
+   "a_pole": -1,
+   "prompt": "I would describe myself as more…",
+   "a": "imaginative",
+   "b": "practical"
+  },
+  {
+   "key": "q10",
+   "dim": "si",
+   "a_pole": 1,
+   "prompt": "With a new topic I like to…",
+   "a": "learn the standard method and practise it",
+   "b": "find my own way of approaching it"
+  },
+  {
+   "key": "q11",
+   "dim": "vv",
+   "a_pole": 1,
+   "prompt": "When I think about a linked list, I mostly…",
+   "a": "picture boxes and arrows",
+   "b": "think of a description in words"
+  },
+  {
+   "key": "q12",
+   "dim": "vv",
+   "a_pole": -1,
+   "prompt": "I learn more from…",
+   "a": "a clear written explanation",
+   "b": "a diagram or animation"
+  },
+  {
+   "key": "q13",
+   "dim": "vv",
+   "a_pole": 1,
+   "prompt": "Someone gives me directions. I'd rather have…",
+   "a": "a map",
+   "b": "written step-by-step instructions"
+  },
+  {
+   "key": "q14",
+   "dim": "vv",
+   "a_pole": -1,
+   "prompt": "After a lecture I remember best…",
+   "a": "what was said or written",
+   "b": "the pictures and diagrams"
+  },
+  {
+   "key": "q15",
+   "dim": "vv",
+   "a_pole": 1,
+   "prompt": "When I explain an idea to a friend, I…",
+   "a": "sketch it",
+   "b": "talk them through it"
+  },
+  {
+   "key": "q16",
+   "dim": "sg",
+   "a_pole": 1,
+   "prompt": "When I study a new chapter, I…",
+   "a": "go through it section by section, in order",
+   "b": "skim it first to see the whole picture"
+  },
+  {
+   "key": "q17",
+   "dim": "sg",
+   "a_pole": -1,
+   "prompt": "I understand a topic best when…",
+   "a": "I see how it fits with everything else",
+   "b": "I master each step before moving on"
+  },
+  {
+   "key": "q18",
+   "dim": "sg",
+   "a_pole": 1,
+   "prompt": "When solving a problem, I usually…",
+   "a": "work forward one step at a time",
+   "b": "see the answer suddenly, then fill in the steps"
+  },
+  {
+   "key": "q19",
+   "dim": "sg",
+   "a_pole": -1,
+   "prompt": "A good course outline for me…",
+   "a": "shows the big picture and connections up front",
+   "b": "lists the topics in a clear order"
+  },
+  {
+   "key": "q20",
+   "dim": "sg",
+   "a_pole": 1,
+   "prompt": "If I miss one step in an explanation, I…",
+   "a": "find it hard to follow the rest",
+   "b": "can usually still get the overall idea"
+  }
+ ]
+}

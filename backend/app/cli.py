@@ -69,6 +69,75 @@ def create_admin(
     typer.echo(f"Created admin {email.lower()}.")
 
 
+@cli.command()
+def seed(
+    pack: Path = typer.Option(None, help="Content folder (default: content/dsa)"),
+    force: bool = typer.Option(False, help="Seed even if validation reports errors"),
+) -> None:
+    """Load (or update) a content pack into the database."""
+    from app.content_pack import DEFAULT_PACK, load_pack, validate
+    from app.core.db import SessionLocal
+    from app.services.seed import seed_pack
+
+    p = load_pack(pack or DEFAULT_PACK)
+    errors, _ = validate(p)
+    if errors and not force:
+        for e in errors:
+            typer.echo(f"ERROR: {e}")
+        typer.echo("Fix the content (see `adaptaid validate-content`) or pass --force.")
+        raise typer.Exit(1)
+    with SessionLocal() as db:
+        r = seed_pack(db, p)
+        db.commit()
+    typer.echo(
+        f"Seeded course {p.code}: {r.concepts} concepts, {r.aids} aids, {r.questions} questions "
+        f"({r.deactivated_aids} aids and {r.deactivated_questions} questions archived)."
+    )
+
+
+@cli.command("validate-content")
+def validate_content(
+    pack: Path = typer.Option(None, help="Content folder (default: content/dsa)"),
+    concept: list[str] = typer.Option(None, "--concept", help="Only check these concept slugs"),
+) -> None:
+    """Check a content pack: schema, coverage rules, question pools, study-item leaks."""
+    from app.content_pack import DEFAULT_PACK, load_pack, validate
+
+    p = load_pack(pack or DEFAULT_PACK)
+    errors, warnings = validate(p, set(concept) if concept else None)
+    for w in warnings:
+        typer.echo(f"warning: {w}")
+    for e in errors:
+        typer.echo(f"ERROR: {e}")
+    counts = {pool: sum(1 for q in p.questions if q.pool == pool) for pool in ("diagnostic", "check", "drill", "study")}
+    typer.echo(f"{len(p.concepts)} concepts, {len(p.aids)} aids, {len(p.questions)} questions {counts}")
+    if errors:
+        raise typer.Exit(1)
+    typer.echo("Content is valid.")
+
+
+@cli.command("check-links")
+def check_links(
+    pack: Path = typer.Option(None, help="Content folder (default: content/dsa)"),
+    concept: list[str] = typer.Option(None, "--concept", help="Only check these concept slugs"),
+) -> None:
+    """Open every external aid URL (YouTube through oEmbed) and report broken ones."""
+    from app.content_pack import DEFAULT_PACK, check_url, load_pack
+
+    p = load_pack(pack or DEFAULT_PACK)
+    bad = 0
+    for a in p.aids:
+        if a.delivery != "external_url" or (concept and a.concept not in concept):
+            continue
+        ok, info = check_url(a.url or "")
+        bad += 0 if ok else 1
+        typer.echo(f"{'ok  ' if ok else 'FAIL'} {a.slug:32} {a.url}  {info}")
+    if bad:
+        typer.echo(f"{bad} broken link(s)")
+        raise typer.Exit(1)
+    typer.echo("All links work.")
+
+
 def main() -> None:
     cli()
 

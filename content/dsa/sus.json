@@ -1,0 +1,42 @@
+{
+ "version": "1.0",
+ "title": "System Usability Scale",
+ "source": "Brooke, J. (1996). SUS: A 'quick and dirty' usability scale.",
+ "scale": [
+  "Strongly disagree",
+  "Disagree",
+  "Neutral",
+  "Agree",
+  "Strongly agree"
+ ],
+ "scoring": "Odd items: answer - 1. Even items: 5 - answer. Sum x 2.5 gives 0-100; 68 is the usual average.",
+ "items": [
+  "I think that I would like to use AdaptAid frequently.",
+  "I found AdaptAid unnecessarily complex.",
+  "I thought AdaptAid was easy to use.",
+  "I think that I would need the support of a technical person to be able to use AdaptAid.",
+  "I found the various functions in AdaptAid were well integrated.",
+  "I thought there was too much inconsistency in AdaptAid.",
+  "I would imagine that most people would learn to use AdaptAid very quickly.",
+  "I found AdaptAid very cumbersome to use.",
+  "I felt very confident using AdaptAid.",
+  "I needed to learn a lot of things before I could get going with AdaptAid."
+ ],
+ "satisfaction": {
+  "scale": [
+   "Strongly disagree",
+   "Disagree",
+   "Neutral",
+   "Agree",
+   "Strongly agree"
+  ],
+  "items": [
+   "The recommended teaching aids matched what I needed to learn.",
+   "The 'why this' explanations helped me decide what to use.",
+   "Seeing my mastery change after quick checks motivated me.",
+   "I learned more than I would have with the course material alone.",
+   "I would use AdaptAid again for another subject."
+  ],
+  "open_question": "What should we improve?"
+ }
+}

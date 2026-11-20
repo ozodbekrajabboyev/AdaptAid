@@ -78,3 +78,16 @@ def register(client: TestClient, email: str, role: str = "student", **extra) -> 
     res = client.post("/api/auth/register", json=body)
     assert res.status_code == 201, res.text
     return res.json()
+
+
+@pytest.fixture
+def seeded(db: Session, tmp_path_factory):
+    """The mini content pack loaded into the test database. Returns the SeedResult."""
+    from app.content_pack import load_pack
+    from app.services.seed import seed_pack
+    from tests.fixtures.minipack import make_minipack
+
+    pack = load_pack(make_minipack(tmp_path_factory.mktemp("pack")))
+    result = seed_pack(db, pack)
+    db.commit()
+    return result

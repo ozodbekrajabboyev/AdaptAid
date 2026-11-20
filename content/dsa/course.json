@@ -1,0 +1,10 @@
+{
+  "code": "DSA",
+  "title": "Data Structures and Algorithms",
+  "description": "Core data structures and algorithms for undergraduate computer science: complexity, linear structures, recursion, searching and sorting, hashing, trees, heaps and graphs.",
+  "concepts_in_syllabus_order": [
+    "complexity", "arrays", "linked-lists", "stacks", "queues", "recursion", "searching",
+    "sorting", "hashing", "trees", "bst", "heaps", "graphs"
+  ],
+  "study_concepts": ["stacks", "queues", "recursion", "hashing"]
+}

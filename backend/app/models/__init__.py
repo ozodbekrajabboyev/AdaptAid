@@ -3,6 +3,7 @@
 from app.models.content import AidConcept, Concept, ConceptPrerequisite, Course, Question, TeachingAid
 from app.models.learning import (
     AidStats,
+    AidUse,
     Attempt,
     Interaction,
     LearnerFeatures,
@@ -20,6 +21,7 @@ from app.models.people import Enrollment, SchoolClass, User
 __all__ = [
     "AidConcept",
     "AidStats",
+    "AidUse",
     "Attempt",
     "Concept",
     "ConceptPrerequisite",
