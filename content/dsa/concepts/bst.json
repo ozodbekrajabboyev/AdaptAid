@@ -1,0 +1,338 @@
+{
+ "slug": "bst",
+ "name": "Binary search trees",
+ "description": "Binary trees that keep smaller keys to the left and larger keys to the right, so search, insert and delete follow a single path.",
+ "prerequisites": [
+  "trees",
+  "searching"
+ ],
+ "aids": [
+  {
+   "slug": "bst-notes",
+   "title": "Binary search trees: the BST property, operations and cost",
+   "type": "notes",
+   "delivery": "native_md",
+   "body": "bst-notes.md",
+   "source": "AdaptAid",
+   "description": "The BST property, search, insert and the three delete cases, why inorder is sorted, and why everything costs O(h).",
+   "difficulty": 2,
+   "duration": 12,
+   "order": 1
+  },
+  {
+   "slug": "bst-worked-example",
+   "title": "Worked example: a BST of ticket numbers",
+   "type": "worked_example",
+   "delivery": "native_md",
+   "body": "bst-worked-example.md",
+   "source": "AdaptAid",
+   "description": "Build a BST, search for a missing key, insert it, then delete a node with two children using its inorder successor.",
+   "difficulty": 2,
+   "duration": 15,
+   "order": 2
+  },
+  {
+   "slug": "bst-video",
+   "title": "Data structures: Binary Search Tree (mycodeschool)",
+   "type": "video",
+   "delivery": "external_url",
+   "url": "https://www.youtube.com/watch?v=pYT9F8_LFTM",
+   "source": "mycodeschool (YouTube)",
+   "description": "Compares arrays, linked lists and BSTs for search, insert and delete, then explains the BST property and how search and insert follow one path.",
+   "difficulty": 2,
+   "duration": 20,
+   "order": 3
+  },
+  {
+   "slug": "bst-animation",
+   "title": "Binary search tree visualisation (USFCA)",
+   "type": "animation",
+   "delivery": "external_url",
+   "url": "https://www.cs.usfca.edu/~galles/visualization/BST.html",
+   "source": "USFCA (David Galles)",
+   "description": "Type in keys to insert, find and delete, and watch every comparison and pointer change animated step by step.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 4
+  },
+  {
+   "slug": "bst-interactive",
+   "title": "BST builder",
+   "type": "interactive",
+   "delivery": "interactive_component",
+   "component": "bst-builder",
+   "source": "AdaptAid",
+   "description": "Insert your own keys and search for them in a live BST, with each comparison on the path highlighted; try sorted input to watch the tree degenerate into a chain.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 5
+  },
+  {
+   "slug": "bst-concept-map",
+   "title": "Binary search trees at a glance",
+   "type": "concept_map",
+   "delivery": "native_md",
+   "body": "bst-concept-map.md",
+   "source": "AdaptAid",
+   "description": "One diagram linking the BST property, the three operations and their delete cases, height, and self-balancing trees.",
+   "difficulty": 2,
+   "duration": 5,
+   "order": 6
+  },
+  {
+   "slug": "bst-practice",
+   "title": "Practice: building and changing a BST",
+   "type": "practice",
+   "delivery": "native_md",
+   "body": "bst-practice.md",
+   "source": "AdaptAid",
+   "description": "Five questions with explanations: tree height, search paths, successors, deletion and insertion order.",
+   "difficulty": 3,
+   "duration": 12,
+   "order": 7
+  },
+  {
+   "slug": "bst-article",
+   "title": "Binary Search Tree (Programiz)",
+   "type": "article",
+   "delivery": "external_url",
+   "url": "https://www.programiz.com/dsa/binary-search-tree",
+   "source": "Programiz",
+   "description": "Search, insert and the three delete cases illustrated with diagrams, with code in Python, Java, C and C++ and a complexity table.",
+   "difficulty": 2,
+   "duration": 12,
+   "order": 8
+  }
+ ],
+ "questions": [
+  {
+   "key": "bst-d01",
+   "pool": "diagnostic",
+   "stem": "In a binary search tree, where is the **smallest** key?",
+   "options": [
+    "At the node you reach by following left children from the root until there are none",
+    "At the root",
+    "At a leaf on the deepest level",
+    "Always in the left child of the root"
+   ],
+   "answer": 0,
+   "explanation": "Every left step moves to smaller keys, so the minimum is the leftmost node. It need not be on the deepest level, and it need not even be a leaf: it can have a right child (inserting 5, 2, 3 makes 2 the minimum, with 3 as its right child).",
+   "difficulty": 2
+  },
+  {
+   "key": "bst-c01",
+   "pool": "check",
+   "stem": "Which condition, checked at every node, **guarantees** that a binary tree is a binary search tree?",
+   "options": [
+    "Every parent is smaller than both of its children",
+    "Its left child is smaller than it and its right child is larger than it",
+    "Every key in its left subtree is smaller than it and every key in its right subtree is larger",
+    "All leaves are on the same level and keys grow from the root down"
+   ],
+   "answer": 2,
+   "explanation": "The BST property is about whole subtrees. Comparing a node with its two children only is not enough: a node deep in the left subtree could still be larger than the root. \"Parent smaller than children\" is the heap property, a different structure.",
+   "difficulty": 1
+  },
+  {
+   "key": "bst-c02",
+   "pool": "check",
+   "stem": "The keys 40, 20, 60, 10, 30, 50, 70 are inserted in that order into an empty BST. Which node is the **parent of 30**?",
+   "options": [
+    "40",
+    "10",
+    "50",
+    "20"
+   ],
+   "answer": 3,
+   "explanation": "30 < 40, so it goes left to 20; 30 > 20, so it becomes 20's right child. It ends up under 20, even though it is closer in value to 40.",
+   "difficulty": 2
+  },
+  {
+   "key": "bst-c03",
+   "pool": "check",
+   "stem": "The keys 45, 25, 65, 15, 35, 55, 75 are inserted in that order into an empty BST. Which keys are compared, in order, when you **search for 60**?",
+   "options": [
+    "45, 55",
+    "45, 65, 55",
+    "45, 25, 35",
+    "45, 65, 75"
+   ],
+   "answer": 1,
+   "explanation": "60 > 45: go right to 65. 60 < 65: go left to 55. 60 > 55: go right, which is None, so 60 is not in the tree. Three comparisons; the left half of the tree is never touched.",
+   "difficulty": 2
+  },
+  {
+   "key": "bst-c04",
+   "pool": "check",
+   "stem": "What does an **inorder** traversal of any binary search tree output?",
+   "options": [
+    "The keys in ascending sorted order",
+    "The keys in the order they were inserted",
+    "The keys level by level from the root",
+    "The keys in descending sorted order"
+   ],
+   "answer": 0,
+   "explanation": "Inorder visits the left subtree (all smaller keys), then the node, then the right subtree (all larger keys). Applied at every node, that produces ascending order. Insertion order is lost once keys are placed in the tree.",
+   "difficulty": 1
+  },
+  {
+   "key": "bst-c05",
+   "pool": "check",
+   "stem": "The keys 45, 25, 65, 15, 35, 55, 75 are inserted into an empty BST. You then delete **45** using the **inorder successor** method. Which key is now at the root?",
+   "options": [
+    "65",
+    "55",
+    "35",
+    "75"
+   ],
+   "answer": 1,
+   "explanation": "45 has two children, so it is replaced by its inorder successor: go right to 65, then left as far as possible, reaching 55. 35 is the inorder predecessor, which the other standard method uses. Just promoting the right child 65 is not the successor method, and 65 would then need two left children (25's subtree and 55).",
+   "difficulty": 2
+  },
+  {
+   "key": "bst-c06",
+   "pool": "check",
+   "stem": "What is the **worst-case** time to search for a key in a binary search tree with *n* nodes that is not kept balanced?",
+   "options": [
+    "O(log n)",
+    "O(1)",
+    "O(n)",
+    "O(n log n)"
+   ],
+   "answer": 2,
+   "explanation": "Search costs O(h). Without balancing, the tree can be a chain with h = n − 1 (for example after inserting sorted keys), so the search may visit every node. O(log n) is the cost only when the tree is balanced.",
+   "difficulty": 2
+  },
+  {
+   "key": "bst-c07",
+   "pool": "check",
+   "stem": "The keys 1, 2, 3, ..., *n* are inserted in increasing order into an empty BST. What is the **height** of the result (counting edges)?",
+   "options": [
+    "n − 1",
+    "About log₂ n",
+    "1",
+    "About n / 2"
+   ],
+   "answer": 0,
+   "explanation": "Each new key is larger than everything already in the tree, so it always becomes the right child of the previous key. The tree is a chain of n nodes, which has n − 1 edges. This is the degenerate case that AVL and red-black trees prevent.",
+   "difficulty": 2
+  },
+  {
+   "key": "bst-c08",
+   "pool": "check",
+   "stem": "A binary tree has root 20 with left child 10 and right child 30. Node 30 has a left child **15**. Is it a binary search tree?",
+   "options": [
+    "Yes: every left child is smaller than its parent and every right child is larger",
+    "No: in a BST a node cannot have only a left child",
+    "Yes: the root is larger than its left child and smaller than its right child",
+    "No: 15 is in the right subtree of 20 but is smaller than 20"
+   ],
+   "answer": 3,
+   "explanation": "Each parent–child pair looks fine, but the BST property covers whole subtrees: everything right of 20 must be larger than 20. Searching for 15 would go left at 20 and never find it. The inorder traversal 10 20 15 30 is not sorted, which confirms it.",
+   "difficulty": 3
+  },
+  {
+   "key": "bst-c09",
+   "pool": "check",
+   "stem": "The keys 45, 25, 65, 15, 55 are inserted in that order into an empty BST, so 25 has only a left child (15). What happens when you **delete 25**?",
+   "options": [
+    "25 is replaced by 55, the smallest key in the root's right subtree",
+    "15 becomes the root",
+    "15 takes 25's place as the left child of 45",
+    "25 and its whole subtree are removed"
+   ],
+   "answer": 2,
+   "explanation": "A node with one child is spliced out: its child moves up into its place. Everything under 25 was already smaller than 45, so 15 is a valid left child of 45. The successor trick is only needed when the node has two children.",
+   "difficulty": 2
+  },
+  {
+   "key": "bst-c10",
+   "pool": "check",
+   "stem": "Why are **AVL trees** and **red-black trees** used instead of plain BSTs?",
+   "options": [
+    "They store the keys in a sorted array so that search takes O(1)",
+    "They allow duplicate keys, which a plain BST cannot store",
+    "They make inorder traversal faster than O(n)",
+    "They rebalance with rotations after updates, keeping the height O(log n) so every operation is O(log n) in the worst case"
+   ],
+   "answer": 3,
+   "explanation": "A plain BST can degenerate into a chain and cost O(n). Self-balancing trees restore balance after each insert or delete with rotations, each a local O(1) pointer change, so h stays O(log n). An inorder traversal still visits all n keys, so it stays O(n).",
+   "difficulty": 2
+  },
+  {
+   "key": "bst-p01",
+   "pool": "drill",
+   "stem": "The keys 8, 3, 10, 1, 6, 14, 4, 7, 13 are inserted in that order into an empty BST. What is the **height** of the tree (counting edges)?",
+   "options": [
+    "4",
+    "2",
+    "3",
+    "8"
+   ],
+   "answer": 2,
+   "explanation": "The longest paths are 8 → 3 → 6 → 4 (or 7) and 8 → 10 → 14 → 13, each with 3 edges. 4 counts the nodes on such a path instead of the edges, and 8 would be the height of a chain of 9 nodes.",
+   "difficulty": 2,
+   "aid": "bst-practice"
+  },
+  {
+   "key": "bst-p02",
+   "pool": "drill",
+   "stem": "In the BST built by inserting 8, 3, 10, 1, 6, 14, 4, 7, 13, how many **comparisons** does a search for **7** make (counting the final match)?",
+   "options": [
+    "4",
+    "3",
+    "6",
+    "9"
+   ],
+   "answer": 0,
+   "explanation": "7 < 8 go left, 7 > 3 go right, 7 > 6 go right, 7 = 7 found: 4 comparisons on the path 8, 3, 6, 7. 3 counts the edges instead of the nodes, and 9 would be a linear scan of every key.",
+   "difficulty": 2,
+   "aid": "bst-practice"
+  },
+  {
+   "key": "bst-p03",
+   "pool": "drill",
+   "stem": "A node X in a BST has a **right child**. Where is X's **inorder successor** (the next larger key)?",
+   "options": [
+    "X's right child, always",
+    "The leftmost node in X's right subtree",
+    "The rightmost node in X's left subtree",
+    "X's parent"
+   ],
+   "answer": 1,
+   "explanation": "The next larger key must be in X's right subtree, and it is the smallest key there: go right once, then left as far as possible. It is the right child only when that child has no left subtree. The rightmost node of the left subtree is the predecessor.",
+   "difficulty": 2,
+   "aid": "bst-practice"
+  },
+  {
+   "key": "bst-p04",
+   "pool": "drill",
+   "stem": "The keys 8, 3, 10, 1, 6, 14, 4, 7, 13 are inserted into an empty BST. You then delete **3** using the inorder successor method. What is the **preorder** traversal afterwards?",
+   "options": [
+    "8 1 6 4 7 10 14 13",
+    "8 6 4 1 7 10 14 13",
+    "8 4 1 6 4 7 10 14 13",
+    "8 4 1 6 7 10 14 13"
+   ],
+   "answer": 3,
+   "explanation": "3 has two children. Its successor is the leftmost node of its right subtree: 6, then left to 4. Copy 4 into 3's place and remove the old 4 (a leaf). Preorder: 8 4 1 6 7 10 14 13. 8 1 6 4 ... uses the predecessor instead, and the version with 4 twice forgot to delete the successor.",
+   "difficulty": 3,
+   "aid": "bst-practice"
+  },
+  {
+   "key": "bst-p05",
+   "pool": "drill",
+   "stem": "Inserting the keys 1 to 7 in which order produces a tree of **height 6** (a chain)?",
+   "options": [
+    "4, 2, 6, 1, 3, 5, 7",
+    "1, 7, 2, 6, 3, 5, 4",
+    "2, 1, 4, 3, 6, 5, 7",
+    "3, 1, 5, 2, 4, 6, 7"
+   ],
+   "answer": 1,
+   "explanation": "In 1, 7, 2, 6, 3, 5, 4 each new key falls between the last two inserted keys, so it always becomes a child of the previous key: a zig-zag chain of height 6. Sorted input is not the only bad case. 4, 2, 6, 1, 3, 5, 7 gives the perfectly balanced tree of height 2.",
+   "difficulty": 3,
+   "aid": "bst-practice"
+  }
+ ]
+}

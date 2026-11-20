@@ -1,0 +1,475 @@
+{
+ "slug": "stacks",
+ "name": "Stacks",
+ "description": "A last-in, first-out collection where you only ever push, pop or peek at the top, used for brackets, undo and function calls.",
+ "prerequisites": [
+  "arrays"
+ ],
+ "aids": [
+  {
+   "slug": "stacks-notes",
+   "title": "Stacks: LIFO, operations and two implementations",
+   "type": "notes",
+   "delivery": "native_md",
+   "body": "stacks-notes.md",
+   "source": "AdaptAid",
+   "description": "What a stack is, why push, pop and peek are O(1), how to build one on a list or a linked list, and where stacks are used.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 1
+  },
+  {
+   "slug": "stacks-worked-example",
+   "title": "Worked example: checking balanced brackets",
+   "type": "worked_example",
+   "delivery": "native_md",
+   "body": "stacks-worked-example.md",
+   "source": "AdaptAid",
+   "description": "Build the classic bracket checker step by step and trace the stack on a balanced string and on a crossed one.",
+   "difficulty": 2,
+   "duration": 12,
+   "order": 2
+  },
+  {
+   "slug": "stacks-video",
+   "title": "Data structures: Introduction to stack (mycodeschool)",
+   "type": "video",
+   "delivery": "external_url",
+   "url": "https://www.youtube.com/watch?v=F1F2imiOJfk",
+   "source": "mycodeschool (YouTube)",
+   "description": "A clear whiteboard lesson on the stack as an abstract data type: LIFO order, the push, pop, top and is-empty operations in constant time, and typical applications.",
+   "difficulty": 1,
+   "duration": 9,
+   "order": 3
+  },
+  {
+   "slug": "stacks-animation",
+   "title": "Array-based stack, animated (USFCA)",
+   "type": "animation",
+   "delivery": "external_url",
+   "url": "https://www.cs.usfca.edu/~galles/visualization/StackArray.html",
+   "source": "USFCA (David Galles)",
+   "description": "Push and pop your own values and watch the array and its top index change at every step.",
+   "difficulty": 1,
+   "duration": 8,
+   "order": 4
+  },
+  {
+   "slug": "stacks-concept-map",
+   "title": "Stacks at a glance",
+   "type": "concept_map",
+   "delivery": "native_md",
+   "body": "stacks-concept-map.md",
+   "source": "AdaptAid",
+   "description": "One diagram linking LIFO operations, the two implementations and the main applications, including the call stack.",
+   "difficulty": 2,
+   "duration": 5,
+   "order": 5
+  },
+  {
+   "slug": "stacks-practice",
+   "title": "Practice: using stacks",
+   "type": "practice",
+   "delivery": "native_md",
+   "body": "stacks-practice.md",
+   "source": "AdaptAid",
+   "description": "Five questions with explanations: push and pop traces, list-based stacks, bracket checking and postfix evaluation.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 6
+  },
+  {
+   "slug": "stacks-article",
+   "title": "Stack Data Structure (Programiz)",
+   "type": "article",
+   "delivery": "external_url",
+   "url": "https://www.programiz.com/dsa/stack",
+   "source": "Programiz",
+   "description": "A written tutorial on the LIFO principle and stack operations, with implementations in Python, Java, C and C++ and common applications.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 7
+  }
+ ],
+ "questions": [
+  {
+   "key": "stacks-d01",
+   "pool": "diagnostic",
+   "stem": "A stack starts empty. After push(1), push(2), pop(), push(3), push(4), pop(), what does peek() return?",
+   "options": [
+    "4",
+    "1",
+    "3",
+    "2"
+   ],
+   "answer": 2,
+   "explanation": "Bottom → top: [1] → [1, 2] → pop removes 2 → [1, 3] → [1, 3, 4] → pop removes 4 → [1, 3]. The top is 3. Answering 4 forgets the last pop; 1 is what the front of a queue (first in, first out) would show.",
+   "difficulty": 2
+  },
+  {
+   "key": "stacks-c01",
+   "pool": "check",
+   "stem": "In which order does a stack remove its items?",
+   "options": [
+    "The oldest item first (first in, first out)",
+    "The most recently added item first (last in, first out)",
+    "The smallest item first",
+    "In whatever order they happen to be stored in memory"
+   ],
+   "answer": 1,
+   "explanation": "A stack only touches its top, which always holds the most recent item: LIFO. First in, first out describes a queue, and smallest-first describes a priority queue.",
+   "difficulty": 1
+  },
+  {
+   "key": "stacks-c02",
+   "pool": "check",
+   "stem": "With a good implementation, what do push, pop and peek each cost on a stack of n items?",
+   "options": [
+    "O(1) each",
+    "O(n) each",
+    "O(1) for push, but O(n) for pop",
+    "O(log n) each"
+   ],
+   "answer": 0,
+   "explanation": "Each operation works only on the top item, so the size of the stack does not matter: O(1). On a Python list, push is `append` (O(1) amortised), pop is `pop()` and peek is `s[-1]`. O(n) costs appear only if you work at the wrong end, for example with `pop(0)`.",
+   "difficulty": 1
+  },
+  {
+   "key": "stacks-c03",
+   "pool": "check",
+   "stem": "What happens when this runs?\n\n```python\nstack = []\nstack.append(1)\nstack.pop()\nstack.pop()\n```",
+   "options": [
+    "The second pop returns None",
+    "The second pop returns 1 again",
+    "The second pop raises IndexError (stack underflow)",
+    "The second pop does nothing and returns 0"
+   ],
+   "answer": 2,
+   "explanation": "After the first pop the stack is empty. Popping an empty Python list raises `IndexError: pop from empty list`: a stack underflow. Check `if stack:` (is_empty) before popping.",
+   "difficulty": 1
+  },
+  {
+   "key": "stacks-c04",
+   "pool": "check",
+   "stem": "The bracket checker processes `[{()}]` one character at a time. What is on the stack (bottom → top) right after it has read the 4th character?",
+   "options": [
+    "`[ { (`",
+    "`[ {`",
+    "`[ { ( )`",
+    "`( {`"
+   ],
+   "answer": 1,
+   "explanation": "Characters 1 to 3 are openers, so they are pushed: `[ { (`. The 4th character, `)`, pops the matching `(`, leaving `[ {`. Closing brackets are never pushed; they only pop.",
+   "difficulty": 2
+  },
+  {
+   "key": "stacks-c05",
+   "pool": "check",
+   "stem": "A simple counter adds 1 for each opening bracket and subtracts 1 for each closing bracket, rejects if the count ever drops below 0, and accepts if it ends at 0. Which string does the counter wrongly accept, while the stack checker rejects it?",
+   "options": [
+    "`(()`",
+    "`)(`",
+    "`({)}`",
+    "`(()))`"
+   ],
+   "answer": 2,
+   "explanation": "In `({)}` the count goes 1, 2, 1, 0, so the counter accepts it. The stack checker sees `)` arrive while `{` is on top and rejects it: the counter ignores bracket types and nesting order. The other strings are rejected by both: `(()` ends at 1, `)(` drops below 0 at once, and `(()))` drops below 0 at the last character.",
+   "difficulty": 3
+  },
+  {
+   "key": "stacks-c06",
+   "pool": "check",
+   "stem": "A stack is built on a singly linked list whose head is the top. Which steps pop correctly (assume the stack is not empty)?",
+   "options": [
+    "Save `head.val`, set `head = head.next`, return the saved value",
+    "Set `head = head.next`, then return `head.val`",
+    "Walk to the last node, unlink it and return its value",
+    "Save `head.next.val`, set `head.next = None`, return the saved value"
+   ],
+   "answer": 0,
+   "explanation": "Pop must return the top value and make the next node the new top. Saving the value first matters: moving `head` first returns the *second* item. Walking to the last node works at the wrong end and costs O(n).",
+   "difficulty": 2
+  },
+  {
+   "key": "stacks-c07",
+   "pool": "check",
+   "stem": "A stack is stored in a fixed array of capacity 5, with `top` holding the index of the top item (−1 when empty). Starting empty, it does push, push, push, pop, push, push. What is `top` now?",
+   "options": [
+    "4",
+    "5",
+    "2",
+    "3"
+   ],
+   "answer": 3,
+   "explanation": "Each push adds 1 to `top` and each pop subtracts 1: −1 + 3 − 1 + 2 = 3. There are 4 items, at indices 0 to 3. 5 is the number of pushes, and it would be out of range for an array of capacity 5.",
+   "difficulty": 2
+  },
+  {
+   "key": "stacks-c08",
+   "pool": "check",
+   "stem": "An editor keeps an undo stack and a redo stack. Typing a letter pushes it onto the undo stack and empties the redo stack. Undo pops a letter from the undo stack, removes it from the text and pushes it onto the redo stack. Redo pops from the redo stack, puts the letter back and pushes it onto the undo stack. The user types A, B, C, presses Undo, Undo, Redo, then types D. What is the text, and what is on the redo stack?",
+   "options": [
+    "Text ABD; the redo stack holds C",
+    "Text ACD; the redo stack is empty",
+    "Text ABD; the redo stack is empty",
+    "Text ABCD; the redo stack is empty"
+   ],
+   "answer": 2,
+   "explanation": "After typing, undo = [A, B, C]. Undo, Undo: text A, redo = [C, B]. Redo pops B, the most recently undone letter: text AB, redo = [C]. Typing D empties the redo stack: text ABD, redo empty. Redo brings back the *latest* undo, B, not C.",
+   "difficulty": 3
+  },
+  {
+   "key": "stacks-c09",
+   "pool": "check",
+   "stem": "Each character of `LIFO` is pushed onto an empty stack in order, then the stack is popped until it is empty. What do the popped characters spell?",
+   "options": [
+    "LIFO",
+    "OFIL",
+    "FOLI",
+    "OLIF"
+   ],
+   "answer": 1,
+   "explanation": "The last character pushed, O, is popped first, then F, I and L. Pushing everything and then popping everything reverses a sequence.",
+   "difficulty": 1
+  },
+  {
+   "key": "stacks-c10",
+   "pool": "check",
+   "stem": "Execution has just reached the marked line. What is on the call stack, from top to bottom?\n\n```python\ndef first():\n    second()\n\ndef second():\n    third()\n\ndef third():\n    pass        # <- here\n\nfirst()\n```",
+   "options": [
+    "third, second, first, then the main program",
+    "first, second, third, then the main program",
+    "only third, because the others have already finished",
+    "the main program, then third"
+   ],
+   "answer": 0,
+   "explanation": "Each call pushes a frame, and the caller waits until the call returns. first called second, which called third, so none of them has finished: third is on top and the main program is at the bottom. When third returns its frame is popped and second carries on.",
+   "difficulty": 2
+  },
+  {
+   "key": "stacks-p01",
+   "pool": "drill",
+   "stem": "Starting with an empty stack: push A, push B, push C, pop, push D, pop, pop. Which values are popped, in order?",
+   "options": [
+    "C, D, B",
+    "A, B, C",
+    "C, B, A",
+    "D, C, B"
+   ],
+   "answer": 0,
+   "explanation": "A B C → pop C → A B → push D → A B D → pop D → pop B, leaving only A. A, B, C is first-in-first-out (queue) order, and D, C, B forgets that C was popped before D arrived.",
+   "difficulty": 1,
+   "aid": "stacks-practice"
+  },
+  {
+   "key": "stacks-p02",
+   "pool": "drill",
+   "stem": "What does this print?\n\n```python\ns = [5]\ns.append(7)\ns.append(s[-1] + s[0])\ns.pop()\ns.append(1)\nprint(s[-1], len(s))\n```",
+   "options": [
+    "12 4",
+    "1 4",
+    "1 3",
+    "5 3"
+   ],
+   "answer": 2,
+   "explanation": "`s[-1]` is the top (7) and `s[0]` the bottom (5), so 12 is pushed: [5, 7, 12]. `pop()` removes 12, then 1 is pushed: [5, 7, 1]. The top is 1 and there are 3 items. \"1 4\" forgets that the pop removed 12.",
+   "difficulty": 2,
+   "aid": "stacks-practice"
+  },
+  {
+   "key": "stacks-p03",
+   "pool": "drill",
+   "stem": "The stack-based bracket checker reads `(()]`. When does it detect a problem?",
+   "options": [
+    "At the end, because the stack is not empty",
+    "At the 3rd character, because `)` arrives too early",
+    "At the 4th character: `]` pops `(`, which does not match",
+    "Never: the string is balanced"
+   ],
+   "answer": 2,
+   "explanation": "It pushes `(` and `(`; the `)` pops a matching `(`; then `]` pops the remaining `(`, the wrong type, so it returns False right there. A plain counter would see two openers and two closers and miss the problem.",
+   "difficulty": 2,
+   "aid": "stacks-practice"
+  },
+  {
+   "key": "stacks-p04",
+   "pool": "drill",
+   "stem": "A stack evaluates the postfix expression `6 2 3 + *`: each number is pushed, and each operator pops two numbers, applies itself to them and pushes the result. What is the final result?",
+   "options": [
+    "15",
+    "30",
+    "11",
+    "12"
+   ],
+   "answer": 1,
+   "explanation": "Push 6, 2, 3. `+` pops 3 and 2 and pushes 5: [6, 5]. `*` pops 5 and 6 and pushes 30. Reading it left to right as 6 × 2 + 3 gives 15, but in postfix each operator applies to the two most recent values on the stack.",
+   "difficulty": 3,
+   "aid": "stacks-practice"
+  },
+  {
+   "key": "stacks-p05",
+   "pool": "drill",
+   "stem": "While checking `(()(()))`, what is the largest number of items the stack holds at any moment?",
+   "options": [
+    "4",
+    "8",
+    "2",
+    "3"
+   ],
+   "answer": 3,
+   "explanation": "The stack sizes after each character are 1, 2, 1, 2, 3, 2, 1, 0, so the peak is 3. 4 is the total number of `(` characters, but some are popped before others are pushed. A balanced string of length n can hold up to n/2 items, so the checker needs O(n) space in the worst case.",
+   "difficulty": 2,
+   "aid": "stacks-practice"
+  },
+  {
+   "key": "stacks-a01",
+   "pool": "study",
+   "stem": "A stack starts empty and runs: push(4), push(9), pop(), push(2), push(7), pop(), pop(). Which values are popped, in order?",
+   "options": [
+    "9, 7, 2",
+    "4, 9, 2",
+    "9, 2, 7",
+    "7, 2, 4"
+   ],
+   "answer": 0,
+   "explanation": "[4, 9] → pop 9 → [4] → [4, 2, 7] → pop 7 → pop 2. 4 stays on the stack. 4, 9, 2 is first-in-first-out (queue) order.",
+   "difficulty": 1,
+   "form": "A"
+  },
+  {
+   "key": "stacks-b01",
+   "pool": "study",
+   "stem": "A stack starts empty and runs: push(5), push(3), pop(), push(8), push(1), pop(), pop(). Which values are popped, in order?",
+   "options": [
+    "5, 3, 8",
+    "3, 1, 8",
+    "3, 8, 1",
+    "1, 8, 5"
+   ],
+   "answer": 1,
+   "explanation": "[5, 3] → pop 3 → [5] → [5, 8, 1] → pop 1 → pop 8. 5 stays on the stack. 5, 3, 8 is first-in-first-out (queue) order.",
+   "difficulty": 1,
+   "form": "B"
+  },
+  {
+   "key": "stacks-a02",
+   "pool": "study",
+   "stem": "You implement a stack on a Python list. Which pair of operations gives O(1) push and pop (amortised)?",
+   "options": [
+    "`insert(0, x)` to push, `pop(0)` to pop",
+    "`append(x)` to push, `pop(0)` to pop",
+    "`append(x)` to push, `pop()` to pop",
+    "`insert(0, x)` to push, `pop()` to pop"
+   ],
+   "answer": 2,
+   "explanation": "With the end of the list as the top nothing ever shifts: `append` and `pop()` are O(1) (append amortised). Working at the front shifts every item, O(n). Mixing ends removes the oldest item, which is a queue, not a stack.",
+   "difficulty": 2,
+   "form": "A"
+  },
+  {
+   "key": "stacks-b02",
+   "pool": "study",
+   "stem": "You implement a stack on a singly linked list that keeps only a `head` reference. Where should push and pop happen so that both are O(1)?",
+   "options": [
+    "Push at the tail, pop at the tail",
+    "Push at the head, pop at the tail",
+    "Push at the tail, pop at the head",
+    "Push at the head, pop at the head"
+   ],
+   "answer": 3,
+   "explanation": "At the head, push and pop each change one reference: O(1). Reaching the tail means walking the whole list from the head, O(n). Mixing ends removes the oldest item, which is a queue, not a stack.",
+   "difficulty": 2,
+   "form": "B"
+  },
+  {
+   "key": "stacks-a03",
+   "pool": "study",
+   "stem": "What does this print?\n\n```python\ns = []\ns.append(3)\ns.append(8)\ns.append(5)\ntop = s[-1]\ns.pop()\ns.append(top * 2)\nprint(s)\n```",
+   "options": [
+    "[3, 10]",
+    "[8, 5, 10]",
+    "[3, 8, 5, 10]",
+    "[3, 8, 10]"
+   ],
+   "answer": 3,
+   "explanation": "`s[-1]` peeks at 5 without removing it. `pop()` then removes 5, and 5 × 2 = 10 is pushed: [3, 8, 10]. [3, 10] treats the peek as a second pop; [8, 5, 10] pops from the bottom.",
+   "difficulty": 2,
+   "form": "A"
+  },
+  {
+   "key": "stacks-b03",
+   "pool": "study",
+   "stem": "What does this print?\n\n```python\ns = []\ns.append(6)\ns.append(2)\ns.append(9)\nx = s.pop()\ny = s[-1]\ns.append(x + y)\nprint(s)\n```",
+   "options": [
+    "[6, 11]",
+    "[2, 9, 15]",
+    "[6, 2, 9, 18]",
+    "[6, 2, 11]"
+   ],
+   "answer": 3,
+   "explanation": "`pop()` removes and returns 9. `s[-1]` then peeks at the new top, 2, without removing it. 9 + 2 = 11 is pushed: [6, 2, 11]. [6, 11] treats the peek as a second pop; [2, 9, 15] pops from the bottom.",
+   "difficulty": 2,
+   "form": "B"
+  },
+  {
+   "key": "stacks-a04",
+   "pool": "study",
+   "stem": "Which string does the stack-based bracket checker accept as balanced?",
+   "options": [
+    "`{[()]}[]`",
+    "`[(])`",
+    "`(()`",
+    "`())(`"
+   ],
+   "answer": 0,
+   "explanation": "In `{[()]}[]` every closer pops its matching opener and the stack ends empty. `[(])` fails when `]` pops `(` (wrong type), `(()` ends with `(` still on the stack, and `())(` finds the stack empty at the second `)`.",
+   "difficulty": 2,
+   "form": "A"
+  },
+  {
+   "key": "stacks-b04",
+   "pool": "study",
+   "stem": "Which of these strings is balanced according to the stack-based bracket checker?",
+   "options": [
+    "`{(})`",
+    "`[[]`",
+    "`[(){}]()`",
+    "`]{}[`"
+   ],
+   "answer": 2,
+   "explanation": "In `[(){}]()` every closer pops its matching opener and the stack ends empty. `{(})` fails when `}` pops `(` (wrong type), `[[]` ends with `[` still on the stack, and `]{}[` finds the stack empty at the very first character.",
+   "difficulty": 2,
+   "form": "B"
+  },
+  {
+   "key": "stacks-a05",
+   "pool": "study",
+   "stem": "What does this program print? (The outputs are shown on one line, in order.)\n\n```python\ndef a():\n    b()\n    print(\"A\")\n\ndef b():\n    print(\"B1\")\n    c()\n    print(\"B2\")\n\ndef c():\n    print(\"C\")\n\na()\n```",
+   "options": [
+    "A B1 C B2",
+    "B1 C B2 A",
+    "B1 B2 C A",
+    "C B1 B2 A"
+   ],
+   "answer": 1,
+   "explanation": "a calls b before printing, so a waits. b prints B1, then calls c and waits; c prints C and returns. b resumes and prints B2, then returns to a, which prints A. Each paused function resumes exactly where it stopped, most recent first.",
+   "difficulty": 3,
+   "form": "A"
+  },
+  {
+   "key": "stacks-b05",
+   "pool": "study",
+   "stem": "What does this program print? (The outputs are shown on one line, in order.)\n\n```python\ndef p():\n    print(\"P1\")\n    q()\n    print(\"P2\")\n\ndef q():\n    r()\n    print(\"Q\")\n\ndef r():\n    print(\"R\")\n\np()\n```",
+   "options": [
+    "P1 Q R P2",
+    "P1 P2 Q R",
+    "P1 R Q P2",
+    "R Q P1 P2"
+   ],
+   "answer": 2,
+   "explanation": "p prints P1, then calls q and waits. q calls r before printing, so q waits too; r prints R and returns. q resumes and prints Q, then returns to p, which prints P2. Each paused function resumes exactly where it stopped, most recent first.",
+   "difficulty": 3,
+   "form": "B"
+  }
+ ]
+}

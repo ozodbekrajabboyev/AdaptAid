@@ -1,0 +1,332 @@
+{
+ "slug": "trees",
+ "name": "Trees and traversals",
+ "description": "Hierarchical structures of nodes and edges: the vocabulary of trees, binary trees, and the four ways to visit every node.",
+ "prerequisites": [
+  "recursion",
+  "linked-lists"
+ ],
+ "aids": [
+  {
+   "slug": "trees-notes",
+   "title": "Trees: vocabulary, binary trees and traversals",
+   "type": "notes",
+   "delivery": "native_md",
+   "body": "trees-notes.md",
+   "source": "AdaptAid",
+   "description": "Root, leaf, depth and height, binary tree nodes in Python, the four traversals, and recursive size and height.",
+   "difficulty": 2,
+   "duration": 12,
+   "order": 1,
+   "style": [
+    -0.5,
+    0.0,
+    -0.6,
+    0.4
+   ]
+  },
+  {
+   "slug": "trees-worked-example",
+   "title": "Worked example: evaluating an expression tree",
+   "type": "worked_example",
+   "delivery": "native_md",
+   "body": "trees-worked-example.md",
+   "source": "AdaptAid",
+   "description": "Store (2 + 4) * (5 - 3) as a binary tree, evaluate it with a postorder recursion and trace every call.",
+   "difficulty": 2,
+   "duration": 12,
+   "order": 2
+  },
+  {
+   "slug": "trees-video",
+   "title": "Binary tree traversal: Preorder, Inorder, Postorder (mycodeschool)",
+   "type": "video",
+   "delivery": "external_url",
+   "url": "https://www.youtube.com/watch?v=gm8DUJJhmY4",
+   "source": "mycodeschool (YouTube)",
+   "description": "A whiteboard walk-through of the three depth-first traversals on an example tree, with the recursive code for each.",
+   "difficulty": 2,
+   "duration": 15,
+   "order": 3
+  },
+  {
+   "slug": "trees-animation",
+   "title": "Tree traversals animated (VisuAlgo)",
+   "type": "animation",
+   "delivery": "external_url",
+   "url": "https://visualgo.net/en/bst",
+   "source": "VisuAlgo",
+   "description": "Run inorder, preorder and postorder on a sample tree and watch the nodes light up in visiting order (the tree is a BST, but the traversal rules are the same for any binary tree).",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 4
+  },
+  {
+   "slug": "trees-concept-map",
+   "title": "Trees at a glance",
+   "type": "concept_map",
+   "delivery": "native_md",
+   "body": "trees-concept-map.md",
+   "source": "AdaptAid",
+   "description": "One diagram connecting tree vocabulary, depth-first and breadth-first traversals and the recursive pattern.",
+   "difficulty": 2,
+   "duration": 5,
+   "order": 5
+  },
+  {
+   "slug": "trees-practice",
+   "title": "Practice: traversals, height and size",
+   "type": "practice",
+   "delivery": "native_md",
+   "body": "trees-practice.md",
+   "source": "AdaptAid",
+   "description": "Five questions with explanations: traversal orders, size, recursion depth and rebuilding a tree from two traversals.",
+   "difficulty": 3,
+   "duration": 12,
+   "order": 6
+  },
+  {
+   "slug": "trees-article",
+   "title": "Tree Traversal: inorder, preorder and postorder (Programiz)",
+   "type": "article",
+   "delivery": "external_url",
+   "url": "https://www.programiz.com/dsa/tree-traversal",
+   "source": "Programiz",
+   "description": "A written tutorial on the three depth-first traversals with diagrams and complete code in Python, Java, C and C++.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 7
+  }
+ ],
+ "questions": [
+  {
+   "key": "trees-d01",
+   "pool": "diagnostic",
+   "stem": "What is the **inorder** traversal of this binary tree?\n\n```python\nroot = Node(1,\n            Node(2, Node(4), Node(5)),\n            Node(3))\n```\n\n(`Node(key, left, right)`; a missing argument means no child.)",
+   "options": [
+    "1 2 4 5 3",
+    "4 5 2 3 1",
+    "4 2 5 1 3",
+    "1 2 3 4 5"
+   ],
+   "answer": 2,
+   "explanation": "Inorder is left subtree, node, right subtree. The left subtree of 1 gives 4 2 5, then 1, then the right subtree 3: 4 2 5 1 3. 1 2 4 5 3 is preorder (node first) and 1 2 3 4 5 is level-order.",
+   "difficulty": 2
+  },
+  {
+   "key": "trees-c01",
+   "pool": "check",
+   "stem": "In a tree, what is a **leaf**?",
+   "options": [
+    "The root of the tree",
+    "Any node on the deepest level of the tree",
+    "A node with exactly one child",
+    "A node with no children"
+   ],
+   "answer": 3,
+   "explanation": "A leaf is a node with no children. Leaves are not always on the deepest level: if the root's left child has no children but its right child does, that left child is a leaf at depth 1.",
+   "difficulty": 1
+  },
+  {
+   "key": "trees-c02",
+   "pool": "check",
+   "stem": "What is the **depth** of a node in a tree?",
+   "options": [
+    "The number of edges on the path from the root down to the node",
+    "The number of edges on the longest path from the node down to a leaf",
+    "The number of children the node has",
+    "The number of nodes in the node's subtree"
+   ],
+   "answer": 0,
+   "explanation": "Depth is measured from the root: the root has depth 0, its children depth 1, and so on. The longest path from a node down to a leaf is its height, the opposite direction.",
+   "difficulty": 1
+  },
+  {
+   "key": "trees-c03",
+   "pool": "check",
+   "stem": "What is the **preorder** traversal of this tree?\n\n```python\nroot = Node(\"M\",\n            Node(\"D\", Node(\"A\"), Node(\"G\")),\n            Node(\"T\", Node(\"P\")))\n```\n\n(`Node(key, left, right)`; `P` is the left child of `T`.)",
+   "options": [
+    "A D G M P T",
+    "M D A G T P",
+    "M D T A G P",
+    "A G D P T M"
+   ],
+   "answer": 1,
+   "explanation": "Preorder visits the node first, then its whole left subtree, then its right subtree: M, then D A G, then T P. M D T A G P is level-order (it finishes a level before going down), and A D G M P T is inorder.",
+   "difficulty": 2
+  },
+  {
+   "key": "trees-c04",
+   "pool": "check",
+   "stem": "A binary tree has root **8**. The children of 8 are 3 (left) and 5 (right). Node 3 has only a **right** child, 9. Node 5 has a left child 1 and a right child 6. What is the **inorder** traversal?",
+   "options": [
+    "8 3 9 5 1 6",
+    "9 3 8 1 5 6",
+    "1 3 5 6 8 9",
+    "3 9 8 1 5 6"
+   ],
+   "answer": 3,
+   "explanation": "Inorder is left, node, right. Node 3 has no left child, so it is visited before its right child 9: 3 9. Then the root 8, then 5's subtree as 1 5 6. Putting 9 before 3 treats it as a left child; the sorted order would only appear if the tree were a binary search tree, which this one is not.",
+   "difficulty": 2
+  },
+  {
+   "key": "trees-c05",
+   "pool": "check",
+   "stem": "In which order does a **level-order** (breadth-first) traversal visit the nodes of this tree?\n\n```python\nroot = Node(\"K\",\n            Node(\"C\", Node(\"X\", Node(\"B\"))),\n            Node(\"R\", Node(\"A\"), Node(\"M\")))\n```",
+   "options": [
+    "K C R X A M B",
+    "K C X B R A M",
+    "K R C M A X B",
+    "B X C A M R K"
+   ],
+   "answer": 0,
+   "explanation": "Level-order visits depth 0 (K), then depth 1 left to right (C R), then depth 2 (X A M), then depth 3 (B). K C X B R A M is preorder, which goes deep down the left side first.",
+   "difficulty": 2
+  },
+  {
+   "key": "trees-c06",
+   "pool": "check",
+   "stem": "What does `f(root)` compute for any binary tree?\n\n```python\ndef f(node):\n    if node is None:\n        return 0\n    if node.left is None and node.right is None:\n        return 1\n    return f(node.left) + f(node.right)\n```",
+   "options": [
+    "The number of nodes in the tree",
+    "The height of the tree",
+    "The number of leaves in the tree",
+    "The number of internal (non-leaf) nodes"
+   ],
+   "answer": 2,
+   "explanation": "Only a node with no children contributes 1; every other node just adds up its subtrees' results. So it counts leaves. To count all nodes the recursive case would need a `1 +` in front.",
+   "difficulty": 2
+  },
+  {
+   "key": "trees-c07",
+   "pool": "check",
+   "stem": "What does `height(root)` return?\n\n```python\ndef height(node):\n    if node is None:\n        return -1\n    return 1 + max(height(node.left), height(node.right))\n\nroot = Node(1, Node(2, Node(4, None, Node(8))), Node(3))\n```",
+   "options": [
+    "4",
+    "2",
+    "1",
+    "3"
+   ],
+   "answer": 3,
+   "explanation": "The longest root-to-leaf path is 1 → 2 → 4 → 8, which has 3 edges. With `height(None) = -1` a leaf has height 0, so the function counts edges. 4 is the number of nodes on that path, which you would get with a base case of 0.",
+   "difficulty": 2
+  },
+  {
+   "key": "trees-c08",
+   "pool": "check",
+   "stem": "Which data structure does an iterative **level-order** traversal use to hold the nodes still waiting to be visited?",
+   "options": [
+    "A stack, so the most recently found node is visited next",
+    "A priority queue ordered by key",
+    "A queue, so nodes are visited in the order they were found",
+    "A hash set of the nodes already visited"
+   ],
+   "answer": 2,
+   "explanation": "A queue is first in, first out: all nodes at depth d are enqueued before any node at depth d + 1, so they come out level by level. A stack would always continue with the newest node, which gives a depth-first order instead.",
+   "difficulty": 1
+  },
+  {
+   "key": "trees-c09",
+   "pool": "check",
+   "stem": "Counting height in edges, what is the **largest number of nodes** a binary tree of height 3 can have?",
+   "options": [
+    "8",
+    "15",
+    "16",
+    "7"
+   ],
+   "answer": 1,
+   "explanation": "Depth d can hold at most 2^d nodes, so depths 0 to 3 hold at most 1 + 2 + 4 + 8 = 15 = 2^(h+1) - 1. 8 is only the bottom level, and 7 is the maximum for height 2.",
+   "difficulty": 2
+  },
+  {
+   "key": "trees-c10",
+   "pool": "check",
+   "stem": "A binary tree with distinct keys has\n\n- preorder: `1 2 4 5 3 6`\n- inorder: `4 2 5 1 6 3`\n\nWhat is its **postorder** traversal?",
+   "options": [
+    "4 5 2 6 3 1",
+    "6 3 5 4 2 1",
+    "4 5 2 3 6 1",
+    "4 2 5 6 3 1"
+   ],
+   "answer": 0,
+   "explanation": "Preorder starts with the root, 1. In the inorder list, 4 2 5 is left of 1 (left subtree) and 6 3 is right of it. Repeating: the left subtree is 2 with children 4 and 5; the right subtree is 3 with left child 6. Postorder (left, right, node) is 4 5 2 6 3 1. Simply reversing the preorder (6 3 5 4 2 1) is a common but wrong shortcut.",
+   "difficulty": 3
+  },
+  {
+   "key": "trees-p01",
+   "pool": "drill",
+   "stem": "What is the **postorder** traversal of this tree?\n\n```python\nroot = Node(\"P\", Node(\"Q\", Node(\"S\")), Node(\"R\"))\n```",
+   "options": [
+    "S Q P R",
+    "P Q S R",
+    "S Q R P",
+    "P Q R S"
+   ],
+   "answer": 2,
+   "explanation": "Postorder visits left subtree, right subtree, then the node. Q's subtree gives S Q, the right subtree gives R, and the root P comes last: S Q R P. The root is always last in postorder and first in preorder.",
+   "difficulty": 1,
+   "aid": "trees-practice"
+  },
+  {
+   "key": "trees-p02",
+   "pool": "drill",
+   "stem": "What does `size(root)` return?\n\n```python\ndef size(node):\n    if node is None:\n        return 0\n    return 1 + size(node.left) + size(node.right)\n\nroot = Node(1,\n            Node(2, Node(4), Node(5)),\n            Node(3, None, Node(6, Node(7))))\n```",
+   "options": [
+    "3",
+    "6",
+    "7",
+    "4"
+   ],
+   "answer": 2,
+   "explanation": "Every non-empty node adds 1, so the function counts nodes: 1, 2, 3, 4, 5, 6 and 7 make 7. 3 is the height (path 1 → 3 → 6 → 7), and 6 is the number of edges, which is always one less than the number of nodes in a tree.",
+   "difficulty": 1,
+   "aid": "trees-practice"
+  },
+  {
+   "key": "trees-p03",
+   "pool": "drill",
+   "stem": "A binary tree has *n* nodes and every node has only a right child, so it looks like a linked list. At its deepest point, roughly how many calls of a recursive inorder traversal are on the call stack at once?",
+   "options": [
+    "About n",
+    "About log₂ n",
+    "Always 2",
+    "About n / 2"
+   ],
+   "answer": 0,
+   "explanation": "The recursion goes one level deeper for every node on the chain, so about n frames (n + 1 counting the final call on None) are active together. Recursive traversals use O(h) stack space, and this tree has h = n - 1. log₂ n would only hold for a balanced tree.",
+   "difficulty": 2,
+   "aid": "trees-practice"
+  },
+  {
+   "key": "trees-p04",
+   "pool": "drill",
+   "stem": "What does `walk(root)` print?\n\n```python\ndef walk(node):\n    if node is None:\n        return\n    walk(node.right)\n    print(node.key, end=\" \")\n    walk(node.left)\n\nroot = Node(\"A\",\n            Node(\"B\", Node(\"D\"), Node(\"E\")),\n            Node(\"C\", Node(\"F\")))\n```",
+   "options": [
+    "D B E A F C",
+    "C F A E B D",
+    "A C F B E D",
+    "F C A E B D"
+   ],
+   "answer": 1,
+   "explanation": "This is inorder with the sides swapped: right subtree, node, left subtree. C has no right child, so C prints before its left child F; then A; then B's subtree right-first: E B D. The result, C F A E B D, is the ordinary inorder D B E A F C reversed.",
+   "difficulty": 2,
+   "aid": "trees-practice"
+  },
+  {
+   "key": "trees-p05",
+   "pool": "drill",
+   "stem": "A binary tree with distinct keys has\n\n- inorder: `4 2 5 1 3`\n- postorder: `4 5 2 3 1`\n\nWhat is its **preorder** traversal?",
+   "options": [
+    "1 3 2 5 4",
+    "1 2 3 4 5",
+    "1 4 2 5 3",
+    "1 2 4 5 3"
+   ],
+   "answer": 3,
+   "explanation": "The last postorder key, 1, is the root. In the inorder list, 4 2 5 is its left subtree and 3 its right. Within 4 2 5 the last one in postorder is 2, so 2 is the root there with children 4 and 5. Preorder (node, left, right) is 1 2 4 5 3. 1 2 3 4 5 is the level-order.",
+   "difficulty": 3,
+   "aid": "trees-practice"
+  }
+ ]
+}

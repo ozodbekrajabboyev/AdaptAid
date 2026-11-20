@@ -1,0 +1,475 @@
+{
+ "slug": "queues",
+ "name": "Queues",
+ "description": "A first-in, first-out line of items: you add at the back and remove from the front, both in O(1) time.",
+ "prerequisites": [
+  "arrays"
+ ],
+ "aids": [
+  {
+   "slug": "queues-notes",
+   "title": "Queues: FIFO order, enqueue and dequeue, and how to build one",
+   "type": "notes",
+   "delivery": "native_md",
+   "body": "queues-notes.md",
+   "source": "AdaptAid",
+   "description": "What a queue is, where it is used, its O(1) operations, and the circular-array and linked-list implementations.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 1
+  },
+  {
+   "slug": "queues-worked-example",
+   "title": "Worked example: a circular-array print queue",
+   "type": "worked_example",
+   "delivery": "native_md",
+   "body": "queues-worked-example.md",
+   "source": "AdaptAid",
+   "description": "Build a fixed-size queue whose indices wrap around, then trace every enqueue and dequeue through the array.",
+   "difficulty": 2,
+   "duration": 15,
+   "order": 2
+  },
+  {
+   "slug": "queues-video",
+   "title": "Array implementation of a queue (mycodeschool)",
+   "type": "video",
+   "delivery": "external_url",
+   "url": "https://www.youtube.com/watch?v=okr-XE8yTO8",
+   "source": "mycodeschool (YouTube)",
+   "description": "Why a plain array wastes space as a queue, and how a circular array with front and rear indices gives O(1) enqueue and dequeue.",
+   "difficulty": 2,
+   "duration": 15,
+   "order": 3
+  },
+  {
+   "slug": "queues-animation",
+   "title": "Queue in a circular array, animated",
+   "type": "animation",
+   "delivery": "external_url",
+   "url": "https://www.cs.usfca.edu/~galles/visualization/QueueArray.html",
+   "source": "USFCA (David Galles)",
+   "description": "Enqueue and dequeue your own values and watch the head and tail indices move and wrap around a fixed-size array.",
+   "difficulty": 2,
+   "duration": 8,
+   "order": 4
+  },
+  {
+   "slug": "queues-cheat-sheet",
+   "title": "Queues cheat sheet",
+   "type": "cheat_sheet",
+   "delivery": "native_md",
+   "body": "queues-cheat-sheet.md",
+   "source": "AdaptAid",
+   "description": "Operation costs, implementations compared, circular-array formulas, and when to use a queue, stack or deque.",
+   "difficulty": 2,
+   "duration": 5,
+   "order": 5
+  },
+  {
+   "slug": "queues-practice",
+   "title": "Practice: tracing queues",
+   "type": "practice",
+   "delivery": "native_md",
+   "body": "queues-practice.md",
+   "source": "AdaptAid",
+   "description": "Five questions with explanations: FIFO traces, circular indices, operation costs, a linked-queue bug and BFS order.",
+   "difficulty": 3,
+   "duration": 12,
+   "order": 6
+  },
+  {
+   "slug": "queues-article",
+   "title": "Queue data structure (Programiz)",
+   "type": "article",
+   "delivery": "external_url",
+   "url": "https://www.programiz.com/dsa/queue",
+   "source": "Programiz",
+   "description": "A written tutorial on queue operations and an array implementation, with code, complexity and applications.",
+   "difficulty": 2,
+   "duration": 12,
+   "order": 7
+  }
+ ],
+ "questions": [
+  {
+   "key": "queues-d01",
+   "pool": "diagnostic",
+   "stem": "Starting with an empty queue, you run these operations in order:\n\n`enqueue(5)`, `enqueue(8)`, `dequeue()`, `enqueue(3)`, `dequeue()`\n\nWhich value is now at the front of the queue?",
+   "options": [
+    "5",
+    "8",
+    "3",
+    "The queue is empty"
+   ],
+   "answer": 2,
+   "explanation": "A queue removes the oldest item first. After the two enqueues it holds 5, 8; the first dequeue removes 5; enqueue(3) gives 8, 3; the second dequeue removes 8, leaving 3 at the front. Answering 5 treats it as a stack (last in, first out), where 8 and then 3 would be removed instead.",
+   "difficulty": 2
+  },
+  {
+   "key": "queues-c01",
+   "pool": "check",
+   "stem": "In which order does a queue give items back?",
+   "options": [
+    "Newest first: the last item added is the first removed (LIFO)",
+    "Oldest first: the first item added is the first removed (FIFO)",
+    "Smallest first, whatever order the items were added in",
+    "In whatever order the queue can reach most quickly"
+   ],
+   "answer": 1,
+   "explanation": "A queue is first in, first out, like a line at a ticket counter. Newest first (LIFO) describes a stack, and smallest first describes a priority queue, which is a different structure.",
+   "difficulty": 1
+  },
+  {
+   "key": "queues-c02",
+   "pool": "check",
+   "stem": "Which of these is naturally modelled by a queue?",
+   "options": [
+    "The undo history of a text editor, undoing the latest change first",
+    "A browser's Back button, returning to the most recent page first",
+    "A pile of plates, where you always take the plate on top first",
+    "Print jobs sent to a shared printer, printed in the order they arrive"
+   ],
+   "answer": 3,
+   "explanation": "The printer serves jobs first come, first served, which is FIFO. The other three all take the most recent item first, which is LIFO: they are stacks.",
+   "difficulty": 1
+  },
+  {
+   "key": "queues-c03",
+   "pool": "check",
+   "stem": "A queue is stored in a Python list `items`. Why is dequeuing with `items.pop(0)` a poor choice when the queue is long?",
+   "options": [
+    "It is O(n): every remaining item shifts one place to the left",
+    "It removes the last item, so the queue behaves like a stack",
+    "It is O(log n): Python has to search the list for the first item",
+    "It raises an error whenever the list holds more than one item"
+   ],
+   "answer": 0,
+   "explanation": "A list keeps its items in one contiguous block starting at index 0, so removing index 0 moves all n - 1 remaining items. `pop(0)` does remove the first item (it is `pop()` with no argument that removes the last). `collections.deque.popleft()` dequeues in O(1).",
+   "difficulty": 2
+  },
+  {
+   "key": "queues-c04",
+   "pool": "check",
+   "stem": "A queue is stored in a circular array of capacity 6. `head` (the index of the front item) is 4, and the queue holds 3 items. At which index will the next enqueued item be stored?",
+   "options": [
+    "7",
+    "0",
+    "1",
+    "3"
+   ],
+   "answer": 2,
+   "explanation": "The items sit at indices 4, 5 and 0, wrapping past the end. The next free slot is (head + count) % capacity = (4 + 3) % 6 = 1. Answering 7 forgets the wrap-around: there is no index 7 in an array of 6 slots. 0 is the slot of the back item, which is already taken.",
+   "difficulty": 2
+  },
+  {
+   "key": "queues-c05",
+   "pool": "check",
+   "stem": "A queue is built on a singly linked list that keeps pointers to both its `head` and its `tail` node. Where should enqueue and dequeue happen so that both are O(1)?",
+   "options": [
+    "Enqueue at the head, dequeue at the tail",
+    "Enqueue after the tail, dequeue at the head",
+    "Enqueue and dequeue both at the head",
+    "Enqueue and dequeue both at the tail"
+   ],
+   "answer": 1,
+   "explanation": "Linking a node after the tail and unlinking the head are both O(1). Removing the tail of a singly linked list is O(n), because you must walk from the head to find the node before it, so dequeuing at the tail is slow. Using only one end gives last in, first out: a stack, not a queue.",
+   "difficulty": 2
+  },
+  {
+   "key": "queues-c06",
+   "pool": "check",
+   "stem": "What does this print?\n\n```python\nfrom collections import deque\n\nq = deque()\nq.append(\"a\")\nq.append(\"b\")\nq.appendleft(\"c\")\nq.popleft()\nq.append(\"d\")\nprint(list(q))\n```",
+   "options": [
+    "['b', 'c', 'd']",
+    "['c', 'a', 'd']",
+    "['c', 'a', 'b', 'd']",
+    "['a', 'b', 'd']"
+   ],
+   "answer": 3,
+   "explanation": "`appendleft(\"c\")` puts c at the front: ['c', 'a', 'b']. `popleft()` removes that front item, c: ['a', 'b']. `append(\"d\")` adds at the back: ['a', 'b', 'd']. ['c', 'a', 'd'] comes from thinking `popleft` removes from the right, and ['b', 'c', 'd'] from thinking `appendleft` adds on the right.",
+   "difficulty": 2
+  },
+  {
+   "key": "queues-c07",
+   "pool": "check",
+   "stem": "A circular-array queue of capacity 4 is full: `data = [E, F, C, D]` and `head = 2`, so the queue order is C, D, E, F. It now grows to capacity 8. How should the items be copied into the new array?",
+   "options": [
+    "In queue order from `head`: C, D, E, F into slots 0 to 3, then set `head = 0`",
+    "Slot by slot: E, F, C, D into slots 0 to 3, keeping `head = 2`",
+    "No copying is needed: the `% capacity` arithmetic adapts by itself",
+    "It cannot grow: a circular-array queue has a fixed capacity for life"
+   ],
+   "answer": 0,
+   "explanation": "With head = 2 and capacity 8, a slot-by-slot copy would make the queue read slots 2, 3, 4, 5: C, D and two empty slots, so E and F are lost. The wrapped part must be unwrapped by copying in queue order. Changing only the capacity breaks the formula too, because (head + count) % 8 is not the same slot as % 4. The copy costs O(n), but doubling makes it rare, so enqueue stays O(1) amortised.",
+   "difficulty": 3
+  },
+  {
+   "key": "queues-c08",
+   "pool": "check",
+   "stem": "Breadth-first search (BFS) visits a graph level by level: first the start vertex, then its neighbours, then their neighbours. Which structure should hold the vertices waiting to be visited?",
+   "options": [
+    "A stack, so the most recently discovered vertex is visited first",
+    "A sorted list, so vertices are visited in increasing numeric order",
+    "A queue, so vertices discovered earlier (closer to the start) are visited first",
+    "A set, so that each waiting vertex is stored only once"
+   ],
+   "answer": 2,
+   "explanation": "FIFO order is exactly level by level: every vertex at distance 1 is discovered, and therefore dequeued, before any vertex at distance 2. A stack visits the newest vertex first and gives depth-first search instead. A set is useful for remembering visited vertices, but it has no order to take the next vertex from.",
+   "difficulty": 2
+  },
+  {
+   "key": "queues-c09",
+   "pool": "check",
+   "stem": "This loop empties a Python list that starts with n items. What is its total running time?\n\n```python\nwhile items:\n    job = items.pop(0)\n    process(job)      # O(1)\n```",
+   "options": [
+    "O(n)",
+    "O(n²)",
+    "O(n log n)",
+    "O(1)"
+   ],
+   "answer": 1,
+   "explanation": "Each `pop(0)` shifts all the remaining items: n - 1, then n - 2, ..., then 0 moves, about n²/2 in total, so O(n²). O(n) is what you get with `collections.deque` and `popleft()`, where each dequeue is O(1).",
+   "difficulty": 3
+  },
+  {
+   "key": "queues-c10",
+   "pool": "check",
+   "stem": "With a good queue implementation, which of these operations is **not** O(1)?",
+   "options": [
+    "Adding an item at the back (enqueue)",
+    "Removing the item at the front (dequeue)",
+    "Reading the front item without removing it (peek)",
+    "Checking whether a given value is anywhere in the queue"
+   ],
+   "answer": 3,
+   "explanation": "Enqueue, dequeue and peek only touch the two ends, so they are O(1). A queue keeps no index of its contents, so finding an arbitrary value means looking at up to all n items: O(n). If you also need fast membership tests, keep a set alongside the queue.",
+   "difficulty": 1
+  },
+  {
+   "key": "queues-p01",
+   "pool": "drill",
+   "stem": "Starting with an empty queue: `enqueue(\"A\")`, `enqueue(\"B\")`, `enqueue(\"C\")`, `dequeue()`, `enqueue(\"D\")`, `dequeue()`. Which two values were dequeued, in order?",
+   "options": [
+    "A, then B",
+    "C, then D",
+    "A, then D",
+    "C, then B"
+   ],
+   "answer": 0,
+   "explanation": "Each dequeue takes the oldest item still waiting: first A, then B. C, then D is the stack (LIFO) answer, which removes the newest item each time.",
+   "difficulty": 1,
+   "aid": "queues-practice"
+  },
+  {
+   "key": "queues-p02",
+   "pool": "drill",
+   "stem": "A circular array of capacity 5 has `head = 3` and holds 4 items. At which indices are the items stored, from front to back?",
+   "options": [
+    "3, 4, 5, 6",
+    "0, 1, 2, 3",
+    "3, 4, 0, 1",
+    "3, 2, 1, 0"
+   ],
+   "answer": 2,
+   "explanation": "Starting at head, each next item is one index further, taken % 5: 3, 4, (5 % 5 =) 0, (6 % 5 =) 1. Indices 5 and 6 do not exist in a 5-slot array, and the front is at head, not necessarily at index 0.",
+   "difficulty": 2,
+   "aid": "queues-practice"
+  },
+  {
+   "key": "queues-p03",
+   "pool": "drill",
+   "stem": "A program adds n tasks to a `collections.deque` with `append` and then removes all of them with `popleft`. What is the total running time?",
+   "options": [
+    "O(n²)",
+    "O(n)",
+    "O(n log n)",
+    "O(1)"
+   ],
+   "answer": 1,
+   "explanation": "Both `append` and `popleft` are O(1) on a deque, so 2n operations cost O(n). O(n²) is the cost with a list and `pop(0)`, which shifts the remaining items on every removal.",
+   "difficulty": 2,
+   "aid": "queues-practice"
+  },
+  {
+   "key": "queues-p04",
+   "pool": "drill",
+   "stem": "This linked-list queue has a bug in `dequeue`. What happens when you run `q.enqueue(1)`, `q.dequeue()`, `q.enqueue(2)`, `q.dequeue()`?\n\n```python\nclass Node:\n    def __init__(self, value):\n        self.value = value\n        self.next = None\n\nclass LinkedQueue:\n    def __init__(self):\n        self.head = None\n        self.tail = None\n\n    def enqueue(self, value):\n        node = Node(value)\n        if self.tail is None:      # queue is empty\n            self.head = node\n        else:\n            self.tail.next = node\n        self.tail = node\n\n    def dequeue(self):\n        node = self.head\n        self.head = node.next\n        return node.value\n```",
+   "options": [
+    "Both dequeues work and return 1, then 2",
+    "The second `dequeue` returns 1 again instead of 2",
+    "The second `enqueue` crashes because the queue was empty",
+    "The second `dequeue` crashes: `head` is None but `tail` still points to the old node"
+   ],
+   "answer": 3,
+   "explanation": "Removing the last node sets head to None but leaves tail pointing at it. enqueue(2) then sees that tail is not None and links the new node after the removed one, so head stays None and the second dequeue fails with AttributeError ('NoneType' object has no attribute 'next'). The fix: in dequeue, when head becomes None, set tail to None too.",
+   "difficulty": 3,
+   "aid": "queues-practice"
+  },
+  {
+   "key": "queues-p05",
+   "pool": "drill",
+   "stem": "BFS starts at A on this graph and uses a queue, adding each vertex's unvisited neighbours in the order listed. In which order are the vertices visited?\n\n```python\ngraph = {\n    \"A\": [\"B\", \"C\"],\n    \"B\": [\"D\"],\n    \"C\": [\"E\"],\n    \"D\": [],\n    \"E\": [],\n}\n```",
+   "options": [
+    "A, B, C, D, E",
+    "A, B, D, C, E",
+    "A, C, E, B, D",
+    "A, C, B, E, D"
+   ],
+   "answer": 0,
+   "explanation": "The queue goes [A] → [B, C] → [C, D] → [D, E] → [E] → []: A, B and C are all dequeued before their neighbours D and E. A, B, D, C, E is depth-first order (deep before wide), and A, C, E, B, D is what you get by swapping the queue for a stack.",
+   "difficulty": 2,
+   "aid": "queues-practice"
+  },
+  {
+   "key": "queues-a01",
+   "pool": "study",
+   "stem": "Starting with an empty queue, you run: `enqueue(2)`, `enqueue(9)`, `enqueue(4)`, `dequeue()`, `enqueue(6)`, `dequeue()`. Which value is at the front of the queue now?",
+   "options": [
+    "9",
+    "4",
+    "6",
+    "2"
+   ],
+   "answer": 1,
+   "explanation": "FIFO: the first dequeue removes 2 and the second removes 9, leaving 4, 6 with 4 at the front. 9 is the top of the stack you would get by treating the operations as last in, first out.",
+   "difficulty": 1,
+   "form": "A"
+  },
+  {
+   "key": "queues-a02",
+   "pool": "study",
+   "stem": "A queue is stored in a circular array of capacity 8. `head` is 6 and the queue holds 4 items. At which index is the item at the **back** of the queue?",
+   "options": [
+    "9",
+    "2",
+    "3",
+    "1"
+   ],
+   "answer": 3,
+   "explanation": "The items occupy head, head + 1, ... wrapping with % 8: indices 6, 7, 0, 1. The back is (head + count - 1) % 8 = 9 % 8 = 1. 9 forgets the wrap-around, 2 is the next free slot (one past the back), and 3 is count - 1, which ignores head.",
+   "difficulty": 2,
+   "form": "A"
+  },
+  {
+   "key": "queues-a03",
+   "pool": "study",
+   "stem": "A queue is stored in a Python list, using `items.append(x)` to enqueue and `items.pop(0)` to dequeue. What does each operation cost for a queue of n items?",
+   "options": [
+    "Enqueue O(1), dequeue O(n)",
+    "Enqueue O(n), dequeue O(1)",
+    "Both O(1)",
+    "Both O(n)"
+   ],
+   "answer": 0,
+   "explanation": "Appending at the end of a list is O(1) (amortised). Removing index 0 shifts the remaining n - 1 items left, so it is O(n). 'Both O(1)' is the common mistake: only collections.deque gives O(1) at both ends.",
+   "difficulty": 2,
+   "form": "A"
+  },
+  {
+   "key": "queues-a04",
+   "pool": "study",
+   "stem": "A queue uses a singly linked list with `head` and `tail` pointers, and `dequeue` removes the head node. Which pointers must `dequeue` change when it removes the **only** node in the queue?",
+   "options": [
+    "Only `head`: it becomes None",
+    "Only `tail`: it becomes None",
+    "Both: `head` and `tail` must become None",
+    "Neither: unlinking the node is enough"
+   ],
+   "answer": 2,
+   "explanation": "Normally dequeue only moves head forward. When the last node goes, tail still points to it; unless tail is reset to None, the next enqueue links the new node after the removed one and head never sees it. 'Only head' is exactly that bug.",
+   "difficulty": 2,
+   "form": "A"
+  },
+  {
+   "key": "queues-a05",
+   "pool": "study",
+   "stem": "What does this print?\n\n```python\nfrom collections import deque\n\nd = deque([1, 2, 3])\nd.appendleft(0)\nd.pop()\nd.append(4)\nd.popleft()\nprint(list(d))\n```",
+   "options": [
+    "[2, 3, 4]",
+    "[1, 2, 4]",
+    "[1, 2, 3]",
+    "[0, 1, 2]"
+   ],
+   "answer": 1,
+   "explanation": "appendleft(0) gives [0, 1, 2, 3]; pop() removes from the right: [0, 1, 2]; append(4) gives [0, 1, 2, 4]; popleft() removes from the left: [1, 2, 4]. [2, 3, 4] comes from treating appendleft as adding on the right (or pop as removing on the left), and [1, 2, 3] from swapping pop and popleft.",
+   "difficulty": 2,
+   "form": "A"
+  },
+  {
+   "key": "queues-b01",
+   "pool": "study",
+   "stem": "Starting with an empty queue, you run: `enqueue(7)`, `enqueue(1)`, `enqueue(5)`, `dequeue()`, `enqueue(8)`, `dequeue()`. Which value is at the front of the queue now?",
+   "options": [
+    "1",
+    "8",
+    "5",
+    "7"
+   ],
+   "answer": 2,
+   "explanation": "FIFO: the first dequeue removes 7 and the second removes 1, leaving 5, 8 with 5 at the front. 1 is the top of the stack you would get by treating the operations as last in, first out.",
+   "difficulty": 1,
+   "form": "B"
+  },
+  {
+   "key": "queues-b02",
+   "pool": "study",
+   "stem": "A queue is stored in a circular array of capacity 7. `head` is 5 and the queue holds 3 items. At which index is the item at the **back** of the queue?",
+   "options": [
+    "0",
+    "7",
+    "1",
+    "2"
+   ],
+   "answer": 0,
+   "explanation": "The items occupy head, head + 1, ... wrapping with % 7: indices 5, 6, 0. The back is (head + count - 1) % 7 = 7 % 7 = 0. 7 forgets the wrap-around, 1 is the next free slot (one past the back), and 2 is count - 1, which ignores head.",
+   "difficulty": 2,
+   "form": "B"
+  },
+  {
+   "key": "queues-b03",
+   "pool": "study",
+   "stem": "A queue is stored in a Python list, using `items.insert(0, x)` to enqueue and `items.pop()` to dequeue. What does each operation cost for a queue of n items?",
+   "options": [
+    "Enqueue O(1), dequeue O(n)",
+    "Both O(1)",
+    "Both O(n)",
+    "Enqueue O(n), dequeue O(1)"
+   ],
+   "answer": 3,
+   "explanation": "Inserting at index 0 shifts all n items one place right, so it is O(n). pop() with no argument removes the last item, which is O(1). 'Both O(1)' is the common mistake: only collections.deque gives O(1) at both ends.",
+   "difficulty": 2,
+   "form": "B"
+  },
+  {
+   "key": "queues-b04",
+   "pool": "study",
+   "stem": "A queue uses a singly linked list with `head` and `tail` pointers, and `enqueue` adds a node after the tail. Which pointers must `enqueue` change when the queue was **empty** before the call?",
+   "options": [
+    "Only `tail`: it points to the new node",
+    "Both: `head` and `tail` must point to the new node",
+    "Only `head`: it points to the new node",
+    "Neither: linking the node is enough"
+   ],
+   "answer": 1,
+   "explanation": "Normally enqueue only links the node after the tail and moves tail. In an empty queue there is no tail node to link from and head is None, so both must point to the new node; otherwise the next dequeue finds head is None. 'Only tail' is the usual bug.",
+   "difficulty": 2,
+   "form": "B"
+  },
+  {
+   "key": "queues-b05",
+   "pool": "study",
+   "stem": "What does this print?\n\n```python\nfrom collections import deque\n\nd = deque([5, 6, 7])\nd.append(8)\nd.popleft()\nd.appendleft(4)\nd.pop()\nprint(list(d))\n```",
+   "options": [
+    "[6, 7, 8]",
+    "[5, 6, 7]",
+    "[4, 6, 7]",
+    "[4, 5, 6]"
+   ],
+   "answer": 2,
+   "explanation": "append(8) gives [5, 6, 7, 8]; popleft() removes from the left: [6, 7, 8]; appendleft(4) gives [4, 6, 7, 8]; pop() removes from the right: [4, 6, 7]. [6, 7, 8] comes from treating appendleft as adding on the right, and [5, 6, 7] from swapping pop and popleft.",
+   "difficulty": 2,
+   "form": "B"
+  }
+ ]
+}

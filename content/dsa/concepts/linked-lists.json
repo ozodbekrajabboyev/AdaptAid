@@ -1,0 +1,331 @@
+{
+ "slug": "linked-lists",
+ "name": "Linked lists",
+ "description": "A chain of nodes joined by references: cheap insertion and deletion where you are, but no instant access by position.",
+ "prerequisites": [
+  "arrays"
+ ],
+ "aids": [
+  {
+   "slug": "linked-lists-notes",
+   "title": "Linked lists: nodes, traversal and pointer operations",
+   "type": "notes",
+   "delivery": "native_md",
+   "body": "linked-lists-notes.md",
+   "source": "AdaptAid",
+   "description": "How nodes and next references form a list, what each operation costs, doubly linked lists, and when to prefer a linked list over an array.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 1,
+   "style": [
+    -0.5,
+    0.0,
+    -0.6,
+    0.4
+   ]
+  },
+  {
+   "slug": "linked-lists-worked-example",
+   "title": "Worked example: reversing a linked list in place",
+   "type": "worked_example",
+   "delivery": "native_md",
+   "body": "linked-lists-worked-example.md",
+   "source": "AdaptAid",
+   "description": "Reverse a playlist with three pointers, tracing every link change, then check the edge cases and the cost.",
+   "difficulty": 3,
+   "duration": 12,
+   "order": 2
+  },
+  {
+   "slug": "linked-lists-video",
+   "title": "Linked Lists Introduction (WilliamFiset)",
+   "type": "video",
+   "delivery": "external_url",
+   "url": "https://www.youtube.com/watch?v=-Yn5DU0_-lw",
+   "source": "WilliamFiset (YouTube)",
+   "description": "Animated slides on singly and doubly linked lists: terminology, where they are used, how insertion and removal re-link nodes, and the cost of each operation.",
+   "difficulty": 2,
+   "duration": 15,
+   "order": 3
+  },
+  {
+   "slug": "linked-lists-animation",
+   "title": "Linked list operations, animated (VisuAlgo)",
+   "type": "animation",
+   "delivery": "external_url",
+   "url": "https://visualgo.net/en/list",
+   "source": "VisuAlgo",
+   "description": "Insert, remove and search in singly and doubly linked lists and watch the references change one step at a time.",
+   "difficulty": 2,
+   "duration": 12,
+   "order": 4
+  },
+  {
+   "slug": "linked-lists-concept-map",
+   "title": "Linked lists at a glance",
+   "type": "concept_map",
+   "delivery": "native_md",
+   "body": "linked-lists-concept-map.md",
+   "source": "AdaptAid",
+   "description": "One diagram connecting nodes, singly and doubly linked lists, the cost of each operation and the comparison with arrays.",
+   "difficulty": 2,
+   "duration": 5,
+   "order": 5
+  },
+  {
+   "slug": "linked-lists-practice",
+   "title": "Practice: tracing pointers",
+   "type": "practice",
+   "delivery": "native_md",
+   "body": "linked-lists-practice.md",
+   "source": "AdaptAid",
+   "description": "Five pointer-tracing questions with explanations: building, re-linking, deleting and reversing.",
+   "difficulty": 3,
+   "duration": 12,
+   "order": 6
+  },
+  {
+   "slug": "linked-lists-article",
+   "title": "Linked List Data Structure (Programiz)",
+   "type": "article",
+   "delivery": "external_url",
+   "url": "https://www.programiz.com/dsa/linked-list",
+   "source": "Programiz",
+   "description": "A written tutorial on how a linked list is represented, with complete code in Python, Java, C and C++, its complexity and its applications.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 7
+  }
+ ],
+ "questions": [
+  {
+   "key": "linked-lists-d01",
+   "pool": "diagnostic",
+   "stem": "A singly linked list of n nodes keeps only a reference to its head. What does it cost to read the value at position k?",
+   "options": [
+    "O(1), the same as an array",
+    "O(log n), by jumping to the middle first",
+    "O(n²), because every node is compared with every other",
+    "O(k), because you follow next from the head k times"
+   ],
+   "answer": 3,
+   "explanation": "Nodes are scattered in memory, so there is no address formula: you follow k `next` references from the head, which is O(k) and O(n) in the worst case. You cannot jump to the middle without walking there first.",
+   "difficulty": 2
+  },
+  {
+   "key": "linked-lists-c01",
+   "pool": "check",
+   "stem": "What does each node of a singly linked list store?",
+   "options": [
+    "Its value and a reference to the next node",
+    "Its value and its index in the list",
+    "Its value and references to every other node",
+    "Only its value; the list records the order separately"
+   ],
+   "answer": 0,
+   "explanation": "A node is a value plus a `next` reference; the last node's `next` is `None`. Nodes do not store their index: a position is found by walking from the head, which is why access by position is O(n).",
+   "difficulty": 1
+  },
+  {
+   "key": "linked-lists-c02",
+   "pool": "check",
+   "stem": "What does it cost to insert a new value at the head of a singly linked list of n nodes?",
+   "options": [
+    "O(n), because every node shifts one place",
+    "O(1), because only the new node's next and the head change",
+    "O(log n), because the list is split in half",
+    "O(n), because you must find the last node first"
+   ],
+   "answer": 1,
+   "explanation": "Create the node, set `new.next = head`, then `head = new`: the same small amount of work whatever n is. Nothing shifts; shifting is what makes inserting at the front of an *array* O(n).",
+   "difficulty": 1
+  },
+  {
+   "key": "linked-lists-c03",
+   "pool": "check",
+   "stem": "The goal is to insert node `new` directly after node `cur`. What is wrong with this code?\n\n```python\ncur.next = new\nnew.next = cur.next\n```",
+   "options": [
+    "Nothing: it inserts new correctly after cur",
+    "It inserts new before cur instead of after it",
+    "It raises AttributeError because new.next does not exist yet",
+    "new ends up pointing to itself, and the nodes after cur are lost"
+   ],
+   "answer": 3,
+   "explanation": "After the first line `cur.next` is already `new`, so the second line sets `new.next = new`: a loop of one node, and nothing points to the old rest of the list any more. Swap the lines: `new.next = cur.next` first, then `cur.next = new`.",
+   "difficulty": 2
+  },
+  {
+   "key": "linked-lists-c04",
+   "pool": "check",
+   "stem": "`Node(val, next)` builds a node with that value and next reference. What does this print?\n\n```python\nhead = Node(5, Node(10, Node(15, Node(20))))\nhead.next = head.next.next\ncur = head\nwhile cur:\n    print(cur.val, end=\" \")\n    cur = cur.next\n```",
+   "options": [
+    "5 10 20",
+    "10 15 20",
+    "5 15 20",
+    "5 20"
+   ],
+   "answer": 2,
+   "explanation": "`head.next.next` is the node holding 15, so the head (5) now points straight to 15 and the node holding 10 is skipped: it has been deleted. Only that one link changed, so 15 → 20 is untouched.",
+   "difficulty": 2
+  },
+  {
+   "key": "linked-lists-c05",
+   "pool": "check",
+   "stem": "A singly linked list keeps references to both its head and its tail. What does it cost to delete the tail node?",
+   "options": [
+    "O(1), because the tail reference gives the node directly",
+    "O(n), because you must walk from the head to the node before the tail",
+    "O(log n), because you can search from both ends at once",
+    "O(1), but only if the values are sorted"
+   ],
+   "answer": 1,
+   "explanation": "Deleting the tail means setting the *previous* node's `next` to `None` and moving `tail` to it. A singly linked node does not know its predecessor, so you must walk from the head: O(n). The tail reference makes *appending* O(1), not deleting. A doubly linked list solves this with `prev`.",
+   "difficulty": 3
+  },
+  {
+   "key": "linked-lists-c06",
+   "pool": "check",
+   "stem": "What does a doubly linked list allow that a singly linked list does not?",
+   "options": [
+    "Removing a node you already hold in O(1), because it knows its predecessor",
+    "Reading the k-th item in O(1)",
+    "Using less memory per node",
+    "Keeping its values sorted automatically"
+   ],
+   "answer": 0,
+   "explanation": "With `prev`, both neighbours can be re-linked directly: `x.prev.next = x.next` and `x.next.prev = x.prev`. There is still no address formula, so access by position stays O(n), and the extra reference makes each node *bigger*, not smaller.",
+   "difficulty": 2
+  },
+  {
+   "key": "linked-lists-c07",
+   "pool": "check",
+   "stem": "Which workload suits a linked list better than a Python list (a dynamic array)?",
+   "options": [
+    "Reading items by index many times, as in `a[i]`",
+    "Inserting and removing items at the front, many times",
+    "Running binary search over sorted data",
+    "Summing all the values as fast as possible"
+   ],
+   "answer": 1,
+   "explanation": "At the front, a linked list re-links one reference (O(1)) while an array shifts every item (O(n)). Indexing and binary search need O(1) access by position, which only arrays have, and arrays are also faster to scan because their items sit together in memory.",
+   "difficulty": 2
+  },
+  {
+   "key": "linked-lists-c08",
+   "pool": "check",
+   "stem": "What does `middle(head)` return for the list 1 → 2 → 3 → 4 → 5 → 6?\n\n```python\ndef middle(head):\n    slow = fast = head\n    while fast and fast.next:\n        slow = slow.next\n        fast = fast.next.next\n    return slow.val\n```",
+   "options": [
+    "3",
+    "5",
+    "6",
+    "4"
+   ],
+   "answer": 3,
+   "explanation": "fast moves two nodes per step and slow moves one. The values (slow, fast) go (1, 1) → (2, 3) → (3, 5) → (4, None), and the loop stops because fast is None. slow is at 4, the second of the two middle nodes. For 1 → … → 5 it would return 3.",
+   "difficulty": 3
+  },
+  {
+   "key": "linked-lists-c09",
+   "pool": "check",
+   "stem": "A singly linked list holds n numbers in sorted order. What does it cost, in the worst case, to check whether the value 42 is in it?",
+   "options": [
+    "O(log n), using binary search because the values are sorted",
+    "O(1), because a sorted list keeps an index",
+    "O(n), because a node can only be reached by walking to it",
+    "O(n log n), because the list must be sorted again first"
+   ],
+   "answer": 2,
+   "explanation": "Binary search must jump to the middle in O(1), which only an array can do; in a linked list just reaching the middle takes n/2 steps. So you walk from the head: O(n). Sorting lets you stop early once you pass 42, but the worst case is still O(n).",
+   "difficulty": 2
+  },
+  {
+   "key": "linked-lists-c10",
+   "pool": "check",
+   "stem": "Starting with only the head, you insert a new value at position k of a singly linked list with n nodes (k ≤ n). What is the total cost?",
+   "options": [
+    "O(k), because walking to the node before position k dominates",
+    "O(1), because linked-list insertion is always constant time",
+    "O(n − k), because the later nodes must shift",
+    "O(n²), because every node must be re-linked"
+   ],
+   "answer": 0,
+   "explanation": "The re-linking itself is O(1), but first you must walk k − 1 steps to the node that will come before the new one, so the total is O(k), which is O(n) in the worst case. Nothing shifts in a linked list: O(n − k) is the cost of the same insertion in an array.",
+   "difficulty": 2
+  },
+  {
+   "key": "linked-lists-p01",
+   "pool": "drill",
+   "stem": "Starting with an empty list, values are inserted at the head in this order: 3, then 7, then 1. What is the list, from head to tail?",
+   "options": [
+    "3 → 7 → 1",
+    "1 → 7 → 3",
+    "7 → 1 → 3",
+    "1 → 3 → 7"
+   ],
+   "answer": 1,
+   "explanation": "Each new node goes in front of the current head: 3, then 7 → 3, then 1 → 7 → 3. Inserting at the head reverses the order of arrival, exactly like pushing onto a stack.",
+   "difficulty": 1,
+   "aid": "linked-lists-practice"
+  },
+  {
+   "key": "linked-lists-p02",
+   "pool": "drill",
+   "stem": "The list is A → B → C → D. What is the list, starting from `head`, after these four lines?\n\n```python\nn = head.next\nhead.next = n.next\nn.next = head\nhead = n\n```",
+   "options": [
+    "A → C → D",
+    "B → A → C → D",
+    "B → A",
+    "A → B → C → D"
+   ],
+   "answer": 1,
+   "explanation": "`n` is B. `head.next = n.next` makes A point to C. `n.next = head` makes B point to A. `head = n` makes B the new head: B → A → C → D. The first two nodes have swapped places, and nothing is lost because A still points to C.",
+   "difficulty": 2,
+   "aid": "linked-lists-practice"
+  },
+  {
+   "key": "linked-lists-p03",
+   "pool": "drill",
+   "stem": "In a doubly linked list, `x` is a node in the middle (it has neighbours on both sides). Which two lines remove `x` from the list?",
+   "options": [
+    "`x.next = x.prev` and `x.prev = x.next`",
+    "`x.prev.next = x.prev` and `x.next.prev = x.next`",
+    "`x.prev.next = x.next` and `x.next.prev = x.prev`",
+    "`x.next = None` and `x.prev = None`"
+   ],
+   "answer": 2,
+   "explanation": "The neighbours must skip over x: the node before x points forward to x's next, and the node after x points back to x's prev. Changing only x's own references, or setting them to None, leaves both neighbours still pointing at x, so x stays in the list.",
+   "difficulty": 2,
+   "aid": "linked-lists-practice"
+  },
+  {
+   "key": "linked-lists-p04",
+   "pool": "drill",
+   "stem": "`reverse` runs on the list a → b → c → d → e. After 3 iterations of its loop, what lists start at `prev` and at `cur`?\n\n```python\ndef reverse(head):\n    prev = None\n    cur = head\n    while cur is not None:\n        nxt = cur.next\n        cur.next = prev\n        prev = cur\n        cur = nxt\n    return prev\n```",
+   "options": [
+    "prev: c → b → a, cur: d → e",
+    "prev: a → b → c, cur: d → e",
+    "prev: c → b → a → d → e, cur: d",
+    "prev: d → e, cur: c → b → a"
+   ],
+   "answer": 0,
+   "explanation": "Each iteration moves one node from the front of the `cur` list to the front of the `prev` list. After a, b and c have moved, prev is c → b → a and cur is d → e. The two parts are separate: a's next was set to None in the first iteration, so nothing links a back to d yet.",
+   "difficulty": 3,
+   "aid": "linked-lists-practice"
+  },
+  {
+   "key": "linked-lists-p05",
+   "pool": "drill",
+   "stem": "A singly linked list keeps only a head reference. To append, the code walks from the head to the last node and links the new node after it. What is the total cost of appending n values one by one to an empty list?",
+   "options": [
+    "O(n), because each append only changes one reference",
+    "O(n log n), because the early walks are short",
+    "O(log n), because the list grows one node at a time",
+    "O(n²), because the k-th append first walks past k − 1 nodes"
+   ],
+   "answer": 3,
+   "explanation": "The walks cost 0 + 1 + 2 + … + (n − 1) = n(n − 1)/2 steps: O(n²). The re-linking is cheap, but finding the end is not. Keeping a `tail` reference makes each append O(1) and the whole job O(n).",
+   "difficulty": 3,
+   "aid": "linked-lists-practice"
+  }
+ ]
+}

@@ -1,0 +1,475 @@
+{
+ "slug": "hashing",
+ "name": "Hashing",
+ "description": "Storing keys so they can be found in O(1) time on average: a hash function turns each key into an array index, and collisions are handled by chaining or probing.",
+ "prerequisites": [
+  "arrays"
+ ],
+ "aids": [
+  {
+   "slug": "hashing-notes",
+   "title": "Hashing: hash functions, collisions and load factor",
+   "type": "notes",
+   "delivery": "native_md",
+   "body": "hashing-notes.md",
+   "source": "AdaptAid",
+   "description": "How a hash table turns keys into array indices, how chaining and linear probing handle collisions, and why it is O(1) on average.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 1
+  },
+  {
+   "slug": "hashing-worked-example",
+   "title": "Worked example: a hash table with linear probing",
+   "type": "worked_example",
+   "delivery": "native_md",
+   "body": "hashing-worked-example.md",
+   "source": "AdaptAid",
+   "description": "Insert five keys into a 7-slot table, trace every collision and probe, then search for a present and a missing key.",
+   "difficulty": 2,
+   "duration": 15,
+   "order": 2
+  },
+  {
+   "slug": "hashing-video",
+   "title": "Hash Tables (CS50 Shorts)",
+   "type": "video",
+   "delivery": "external_url",
+   "url": "https://www.youtube.com/watch?v=nvzVHwrrub0",
+   "source": "CS50, Harvard (YouTube)",
+   "description": "A lecture on building a hash table from an array and a hash function, with collisions, linear probing, clustering and chaining.",
+   "difficulty": 2,
+   "duration": 19,
+   "order": 3
+  },
+  {
+   "slug": "hashing-animation",
+   "title": "Hash table visualised (VisuAlgo)",
+   "type": "animation",
+   "delivery": "external_url",
+   "url": "https://visualgo.net/en/hashtable",
+   "source": "VisuAlgo",
+   "description": "Insert, search and remove keys with linear probing, quadratic probing, double hashing or separate chaining and watch where each key lands.",
+   "difficulty": 2,
+   "duration": 12,
+   "order": 4
+  },
+  {
+   "slug": "hashing-concept-map",
+   "title": "Hashing at a glance",
+   "type": "concept_map",
+   "delivery": "native_md",
+   "body": "hashing-concept-map.md",
+   "source": "AdaptAid",
+   "description": "One diagram connecting hash functions, buckets, collisions, chaining, probing, load factor and resizing.",
+   "difficulty": 2,
+   "duration": 5,
+   "order": 5
+  },
+  {
+   "slug": "hashing-practice",
+   "title": "Practice: hash tables by hand",
+   "type": "practice",
+   "delivery": "native_md",
+   "body": "hashing-practice.md",
+   "source": "AdaptAid",
+   "description": "Five questions with explanations: hash function quality, chaining, probe counts, Python dicts and rehashing.",
+   "difficulty": 3,
+   "duration": 12,
+   "order": 6
+  },
+  {
+   "slug": "hashing-article",
+   "title": "Hash Table (Programiz)",
+   "type": "article",
+   "delivery": "external_url",
+   "url": "https://www.programiz.com/dsa/hash-table",
+   "source": "Programiz",
+   "description": "A written tutorial on hashing, collision resolution by chaining and open addressing, good hash functions, and example code.",
+   "difficulty": 2,
+   "duration": 12,
+   "order": 7
+  }
+ ],
+ "questions": [
+  {
+   "key": "hashing-d01",
+   "pool": "diagnostic",
+   "stem": "How does a Python `dict` usually find the value for a key without looking at every entry?",
+   "options": [
+    "It keeps the keys sorted and runs binary search on them",
+    "It scans the entries starting from the newest one",
+    "It remembers the most recently used keys in a cache",
+    "It hashes the key to work out where that entry is stored"
+   ],
+   "answer": 3,
+   "explanation": "A dict is a hash table: hash(key) picks a slot, so a lookup goes almost directly to the entry, O(1) on average. Binary search would be O(log n) and needs sorted keys; dicts do not keep keys sorted (they remember insertion order).",
+   "difficulty": 2
+  },
+  {
+   "key": "hashing-c01",
+   "pool": "check",
+   "stem": "What is the job of the hash function in a hash table?",
+   "options": [
+    "Turn a key into an integer that selects the bucket for that key",
+    "Sort the keys so that they can be binary searched",
+    "Encrypt the stored values so they cannot be read",
+    "Remove duplicate values from the table"
+   ],
+   "answer": 0,
+   "explanation": "The hash function maps a key to an integer, which is reduced (for example with % m) to a bucket index. It must give the same output for the same key every time. A table's hash function is not about secrecy, and it does not sort anything.",
+   "difficulty": 1
+  },
+  {
+   "key": "hashing-c02",
+   "pool": "check",
+   "stem": "In a hash table, what is a **collision**?",
+   "options": [
+    "The same key is inserted into the table twice",
+    "The table has no free buckets left",
+    "Two different keys are mapped to the same bucket",
+    "The hash function returns a negative number"
+   ],
+   "answer": 2,
+   "explanation": "A collision is two *different* keys sharing an index, which is unavoidable when there are more possible keys than buckets. Inserting a key that is already present just updates its value. A full table is a capacity problem, solved by resizing.",
+   "difficulty": 1
+  },
+  {
+   "key": "hashing-c03",
+   "pool": "check",
+   "stem": "A hash table has 10 buckets and uses `h(k) = k % 10`. Which pair of keys collides?",
+   "options": [
+    "23 and 32",
+    "23 and 43",
+    "15 and 51",
+    "40 and 41"
+   ],
+   "answer": 1,
+   "explanation": "23 % 10 = 3 and 43 % 10 = 3, so both go to bucket 3. 23 and 32 have the same digits but land in buckets 3 and 2; 15 and 51 land in 5 and 1; 40 and 41 land in 0 and 1.",
+   "difficulty": 1
+  },
+  {
+   "key": "hashing-c04",
+   "pool": "check",
+   "stem": "A table with 7 slots uses linear probing and `h(k) = k % 7`. Slot 5 holds 12 and slot 6 holds 6; all other slots are empty. Where does 19 go?",
+   "options": [
+    "Slot 7, the next index after 6",
+    "Nowhere: probing stops at the end of the table",
+    "Slot 4, the nearest free slot to its home",
+    "Slot 0, after wrapping around from the end"
+   ],
+   "answer": 3,
+   "explanation": "19 % 7 = 5. Slot 5 is taken, slot 6 is taken, and the next probe is (6 + 1) % 7 = 0, which is free. There is no slot 7 in a 7-slot table, and probing only moves forward, so slot 4 is never tried.",
+   "difficulty": 2
+  },
+  {
+   "key": "hashing-c05",
+   "pool": "check",
+   "stem": "A hash table has 20 buckets and holds 15 keys. What is its load factor?",
+   "options": [
+    "0.75",
+    "1.33",
+    "5",
+    "15"
+   ],
+   "answer": 0,
+   "explanation": "Load factor α = keys / buckets = 15 / 20 = 0.75. 1.33 divides the wrong way round (buckets / keys), 5 is the difference between them, and 15 is just the number of keys.",
+   "difficulty": 1
+  },
+  {
+   "key": "hashing-c06",
+   "pool": "check",
+   "stem": "When a hash table doubles its size, every key must be re-inserted, which costs O(n). Why is insertion still described as O(1)?",
+   "options": [
+    "Keys keep their old indices, so re-inserting each one costs O(1)",
+    "Resizing runs in the background, so it is not counted",
+    "Doubling makes resizes rare, so their total cost spread over all inserts is O(1) each",
+    "It is not: insertion into a hash table is O(n)"
+   ],
+   "answer": 2,
+   "explanation": "After a resize to 2m slots, about m more inserts happen before the next one. Over n inserts the copying adds up to about n + n/2 + n/4 + ... < 2n, so the amortised cost per insert is O(1). Keys do not keep their indices: k % m changes when m changes, which is why every key is rehashed.",
+   "difficulty": 3
+  },
+  {
+   "key": "hashing-c07",
+   "pool": "check",
+   "stem": "Which of these can be used as a key in a Python `dict`?",
+   "options": [
+    "The list `[3, 4]`",
+    "The tuple `(3, 4)`",
+    "The set `{3, 4}`",
+    "The dict `{3: 4}`"
+   ],
+   "answer": 1,
+   "explanation": "Keys must be hashable: their hash must never change. A tuple of immutable values qualifies. Lists, sets and dicts can be changed after insertion, which would change their hash and strand the entry in the wrong bucket, so Python raises TypeError: unhashable type.",
+   "difficulty": 2
+  },
+  {
+   "key": "hashing-c08",
+   "pool": "check",
+   "stem": "This code checks n values against a collection `allowed` of n items. What is the total time if `allowed` is a list, and if it is a set?\n\n```python\nfor v in values:\n    if v in allowed:\n        count += 1\n```",
+   "options": [
+    "List: O(n). Set: O(n)",
+    "List: O(n). Set: O(n²)",
+    "List: O(n log n). Set: O(log n)",
+    "List: O(n²). Set: O(n) on average"
+   ],
+   "answer": 3,
+   "explanation": "`in` on a list is a linear search, O(n) per check, so n checks cost O(n²). `in` on a set hashes v and looks in one bucket, O(1) on average, so n checks cost O(n). Sets are not sorted, so O(log n) binary search does not come into it.",
+   "difficulty": 2
+  },
+  {
+   "key": "hashing-c09",
+   "pool": "check",
+   "stem": "With linear probing, why can't you delete a key by simply setting its slot back to empty?",
+   "options": [
+    "A later search could stop at that empty slot before reaching a key that was probed past it",
+    "Emptying a slot changes the hash function for the other keys",
+    "Python lists do not allow a slot to be set back to None",
+    "The load factor would become negative after the deletion"
+   ],
+   "answer": 0,
+   "explanation": "A search stops at the first empty slot. If a key X was placed further along because this slot was taken, emptying the slot makes searches for X stop early and wrongly report it missing. Open addressing therefore marks deleted slots with a tombstone, which searches step over and inserts may reuse.",
+   "difficulty": 3
+  },
+  {
+   "key": "hashing-c10",
+   "pool": "check",
+   "stem": "Which statement correctly contrasts separate chaining with open addressing?",
+   "options": [
+    "Chaining needs no hash function, while open addressing does",
+    "Open addressing allows a load factor above 1, while chaining does not",
+    "Chaining keeps colliding keys in a list per bucket; open addressing finds them another slot",
+    "Chaining is O(1) in the worst case, while open addressing is O(n)"
+   ],
+   "answer": 2,
+   "explanation": "Both methods use a hash function. With chaining a bucket's list can grow, so the load factor may go above 1; with open addressing every key needs its own slot, so the load factor stays below 1, the opposite of what the third option claims. Both are O(1) on average and O(n) in the worst case.",
+   "difficulty": 2
+  },
+  {
+   "key": "hashing-p01",
+   "pool": "drill",
+   "stem": "A table with 5 buckets uses chaining and the hash function `h(word) = len(word) % 5`. You insert `\"cat\"`, `\"dog\"`, `\"emu\"` and `\"yak\"`. What is the problem?",
+   "options": [
+    "The words are spread evenly, so there is no problem",
+    "All four words land in bucket 3, so lookups scan one long chain",
+    "Words of length 3 cannot be stored in a table of 5 buckets",
+    "Each word lands in its own bucket, which wastes space"
+   ],
+   "answer": 1,
+   "explanation": "Every word has length 3, and 3 % 5 = 3, so they all collide. A good hash function uses the whole key (every character), so that similar keys spread out. With every key in one chain, a lookup is O(n) instead of O(1).",
+   "difficulty": 2,
+   "aid": "hashing-practice"
+  },
+  {
+   "key": "hashing-p02",
+   "pool": "drill",
+   "stem": "A table with 4 buckets uses chaining and `h(k) = k % 4`. After inserting 5, 9, 2, 13 and 6, how many keys are in bucket 1, and how many in bucket 2?",
+   "options": [
+    "1 in bucket 1, 1 in bucket 2",
+    "2 in bucket 1, 3 in bucket 2",
+    "5 in bucket 1, 0 in bucket 2",
+    "3 in bucket 1, 2 in bucket 2"
+   ],
+   "answer": 3,
+   "explanation": "5 % 4 = 1, 9 % 4 = 1 and 13 % 4 = 1, so bucket 1 holds 5, 9 and 13. 2 % 4 = 2 and 6 % 4 = 2, so bucket 2 holds 2 and 6. With chaining a collision never loses or overwrites a key; it just makes the chain longer.",
+   "difficulty": 1,
+   "aid": "hashing-practice"
+  },
+  {
+   "key": "hashing-p03",
+   "pool": "drill",
+   "stem": "A 7-slot table uses linear probing and `h(k) = k % 7`. Its slots 0 to 6 hold `[_, 15, 22, 8, _, _, _]`, where `_` is empty. How many slots does a search for 29 examine before it concludes that 29 is not there?",
+   "options": [
+    "4",
+    "1",
+    "3",
+    "7"
+   ],
+   "answer": 0,
+   "explanation": "29 % 7 = 1. The search looks at slot 1 (15), slot 2 (22), slot 3 (8) and slot 4, which is empty: 4 slots. 15, 22 and 8 all hash to 1 and form a cluster, so the search cannot stop at slot 1. It does not need all 7 slots, because the empty slot proves 29 was never placed further along.",
+   "difficulty": 3,
+   "aid": "hashing-practice"
+  },
+  {
+   "key": "hashing-p04",
+   "pool": "drill",
+   "stem": "What does this print?\n\n```python\ncounts = {}\nfor w in \"the cat and the hat\".split():\n    counts[w] = counts.get(w, 0) + 1\nprint(counts[\"the\"], len(counts))\n```",
+   "options": [
+    "2 5",
+    "1 4",
+    "2 4",
+    "1 5"
+   ],
+   "answer": 2,
+   "explanation": "\"the\" appears twice, and both times it hashes to the same entry, so its count becomes 2. The dict holds one key per distinct word (the, cat, and, hat), so len(counts) is 4, not 5.",
+   "difficulty": 2,
+   "aid": "hashing-practice"
+  },
+  {
+   "key": "hashing-p05",
+   "pool": "drill",
+   "stem": "A chaining table with 4 buckets holds 1, 5 and 9, all in bucket 1 because `k % 4 = 1`. It grows to 8 buckets and rehashes every key with `k % 8`. Where do the keys end up?",
+   "options": [
+    "All three stay together in bucket 1",
+    "1 and 9 in bucket 1, and 5 in bucket 5",
+    "1, 5 and 9 in buckets 1, 5 and 9",
+    "All three move together to bucket 5"
+   ],
+   "answer": 1,
+   "explanation": "Each index is recomputed with the new size: 1 % 8 = 1, 5 % 8 = 5 and 9 % 8 = 1. Leaving every key where it was is the classic resizing mistake: a later lookup for 5 would go to bucket 5 and miss it. There is no bucket 9 in an 8-bucket table.",
+   "difficulty": 2,
+   "aid": "hashing-practice"
+  },
+  {
+   "key": "hashing-a01",
+   "pool": "study",
+   "stem": "A hash table has 10 buckets and puts key k in bucket `k % 10`. Which bucket does key 47 go into?",
+   "options": [
+    "4",
+    "47",
+    "7",
+    "10"
+   ],
+   "answer": 2,
+   "explanation": "47 % 10 is the remainder of 47 ÷ 10, which is 7. 4 is the quotient (47 // 10), and neither 47 nor 10 is a valid index in a table of 10 buckets, which are numbered 0 to 9.",
+   "difficulty": 1,
+   "form": "A"
+  },
+  {
+   "key": "hashing-a02",
+   "pool": "study",
+   "stem": "A table with 5 buckets uses separate chaining and `h(k) = k % 5`. The keys 12, 7, 20, 17 and 3 are inserted. How many keys must be compared when searching for 22, which is not in the table?",
+   "options": [
+    "3",
+    "1",
+    "5",
+    "0"
+   ],
+   "answer": 0,
+   "explanation": "22 % 5 = 2, so only bucket 2 is searched. It holds 12, 7 and 17 (all leave remainder 2), and each is compared with 22 before the search gives up: 3 comparisons. The other buckets are never touched, so not 5, and 'O(1) on average' does not mean exactly one comparison.",
+   "difficulty": 2,
+   "form": "A"
+  },
+  {
+   "key": "hashing-a03",
+   "pool": "study",
+   "stem": "A table with 7 slots uses linear probing and `h(k) = k % 7`. Starting from empty, the keys 9, 16 and 2 are inserted in that order. At which index is 2 stored?",
+   "options": [
+    "2",
+    "3",
+    "0",
+    "4"
+   ],
+   "answer": 3,
+   "explanation": "All three keys hash to 2. 9 takes slot 2, 16 probes on to slot 3, and 2 finds slots 2 and 3 taken and lands in slot 4. Answering 2 ignores the collision, and 3 stops one probe too early.",
+   "difficulty": 2,
+   "form": "A"
+  },
+  {
+   "key": "hashing-a04",
+   "pool": "study",
+   "stem": "A chaining hash table has 16 buckets and holds 12 keys. It doubles its number of buckets whenever an insert would push the load factor above 0.75. What happens when a 13th key is inserted?",
+   "options": [
+    "Nothing: a chaining table never needs to grow",
+    "It grows to 32 buckets and every key is rehashed into the new array",
+    "It grows to 32 buckets and only the new key uses the new part",
+    "It grows to 17 buckets, one more than before"
+   ],
+   "answer": 1,
+   "explanation": "13 / 16 ≈ 0.81 is above 0.75, so the table doubles to 32 buckets. Each key's index is now its hash % 32, not % 16, so every key must be re-inserted. A chaining table could keep going without growing, but its chains would lengthen and lookups would slow towards O(n); growing by one bucket at a time would make resizes far too frequent.",
+   "difficulty": 2,
+   "form": "A"
+  },
+  {
+   "key": "hashing-a05",
+   "pool": "study",
+   "stem": "A hash table with separate chaining holds n keys, but its hash function sends every key to the same bucket. What is the cost of looking up a key?",
+   "options": [
+    "O(1), because a hash table lookup is always constant time",
+    "O(log n), because the chain is searched by halving",
+    "O(n), because the lookup scans one chain holding all n keys",
+    "O(n²), because every key has to be rehashed"
+   ],
+   "answer": 2,
+   "explanation": "Hashing still jumps to one bucket in O(1), but that bucket's chain holds all n keys and must be scanned: O(n). This is the worst case behind the 'O(1) on average' promise, which relies on a hash function that spreads keys evenly. A chain is an unsorted list, so halving does not apply.",
+   "difficulty": 2,
+   "form": "A"
+  },
+  {
+   "key": "hashing-b01",
+   "pool": "study",
+   "stem": "A hash table has 8 buckets and puts key k in bucket `k % 8`. Which bucket does key 29 go into?",
+   "options": [
+    "5",
+    "3",
+    "29",
+    "8"
+   ],
+   "answer": 0,
+   "explanation": "29 % 8 is the remainder of 29 ÷ 8, which is 5 (29 = 3 × 8 + 5). 3 is the quotient (29 // 8), and neither 29 nor 8 is a valid index in a table of 8 buckets, which are numbered 0 to 7.",
+   "difficulty": 1,
+   "form": "B"
+  },
+  {
+   "key": "hashing-b02",
+   "pool": "study",
+   "stem": "A table with 6 buckets uses separate chaining and `h(k) = k % 6`. The keys 8, 14, 9, 20 and 4 are inserted. How many keys must be compared when searching for 26, which is not in the table?",
+   "options": [
+    "1",
+    "5",
+    "0",
+    "3"
+   ],
+   "answer": 3,
+   "explanation": "26 % 6 = 2, so only bucket 2 is searched. It holds 8, 14 and 20 (all leave remainder 2), and each is compared with 26 before the search gives up: 3 comparisons. The other buckets are never touched, so not 5, and 'O(1) on average' does not mean exactly one comparison.",
+   "difficulty": 2,
+   "form": "B"
+  },
+  {
+   "key": "hashing-b03",
+   "pool": "study",
+   "stem": "A table with 11 slots uses linear probing and `h(k) = k % 11`. Starting from empty, the keys 14, 25 and 3 are inserted in that order. At which index is 3 stored?",
+   "options": [
+    "3",
+    "5",
+    "4",
+    "0"
+   ],
+   "answer": 1,
+   "explanation": "All three keys hash to 3. 14 takes slot 3, 25 probes on to slot 4, and 3 finds slots 3 and 4 taken and lands in slot 5. Answering 3 ignores the collision, and 4 stops one probe too early.",
+   "difficulty": 2,
+   "form": "B"
+  },
+  {
+   "key": "hashing-b04",
+   "pool": "study",
+   "stem": "An open-addressing hash table has 8 slots and holds 5 keys. It doubles its number of slots whenever an insert would push the load factor above 0.7. What happens when a 6th key is inserted?",
+   "options": [
+    "Nothing: there are still free slots, so the key just goes in",
+    "It grows to 16 slots and the old keys keep their positions",
+    "It grows to 16 slots and every key is re-inserted at its new position",
+    "It grows to 9 slots, one more than before"
+   ],
+   "answer": 2,
+   "explanation": "6 / 8 = 0.75 is above 0.7, so the table doubles to 16 slots. Each key's index is now its hash % 16, not % 8, so every key must be re-inserted. The key would still fit without growing, but probe runs would lengthen and every operation would slow down; growing by one slot at a time would make resizes far too frequent.",
+   "difficulty": 2,
+   "form": "B"
+  },
+  {
+   "key": "hashing-b05",
+   "pool": "study",
+   "stem": "A hash table with linear probing holds n keys that all hashed to the same index, so they fill one long run of neighbouring slots. What is the cost of searching for a missing key that also hashes to that index?",
+   "options": [
+    "O(n), because the probe walks the whole run of n keys",
+    "O(1), because a hash table search is always constant time",
+    "O(log n), because the run is searched by halving",
+    "O(n²), because every probe rehashes all the keys"
+   ],
+   "answer": 0,
+   "explanation": "Hashing still jumps to the start of the run in O(1), but the search must step through all n occupied slots before it reaches an empty one: O(n). This is the worst case behind the 'O(1) on average' promise, which relies on a hash function that spreads keys evenly. The run is not sorted, so halving does not apply.",
+   "difficulty": 2,
+   "form": "B"
+  }
+ ]
+}

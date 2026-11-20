@@ -1,0 +1,325 @@
+{
+ "slug": "arrays",
+ "name": "Arrays",
+ "description": "Items stored side by side in memory: instant access by index, costly shifting, and lists that grow as you append.",
+ "prerequisites": [
+  "complexity"
+ ],
+ "aids": [
+  {
+   "slug": "arrays-notes",
+   "title": "Arrays: O(1) indexing, shifting, dynamic arrays and 2D grids",
+   "type": "notes",
+   "delivery": "native_md",
+   "body": "arrays-notes.md",
+   "source": "AdaptAid",
+   "description": "Why indexing is instant, why inserting in the middle is slow, how dynamic arrays grow, and how 2D arrays are laid out.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 1
+  },
+  {
+   "slug": "arrays-worked-example",
+   "title": "Worked example: two prices that sum to a target (two pointers)",
+   "type": "worked_example",
+   "delivery": "native_md",
+   "body": "arrays-worked-example.md",
+   "source": "AdaptAid",
+   "description": "Replace an O(n²) pair search with two pointers on a sorted array, traced step by step.",
+   "difficulty": 2,
+   "duration": 12,
+   "order": 2
+  },
+  {
+   "slug": "arrays-video",
+   "title": "Dynamic and Static Arrays (WilliamFiset)",
+   "type": "video",
+   "delivery": "external_url",
+   "url": "https://www.youtube.com/watch?v=PEnFFiQe1pM",
+   "source": "WilliamFiset (YouTube)",
+   "description": "Animated slides on static and dynamic arrays: where they are used, what each operation costs, and how a dynamic array grows when it fills up.",
+   "difficulty": 2,
+   "duration": 12,
+   "order": 3
+  },
+  {
+   "slug": "arrays-animation",
+   "title": "Array operations, animated (VisuAlgo)",
+   "type": "animation",
+   "delivery": "external_url",
+   "url": "https://visualgo.net/en/array",
+   "source": "VisuAlgo",
+   "description": "Insert, remove, search and update in a resizable array and watch the items shift; the e-lecture covers fixed versus doubling capacity.",
+   "difficulty": 2,
+   "duration": 12,
+   "order": 4
+  },
+  {
+   "slug": "arrays-cheat-sheet",
+   "title": "Arrays cheat sheet",
+   "type": "cheat_sheet",
+   "delivery": "native_md",
+   "body": "arrays-cheat-sheet.md",
+   "source": "AdaptAid",
+   "description": "Every common array and Python list operation with its cost, static versus dynamic arrays, 2D layout and two-pointer patterns.",
+   "difficulty": 2,
+   "duration": 6,
+   "order": 5
+  },
+  {
+   "slug": "arrays-practice",
+   "title": "Practice: array operations and their costs",
+   "type": "practice",
+   "delivery": "native_md",
+   "body": "arrays-practice.md",
+   "source": "AdaptAid",
+   "description": "Five questions with explanations: shifting, resizing, grids and two pointers.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 6
+  },
+  {
+   "slug": "arrays-article",
+   "title": "Dynamic array (Wikipedia)",
+   "type": "article",
+   "delivery": "external_url",
+   "url": "https://en.wikipedia.org/wiki/Dynamic_array",
+   "source": "Wikipedia",
+   "description": "A deeper written treatment of geometric growth, amortised append and growth factors, with a performance comparison to other list structures.",
+   "difficulty": 3,
+   "duration": 15,
+   "order": 7
+  }
+ ],
+ "questions": [
+  {
+   "key": "arrays-d01",
+   "pool": "diagnostic",
+   "stem": "A Python list `a` holds 1,000,000 numbers. Which of these operations takes the longest?",
+   "options": [
+    "`a[500000]`",
+    "`a.append(7)`",
+    "`a.insert(0, 7)`",
+    "`a[-1] = 7`"
+   ],
+   "answer": 2,
+   "explanation": "Inserting at index 0 shifts all 1,000,000 items one place to the right: O(n). Reading or writing by index, even in the middle or with a negative index, is a single address calculation, O(1), and `append` is O(1) amortised.",
+   "difficulty": 2
+  },
+  {
+   "key": "arrays-c01",
+   "pool": "check",
+   "stem": "Why can an array read `a[i]` in O(1) time, whatever the value of i?",
+   "options": [
+    "It computes the address as start + i × slot size, without searching",
+    "It starts at a[0] and steps forward i times very quickly",
+    "It keeps a sorted copy of the items and uses binary search",
+    "Arrays are small enough to be scanned in a single step"
+   ],
+   "answer": 0,
+   "explanation": "The slots are equal-sized and contiguous, so the position of item i is one calculation. Stepping forward i times would cost O(i): that is what a linked list has to do, not an array.",
+   "difficulty": 1
+  },
+  {
+   "key": "arrays-c02",
+   "pool": "check",
+   "stem": "An array holds 8 items at indices 0 to 7 and has room for more. How many of the existing items must move to insert a new item at index 2?",
+   "options": [
+    "2",
+    "8",
+    "5",
+    "6"
+   ],
+   "answer": 3,
+   "explanation": "The items at indices 2, 3, 4, 5, 6 and 7 each move one slot right to open a gap: 6 items. In general, inserting at index i into n items moves n − i of them. 2 counts the items *before* the gap, which stay where they are.",
+   "difficulty": 2
+  },
+  {
+   "key": "arrays-c03",
+   "pool": "check",
+   "stem": "What do `a.pop()` and `a.pop(0)` cost on a Python list of n items?",
+   "options": [
+    "Both are O(1)",
+    "`pop()` is O(1); `pop(0)` is O(n)",
+    "`pop()` is O(n); `pop(0)` is O(1)",
+    "Both are O(n)"
+   ],
+   "answer": 1,
+   "explanation": "Removing the last item leaves no gap, so nothing moves. Removing the first item leaves a gap at index 0, so every remaining item shifts one place left: O(n). Both look like a single call, but they do very different amounts of work.",
+   "difficulty": 1
+  },
+  {
+   "key": "arrays-c04",
+   "pool": "check",
+   "stem": "A dynamic array starts empty with capacity 1 and doubles its capacity whenever an append finds it full. What is its capacity after 9 appends?",
+   "options": [
+    "9",
+    "16",
+    "8",
+    "18"
+   ],
+   "answer": 1,
+   "explanation": "The capacity goes 1 → 2 (at the 2nd append) → 4 (3rd) → 8 (5th) → 16 (9th). After 8 appends all 8 slots are full, so the 9th append triggers a resize to 16. Capacity is not the same as length: the array now holds 9 items in 16 slots.",
+   "difficulty": 2
+  },
+  {
+   "key": "arrays-c05",
+   "pool": "check",
+   "stem": "A dynamic array starts empty with capacity 1 and doubles whenever an append finds it full. During 16 appends, how many element copies do the resizes make in total?",
+   "options": [
+    "120",
+    "31",
+    "16",
+    "15"
+   ],
+   "answer": 3,
+   "explanation": "Resizes happen at the 2nd, 3rd, 5th and 9th appends and copy 1, 2, 4 and 8 items: 15 copies, fewer than 2n. Spread over 16 appends that is about one copy each, which is why append is O(1) amortised. 120 = 0 + 1 + … + 15 is what growing by just one slot at a time would cost.",
+   "difficulty": 3
+  },
+  {
+   "key": "arrays-c06",
+   "pool": "check",
+   "stem": "Which statement about `append` on a Python list is correct?",
+   "options": [
+    "Every append is O(1), even when the list has to grow",
+    "Every append is O(n), because the list is copied each time",
+    "Most appends are O(1); an occasional one copies everything, so the average is O(1)",
+    "Append is O(log n), because the capacity doubles"
+   ],
+   "answer": 2,
+   "explanation": "When the list is full, that one append copies every item into a bigger block, so a single append can be O(n). Because the capacity grows by a constant factor, such copies are rare and n appends cost O(n) in total: O(1) per append on average (amortised). Claiming *every* append is O(1) ignores the resize.",
+   "difficulty": 2
+  },
+  {
+   "key": "arrays-c07",
+   "pool": "check",
+   "stem": "A 3 × 4 grid (3 rows, 4 columns) is stored row by row in one flat array. At which flat index is `grid[2][1]`?",
+   "options": [
+    "7",
+    "9",
+    "5",
+    "6"
+   ],
+   "answer": 1,
+   "explanation": "Row-major index = row × columns + column = 2 × 4 + 1 = 9: rows 0 and 1 fill indices 0 to 7, so row 2 starts at 8. Multiplying by the number of rows instead of columns gives 2 × 3 + 1 = 7; swapping row and column gives 1 × 3 + 2 = 5.",
+   "difficulty": 2
+  },
+  {
+   "key": "arrays-c08",
+   "pool": "check",
+   "stem": "What does this print?\n\n```python\ngrid = [[0] * 3] * 2\ngrid[0][0] = 5\nprint(grid)\n```",
+   "options": [
+    "[[5, 0, 0], [0, 0, 0]]",
+    "[[5, 5, 5], [0, 0, 0]]",
+    "[[5, 0, 0], [5, 0, 0]]",
+    "[[5, 0, 0]]"
+   ],
+   "answer": 2,
+   "explanation": "`* 2` copies the *reference* to the inner list, not the list itself, so both rows are the same list object and the change appears in both. Build the rows separately, `[[0] * 3 for _ in range(2)]`, to get `[[5, 0, 0], [0, 0, 0]]`.",
+   "difficulty": 3
+  },
+  {
+   "key": "arrays-c09",
+   "pool": "check",
+   "stem": "How many swaps does `reverse` make on a list of 7 items?\n\n```python\ndef reverse(a):\n    i, j = 0, len(a) - 1\n    while i < j:\n        a[i], a[j] = a[j], a[i]\n        i += 1\n        j -= 1\n```",
+   "options": [
+    "7",
+    "3",
+    "4",
+    "6"
+   ],
+   "answer": 1,
+   "explanation": "It swaps positions (0, 6), (1, 5) and (2, 4); then i = j = 3, so the loop stops and the middle item stays put. In general it makes ⌊n/2⌋ swaps: O(n) time and O(1) extra space. 4 would mean swapping the middle item with itself, which `i < j` prevents.",
+   "difficulty": 2
+  },
+  {
+   "key": "arrays-c10",
+   "pool": "check",
+   "stem": "In an unsorted array of n items, what does it cost to read the item at a known index, and to find the index of a known value?",
+   "options": [
+    "Both are O(1)",
+    "Reading by index is O(n); finding a value is O(1)",
+    "Both are O(n)",
+    "Reading by index is O(1); finding a value is O(n)"
+   ],
+   "answer": 3,
+   "explanation": "Reading by index is one address calculation. Finding a value in an unsorted array means checking the items one by one until it turns up: n checks in the worst case. Fast indexing does not help, because you do not know which index to compute.",
+   "difficulty": 1
+  },
+  {
+   "key": "arrays-p01",
+   "pool": "drill",
+   "stem": "What is `a` after this code, and how many of the existing items had to shift?\n\n```python\na = [4, 8, 15, 16, 23]\na.insert(2, 42)\n```",
+   "options": [
+    "[4, 8, 42, 15, 16, 23], with 3 items shifted",
+    "[4, 42, 8, 15, 16, 23], with 4 items shifted",
+    "[4, 8, 42, 16, 23], with no items shifted",
+    "[4, 8, 15, 42, 16, 23], with 2 items shifted"
+   ],
+   "answer": 0,
+   "explanation": "`insert(2, 42)` puts 42 at index 2, the third slot, so 15, 16 and 23 each move one slot right. It inserts rather than overwrites (overwriting would be `a[2] = 42`, which shifts nothing and loses 15).",
+   "difficulty": 1,
+   "aid": "arrays-practice"
+  },
+  {
+   "key": "arrays-p02",
+   "pool": "drill",
+   "stem": "What is the time complexity of `grid_sum` for a grid with r rows and c columns?\n\n```python\ndef grid_sum(grid):\n    total = 0\n    for row in grid:\n        for value in row:\n            total += value\n    return total\n```",
+   "options": [
+    "O(r + c)",
+    "O(max(r, c))",
+    "O(r × c)",
+    "O(1)"
+   ],
+   "answer": 2,
+   "explanation": "Every one of the r × c cells is visited once. O(r + c) would be visiting one row and one column only. For a square n × n grid this is O(n²), yet it is still linear in the number of cells.",
+   "difficulty": 2,
+   "aid": "arrays-practice"
+  },
+  {
+   "key": "arrays-p03",
+   "pool": "drill",
+   "stem": "What does `pair_with_sum([1, 3, 4, 6, 8, 11], 10)` return, and after how many sums?\n\n```python\ndef pair_with_sum(prices, target):\n    i, j = 0, len(prices) - 1\n    while i < j:\n        s = prices[i] + prices[j]\n        if s == target:\n            return prices[i], prices[j]\n        elif s < target:\n            i += 1\n        else:\n            j -= 1\n    return None\n```",
+   "options": [
+    "(4, 6) after 3 sums",
+    "(4, 6) after 5 sums",
+    "(4, 6) after 15 sums",
+    "None, because the pointers meet first"
+   ],
+   "answer": 1,
+   "explanation": "Sums: 1 + 11 = 12 (too big, j moves left), 1 + 8 = 9 (too small, i moves right), 3 + 8 = 11 (too big), 3 + 6 = 9 (too small), 4 + 6 = 10: found on the 5th sum. 15 is the number of pairs the brute-force method would try (6 × 5 / 2).",
+   "difficulty": 2,
+   "aid": "arrays-practice"
+  },
+  {
+   "key": "arrays-p04",
+   "pool": "drill",
+   "stem": "A dynamic array starts empty with capacity 4 and doubles when an append finds it full. How many resizes happen during 20 appends, and what is the final capacity?",
+   "options": [
+    "3 resizes, final capacity 32",
+    "4 resizes, final capacity 64",
+    "16 resizes, final capacity 20",
+    "2 resizes, final capacity 16"
+   ],
+   "answer": 0,
+   "explanation": "Appends 1 to 4 fill the first block. The 5th append resizes to 8, the 9th to 16 and the 17th to 32; appends 18 to 20 fit. \"2 resizes, 16\" forgets that 20 items do not fit in 16 slots, and \"16 resizes, 20\" is what growing by one slot at a time would do.",
+   "difficulty": 2,
+   "aid": "arrays-practice"
+  },
+  {
+   "key": "arrays-p05",
+   "pool": "drill",
+   "stem": "What is the worst-case time complexity of `remove_all` on a list of n items?\n\n```python\ndef remove_all(a, x):\n    while x in a:\n        a.remove(x)\n```",
+   "options": [
+    "O(n)",
+    "O(n log n)",
+    "O(n²)",
+    "O(1)"
+   ],
+   "answer": 2,
+   "explanation": "Each `x in a` scans the list and each `a.remove(x)` scans and shifts it: O(n) per line. If most items equal x, the loop runs up to n times, so the total is O(n²). It looks like one loop, but each line inside it is a hidden loop. Building a new list in one pass, `[v for v in a if v != x]`, takes O(n).",
+   "difficulty": 3,
+   "aid": "arrays-practice"
+  }
+ ]
+}

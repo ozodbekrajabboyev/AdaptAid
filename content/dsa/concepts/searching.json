@@ -1,0 +1,325 @@
+{
+ "slug": "searching",
+ "name": "Searching",
+ "description": "Finding a value in a collection: linear search checks every item, while binary search halves a sorted array at each step.",
+ "prerequisites": [
+  "arrays"
+ ],
+ "aids": [
+  {
+   "slug": "searching-notes",
+   "title": "Searching: linear search, binary search and their boundaries",
+   "type": "notes",
+   "delivery": "native_md",
+   "body": "searching-notes.md",
+   "source": "AdaptAid",
+   "description": "How linear and binary search work, what binary search needs, how to get its boundaries right, and the lower bound.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 1
+  },
+  {
+   "slug": "searching-worked-example",
+   "title": "Worked example: first occurrence and counting with binary search",
+   "type": "worked_example",
+   "delivery": "native_md",
+   "body": "searching-worked-example.md",
+   "source": "AdaptAid",
+   "description": "Turn binary search into a lower bound to find the first 25 in a list of scores and count the scores below a pass mark, tracing lo, hi and mid.",
+   "difficulty": 3,
+   "duration": 15,
+   "order": 2
+  },
+  {
+   "slug": "searching-video",
+   "title": "Binary Search (CS50 Shorts)",
+   "type": "video",
+   "delivery": "external_url",
+   "url": "https://www.youtube.com/watch?v=T98PIp4omUA",
+   "source": "CS50, Harvard (YouTube)",
+   "description": "A short lecture that steps through binary search on a sorted array, gives its pseudocode, and compares its O(log n) cost with linear search.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 3
+  },
+  {
+   "slug": "searching-animation",
+   "title": "Linear and binary search, animated",
+   "type": "animation",
+   "delivery": "external_url",
+   "url": "https://www.cs.usfca.edu/~galles/visualization/Search.html",
+   "source": "USFCA (David Galles)",
+   "description": "Run linear search and binary search on the same sorted array and compare how many cells each one checks.",
+   "difficulty": 2,
+   "duration": 8,
+   "order": 4
+  },
+  {
+   "slug": "searching-concept-map",
+   "title": "Searching at a glance",
+   "type": "concept_map",
+   "delivery": "native_md",
+   "body": "searching-concept-map.md",
+   "source": "AdaptAid",
+   "description": "One diagram connecting linear search, binary search, its preconditions, the lower bound and the classic boundary bugs.",
+   "difficulty": 2,
+   "duration": 5,
+   "order": 5
+  },
+  {
+   "slug": "searching-practice",
+   "title": "Practice: tracing searches",
+   "type": "practice",
+   "delivery": "native_md",
+   "body": "searching-practice.md",
+   "source": "AdaptAid",
+   "description": "Five questions with explanations: comparison counts, binary search traces, a looping bug and insertion points.",
+   "difficulty": 3,
+   "duration": 12,
+   "order": 6
+  },
+  {
+   "slug": "searching-article",
+   "title": "Binary Search (Programiz)",
+   "type": "article",
+   "delivery": "external_url",
+   "url": "https://www.programiz.com/dsa/binary-search",
+   "source": "Programiz",
+   "description": "A written walkthrough of binary search with illustrations, iterative and recursive code, and its time and space complexity.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 7
+  }
+ ],
+ "questions": [
+  {
+   "key": "searching-d01",
+   "pool": "diagnostic",
+   "stem": "Binary search runs on a sorted array of 1,000 items. What is the largest number of elements it may have to compare with the target?",
+   "options": [
+    "500",
+    "10",
+    "1,000",
+    "32"
+   ],
+   "answer": 1,
+   "explanation": "Each comparison halves the range: 1000 → 500 → 250 → ... → 1, which takes about log₂ 1000 ≈ 10 steps (2¹⁰ = 1024). 1,000 is the worst case of linear search and 500 its average; 32 is √1000, which has nothing to do with halving.",
+   "difficulty": 2
+  },
+  {
+   "key": "searching-c01",
+   "pool": "check",
+   "stem": "What must be true of an array before binary search can be used on it?",
+   "options": [
+    "It must be sorted",
+    "It must contain no duplicate values",
+    "Its length must be a power of 2",
+    "It must contain only integers"
+   ],
+   "answer": 0,
+   "explanation": "Binary search discards half the array after each comparison, which is only safe if the order guarantees the target is not in that half. Duplicates are allowed (you get one of the matching indices), any length works, and any values that can be compared, such as strings, are fine.",
+   "difficulty": 1
+  },
+  {
+   "key": "searching-c02",
+   "pool": "check",
+   "stem": "What is the worst-case time complexity of linear search on a list of n items?",
+   "options": [
+    "O(1)",
+    "O(log n)",
+    "O(n)",
+    "O(n²)"
+   ],
+   "answer": 2,
+   "explanation": "If the target is last or missing, each of the n items is checked once: O(n). O(log n) is binary search, which needs sorted data. O(1) is only the best case, when the target happens to be first.",
+   "difficulty": 1
+  },
+  {
+   "key": "searching-c03",
+   "pool": "check",
+   "stem": "In which situation is linear search a better choice than binary search?",
+   "options": [
+    "Searching a sorted array of 10 million items thousands of times",
+    "Looking up a word in a sorted list of 100,000 dictionary words",
+    "Finding a value in a large sorted array as fast as possible",
+    "Searching once for a value in an unsorted list of 50 items"
+   ],
+   "answer": 3,
+   "explanation": "Binary search needs sorted data, and sorting costs O(n log n), which is more than the single O(n) scan it would replace. When the data is already sorted, or will be searched many times, binary search wins easily.",
+   "difficulty": 2
+  },
+  {
+   "key": "searching-c04",
+   "pool": "check",
+   "stem": "Binary search (`lo = 0`, `hi = len(a) - 1`, `mid = (lo + hi) // 2`) looks for 64 in this array. Which elements does it compare with 64, in order?\n\n```python\na = [3, 8, 15, 21, 30, 42, 57, 64, 79]\n```",
+   "options": [
+    "30, 64",
+    "30, 57, 64",
+    "42, 57, 64",
+    "30, 42, 57, 64"
+   ],
+   "answer": 1,
+   "explanation": "lo = 0, hi = 8: mid = 4, a[4] = 30 < 64, so lo = 5. mid = (5 + 8) // 2 = 6, a[6] = 57 < 64, so lo = 7. mid = (7 + 8) // 2 = 7, a[7] = 64: found. 30, 42, 57, 64 steps through neighbours one at a time, which is linear search after the first comparison.",
+   "difficulty": 2
+  },
+  {
+   "key": "searching-c05",
+   "pool": "check",
+   "stem": "What does `search([2, 4, 6], 6)` return?\n\n```python\ndef search(a, x):\n    lo, hi = 0, len(a) - 1\n    while lo < hi:\n        mid = (lo + hi) // 2\n        if a[mid] == x:\n            return mid\n        elif a[mid] < x:\n            lo = mid + 1\n        else:\n            hi = mid - 1\n    return -1\n```",
+   "options": [
+    "2",
+    "1",
+    "-1",
+    "It never stops"
+   ],
+   "answer": 2,
+   "explanation": "lo = 0, hi = 2: mid = 1, a[1] = 4 < 6, so lo = 2. Now lo == hi, the condition lo < hi is false, and the loop ends without ever checking a[2]: it returns -1. Because hi = len(a) - 1 is inclusive, the loop must be `while lo <= hi`. It does stop, since lo or hi moves on every step.",
+   "difficulty": 3
+  },
+  {
+   "key": "searching-c06",
+   "pool": "check",
+   "stem": "Why does binary search take O(log n) time?",
+   "options": [
+    "Each comparison halves the part of the array that could still hold the target",
+    "It only ever compares the target with the middle element of the array",
+    "It skips every other element as it scans from left to right",
+    "It checks the first and last elements and then the one in the middle"
+   ],
+   "answer": 0,
+   "explanation": "After k comparisons at most n / 2ᵏ candidates remain, which reaches 1 after about log₂ n comparisons. It compares with the middle of the *current* range, which changes every step, not the middle of the whole array. Skipping every other element would still be O(n).",
+   "difficulty": 2
+  },
+  {
+   "key": "searching-c07",
+   "pool": "check",
+   "stem": "A sorted array doubles in size, from n to 2n items. How does the worst-case number of comparisons for binary search change?",
+   "options": [
+    "It doubles",
+    "It stays exactly the same",
+    "It goes up by a factor of four",
+    "It goes up by about one"
+   ],
+   "answer": 3,
+   "explanation": "One extra comparison halves 2n back down to n, so the count grows by one: log₂(2n) = log₂ n + 1. Doubling is what happens to linear search, and a factor of four is what happens to an O(n²) algorithm.",
+   "difficulty": 2
+  },
+  {
+   "key": "searching-c08",
+   "pool": "check",
+   "stem": "`bisect_left(a, x)` from Python's `bisect` module returns the first index `i` with `a[i] >= x`. For `a = [10, 20, 20, 20, 30]`, what are `bisect_left(a, 20)` and `bisect_left(a, 25)`?",
+   "options": [
+    "2 and 4",
+    "1 and 4",
+    "1 and -1",
+    "4 and 4"
+   ],
+   "answer": 1,
+   "explanation": "The first element ≥ 20 is at index 1, the first 20. No element equals 25, but the first element ≥ 25 is 30 at index 4, which is where 25 would be inserted; a lower bound never returns -1. 2 is the index a plain binary search hits first (the middle 20), and 4 and 4 are the results of bisect_right.",
+   "difficulty": 3
+  },
+  {
+   "key": "searching-c09",
+   "pool": "check",
+   "stem": "A singly linked list holds n values in sorted order. Why can't binary search find a value in it in O(log n) time?",
+   "options": [
+    "A linked list cannot be kept in sorted order",
+    "Comparing values stored in nodes is slower than in arrays",
+    "Reaching the middle node means walking from the head, which takes O(n) steps",
+    "It can: binary search is O(log n) on any sorted sequence"
+   ],
+   "answer": 2,
+   "explanation": "Binary search must jump straight to the middle in O(1), which an array allows and a linked list does not. On a linked list the walks to the middle alone add up to O(n), so linear search is just as good. Keeping the list sorted is perfectly possible; it just does not help here.",
+   "difficulty": 3
+  },
+  {
+   "key": "searching-c10",
+   "pool": "check",
+   "stem": "Linear search returns the index of the first match. Searching for 7 in `[4, 9, 7, 1, 7]`, how many comparisons does it make, and what does it return?",
+   "options": [
+    "3 comparisons, returns 2",
+    "5 comparisons, returns 4",
+    "3 comparisons, returns 3",
+    "1 comparison, returns 2"
+   ],
+   "answer": 0,
+   "explanation": "It checks 4, then 9, then 7 at index 2, and stops at the first match: 3 comparisons. It does not go on to the second 7 at index 4. Indices start at 0, so the third item is at index 2, not 3.",
+   "difficulty": 1
+  },
+  {
+   "key": "searching-p01",
+   "pool": "drill",
+   "stem": "Linear search looks for 2 in `[5, 3, 8, 6, 1]`. How many comparisons does it make before it reports that 2 is not there?",
+   "options": [
+    "4",
+    "3",
+    "1",
+    "5"
+   ],
+   "answer": 3,
+   "explanation": "A missing value is the worst case: linear search must check all 5 items before it can be sure, and it cannot stop early because the list is not sorted. 3 is log₂ 5 rounded up, which only applies to binary search on sorted data.",
+   "difficulty": 1,
+   "aid": "searching-practice"
+  },
+  {
+   "key": "searching-p02",
+   "pool": "drill",
+   "stem": "Binary search (`lo = 0`, `hi = len(a) - 1`, `mid = (lo + hi) // 2`) looks for 9 in `[4, 9, 13, 18, 22, 27, 35]`. Which elements does it compare with 9, in order?",
+   "options": [
+    "18, 13, 9",
+    "4, 9",
+    "18, 9",
+    "13, 9"
+   ],
+   "answer": 2,
+   "explanation": "lo = 0, hi = 6: mid = 3, a[3] = 18 > 9, so hi = 2. mid = (0 + 2) // 2 = 1, a[1] = 9: found after 2 comparisons. 13 is never compared, because the new middle jumps straight to index 1. 4, 9 is linear search.",
+   "difficulty": 2,
+   "aid": "searching-practice"
+  },
+  {
+   "key": "searching-p03",
+   "pool": "drill",
+   "stem": "What happens when this function is called as `search([1, 3], 3)`?\n\n```python\ndef search(a, x):\n    lo, hi = 0, len(a) - 1\n    while lo <= hi:\n        mid = (lo + hi) // 2\n        if a[mid] == x:\n            return mid\n        elif a[mid] < x:\n            lo = mid\n        else:\n            hi = mid - 1\n    return -1\n```",
+   "options": [
+    "It returns 1",
+    "It loops forever",
+    "It returns -1",
+    "It raises IndexError"
+   ],
+   "answer": 1,
+   "explanation": "lo = 0, hi = 1, so mid = 0 and a[0] = 1 < 3, which sets lo = mid = 0: nothing has changed, and the same step repeats forever. Because (lo + hi) // 2 rounds down, mid can equal lo, so the update must be lo = mid + 1 to guarantee progress.",
+   "difficulty": 3,
+   "aid": "searching-practice"
+  },
+  {
+   "key": "searching-p04",
+   "pool": "drill",
+   "stem": "Binary search with `while lo <= hi` runs on a sorted array of 64 items. What is the largest number of elements it may compare with the target?",
+   "options": [
+    "7",
+    "6",
+    "32",
+    "64"
+   ],
+   "answer": 0,
+   "explanation": "In the worst case the range shrinks 64 → 32 → 16 → 8 → 4 → 2 → 1, and each of those 7 ranges costs one comparison: ⌊log₂ n⌋ + 1 = 7. 6 forgets that the final one-item range still needs its own comparison. 32 and 64 are linear-search counts.",
+   "difficulty": 3,
+   "aid": "searching-practice"
+  },
+  {
+   "key": "searching-p05",
+   "pool": "drill",
+   "stem": "`bisect_left([3, 8, 12, 19, 25], 15)` returns the index where 15 should be inserted to keep the list sorted. What is it?",
+   "options": [
+    "2",
+    "4",
+    "-1",
+    "3"
+   ],
+   "answer": 3,
+   "explanation": "The first element ≥ 15 is 19 at index 3, so 15 goes in front of it: [3, 8, 12, 15, 19, 25]. 2 is the index of 12, the last element smaller than 15. A lower bound never returns -1: a missing value still has an insertion point.",
+   "difficulty": 2,
+   "aid": "searching-practice"
+  }
+ ]
+}

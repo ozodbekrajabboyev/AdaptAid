@@ -1,0 +1,344 @@
+{
+ "slug": "sorting",
+ "name": "Sorting",
+ "description": "Putting items in order: the simple O(n²) sorts, the faster O(n log n) merge sort and quicksort, and the trade-offs between them.",
+ "prerequisites": [
+  "arrays",
+  "recursion"
+ ],
+ "aids": [
+  {
+   "slug": "sorting-notes",
+   "title": "Sorting: simple O(n²) sorts, merge sort and quicksort",
+   "type": "notes",
+   "delivery": "native_md",
+   "body": "sorting-notes.md",
+   "source": "AdaptAid",
+   "description": "How bubble, selection, insertion, merge and quick sort work, what each one costs, and what stable and in place mean.",
+   "difficulty": 2,
+   "duration": 12,
+   "order": 1
+  },
+  {
+   "slug": "sorting-worked-example",
+   "title": "Worked example: merge sort step by step",
+   "type": "worked_example",
+   "delivery": "native_md",
+   "body": "sorting-worked-example.md",
+   "source": "AdaptAid",
+   "description": "Split seven numbers down to single items, merge them back up comparison by comparison, and see where O(n log n) comes from.",
+   "difficulty": 2,
+   "duration": 15,
+   "order": 2
+  },
+  {
+   "slug": "sorting-video",
+   "title": "Getting Sorted & Big O Notation (Computerphile)",
+   "type": "video",
+   "delivery": "external_url",
+   "url": "https://www.youtube.com/watch?v=kgBjXUE_Nwc",
+   "source": "Computerphile (YouTube)",
+   "description": "Bubble sort and merge sort demonstrated with playing cards, with timings that show why O(n log n) beats O(n²) as lists grow.",
+   "difficulty": 2,
+   "duration": 11,
+   "order": 3,
+   "style": [
+    -0.3,
+    0.0,
+    0.4,
+    0.5
+   ]
+  },
+  {
+   "slug": "sorting-animation",
+   "title": "Sorting algorithms visualised (VisuAlgo)",
+   "type": "animation",
+   "delivery": "external_url",
+   "url": "https://visualgo.net/en/sorting",
+   "source": "VisuAlgo",
+   "description": "Watch bubble, selection, insertion, merge, quick and other sorts run on your own data, with the matching pseudocode line highlighted.",
+   "difficulty": 2,
+   "duration": 12,
+   "order": 4
+  },
+  {
+   "slug": "sorting-interactive",
+   "title": "Sorting stepper",
+   "type": "interactive",
+   "delivery": "interactive_component",
+   "component": "sorting-stepper",
+   "source": "AdaptAid",
+   "description": "Run a sort on a small array one step at a time and watch each comparison and swap as the sorted part grows.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 5
+  },
+  {
+   "slug": "sorting-cheat-sheet",
+   "title": "Sorting cheat sheet",
+   "type": "cheat_sheet",
+   "delivery": "native_md",
+   "body": "sorting-cheat-sheet.md",
+   "source": "AdaptAid",
+   "description": "Best, average and worst cases, extra memory, stability, and when to use each algorithm, in one place.",
+   "difficulty": 2,
+   "duration": 5,
+   "order": 6
+  },
+  {
+   "slug": "sorting-practice",
+   "title": "Practice: tracing sorts",
+   "type": "practice",
+   "delivery": "native_md",
+   "body": "sorting-practice.md",
+   "source": "AdaptAid",
+   "description": "Five questions with explanations: insertion sort and merge traces, a quicksort partition, stability and comparison counts.",
+   "difficulty": 3,
+   "duration": 12,
+   "order": 7
+  },
+  {
+   "slug": "sorting-article",
+   "title": "Sorting algorithms overview (Programiz)",
+   "type": "article",
+   "delivery": "external_url",
+   "url": "https://www.programiz.com/dsa/sorting-algorithm",
+   "source": "Programiz",
+   "description": "A written overview of the common sorting algorithms, with tables of their time and space complexity and their stability.",
+   "difficulty": 2,
+   "duration": 12,
+   "order": 8
+  }
+ ],
+ "questions": [
+  {
+   "key": "sorting-d01",
+   "pool": "diagnostic",
+   "stem": "Which of these sorting algorithms is O(n log n) even in its worst case?",
+   "options": [
+    "Quicksort",
+    "Insertion sort",
+    "Merge sort",
+    "Bubble sort"
+   ],
+   "answer": 2,
+   "explanation": "Merge sort always splits exactly in half and merges in O(n) per level, so every input costs O(n log n). Quicksort is O(n log n) on average but O(n²) when its pivots are consistently bad, for example the last element of an already sorted array. Insertion and bubble sort are O(n²) in the worst case.",
+   "difficulty": 2
+  },
+  {
+   "key": "sorting-c01",
+   "pool": "check",
+   "stem": "Bubble sort (ascending) sweeps left to right, swapping adjacent pairs that are out of order. What is `[5, 1, 4, 2, 8]` after the **first** pass?",
+   "options": [
+    "[1, 2, 4, 5, 8]",
+    "[1, 4, 2, 5, 8]",
+    "[1, 5, 4, 2, 8]",
+    "[1, 4, 5, 2, 8]"
+   ],
+   "answer": 1,
+   "explanation": "5 > 1, swap: [1, 5, 4, 2, 8]. 5 > 4, swap: [1, 4, 5, 2, 8]. 5 > 2, swap: [1, 4, 2, 5, 8]. 5 < 8, no swap. One pass carries the largest values to the right, but the array is not sorted yet: 4 and 2 are still out of order.",
+   "difficulty": 2
+  },
+  {
+   "key": "sorting-c02",
+   "pool": "check",
+   "stem": "What does it mean for a sorting algorithm to be **stable**?",
+   "options": [
+    "Items with equal keys keep their original relative order",
+    "It always runs in O(n log n) time",
+    "It sorts without using any extra memory",
+    "It gives the same output each time it runs"
+   ],
+   "answer": 0,
+   "explanation": "Stability is about ties: if Ana and Ben both scored 80 and Ana came first in the input, a stable sort keeps Ana before Ben. Using no extra memory is being in place, a different property. Any deterministic sort gives the same output each time; stability is specifically about how equal items end up ordered.",
+   "difficulty": 1
+  },
+  {
+   "key": "sorting-c03",
+   "pool": "check",
+   "stem": "Selection sort (ascending) repeatedly finds the smallest item in the unsorted part and swaps it to the front of that part. What is `[29, 10, 14, 37, 13]` after **two** passes?",
+   "options": [
+    "[10, 14, 29, 37, 13]",
+    "[10, 14, 13, 29, 37]",
+    "[10, 13, 14, 29, 37]",
+    "[10, 13, 14, 37, 29]"
+   ],
+   "answer": 3,
+   "explanation": "Pass 1: the minimum, 10, swaps with 29: [10, 29, 14, 37, 13]. Pass 2: the minimum of the rest, 13, swaps with 29: [10, 13, 14, 37, 29]. [10, 14, 29, 37, 13] is insertion sort after two insertions, and [10, 14, 13, 29, 37] is bubble sort after two passes.",
+   "difficulty": 2
+  },
+  {
+   "key": "sorting-c04",
+   "pool": "check",
+   "stem": "Insertion sort is given an array that is **already sorted**. What is its running time?",
+   "options": [
+    "O(n²)",
+    "O(n log n)",
+    "O(n)",
+    "O(1)"
+   ],
+   "answer": 2,
+   "explanation": "Each new item is compared once with its left neighbour, found to be in place, and left alone: n - 1 comparisons and no shifts, so O(n). O(n²) is its worst case, reverse-sorted input, where every item shifts all the way left. Selection sort, by contrast, stays O(n²) even on sorted input.",
+   "difficulty": 2
+  },
+  {
+   "key": "sorting-c05",
+   "pool": "check",
+   "stem": "Quicksort always picks the **last** element as its pivot. What happens when it sorts an array that is already sorted?",
+   "options": [
+    "Every partition splits off just one item, so it takes O(n²)",
+    "The partitions are perfectly balanced, so it takes O(n log n)",
+    "It notices the array is sorted and finishes in O(n)",
+    "It runs out of pivots and stops with the array unsorted"
+   ],
+   "answer": 0,
+   "explanation": "On sorted input the last element is the largest, so every partition puts all the other items on one side: sizes n - 1, n - 2, ..., giving about n²/2 comparisons. This is quicksort's worst case. A random or median-of-three pivot makes it very unlikely, giving O(n log n) on average.",
+   "difficulty": 2
+  },
+  {
+   "key": "sorting-c06",
+   "pool": "check",
+   "stem": "Why does standard merge sort on an array need O(n) extra memory?",
+   "options": [
+    "Its recursion goes n levels deep, one stack frame per item",
+    "Merging two sorted halves writes the result into a temporary array",
+    "It keeps a full copy of the array at every level at once",
+    "It stores the result of every comparison it makes"
+   ],
+   "answer": 1,
+   "explanation": "The merge cannot overwrite the halves while it is still reading them, so it builds its output in a buffer of up to n items. The recursion is only about log₂ n levels deep. The buffers are not all kept at once, so the peak is O(n), not the O(n log n) a copy per level would need.",
+   "difficulty": 2
+  },
+  {
+   "key": "sorting-c07",
+   "pool": "check",
+   "stem": "Selection sort (swap the smallest remaining item to the front, taking the first one on ties) sorts these records by their number. What is the result?\n\n```python\n[('B', 2), ('A', 2), ('C', 1)]\n```",
+   "options": [
+    "[('C', 1), ('B', 2), ('A', 2)]",
+    "[('A', 2), ('B', 2), ('C', 1)]",
+    "[('B', 2), ('A', 2), ('C', 1)]",
+    "[('C', 1), ('A', 2), ('B', 2)]"
+   ],
+   "answer": 3,
+   "explanation": "Pass 1 finds the minimum, ('C', 1) at index 2, and swaps it with ('B', 2) at index 0: [('C', 1), ('A', 2), ('B', 2)]. Pass 2 finds ('A', 2) already in place. That long-distance swap moved B behind A, so the two 2s changed order: selection sort is not stable. A stable sort would give [('C', 1), ('B', 2), ('A', 2)].",
+   "difficulty": 3
+  },
+  {
+   "key": "sorting-c08",
+   "pool": "check",
+   "stem": "Which of these sorts is **in place**, needing only O(1) extra memory besides the array?",
+   "options": [
+    "Merge sort on an array",
+    "Python's `sorted()`, which returns a new list",
+    "Insertion sort",
+    "Any recursive divide-and-conquer sort"
+   ],
+   "answer": 2,
+   "explanation": "Insertion sort only shifts items within the array and needs a single temporary variable. Standard merge sort needs an O(n) buffer to merge into, and sorted() builds a whole new list. Being recursive settles nothing either way: merge sort is not in place, while quicksort works in place apart from its recursion stack.",
+   "difficulty": 1
+  },
+  {
+   "key": "sorting-c09",
+   "pool": "check",
+   "stem": "Merge sort halves n items repeatedly until each piece has one item, then merges back up. Which description of its work is correct?",
+   "options": [
+    "About log₂ n levels, with O(n) merge work at each level",
+    "About n levels, with O(log n) merge work at each level",
+    "About n / 2 levels, with O(n) merge work at each level",
+    "About log₂ n levels, with O(1) merge work at each level"
+   ],
+   "answer": 0,
+   "explanation": "Halving reaches size 1 after about log₂ n splits, and at each level the merges together handle all n items once. So the total is O(n) × log₂ n = O(n log n). n / 2 levels of O(n) work would give O(n²), the cost of the simple sorts.",
+   "difficulty": 2
+  },
+  {
+   "key": "sorting-c10",
+   "pool": "check",
+   "stem": "You must sort 10,000 items that are already in order except for a few items slightly out of place, using O(1) extra memory. Which algorithm fits best?",
+   "options": [
+    "Selection sort",
+    "Insertion sort",
+    "Merge sort",
+    "Quicksort with the last element as pivot"
+   ],
+   "answer": 1,
+   "explanation": "Insertion sort only does work for items that are out of place, so on nearly sorted input it runs in close to O(n) time, in place. Selection sort is O(n²) whatever the input, merge sort needs O(n) extra memory, and last-element quicksort is close to its O(n²) worst case on nearly sorted data.",
+   "difficulty": 3
+  },
+  {
+   "key": "sorting-p01",
+   "pool": "drill",
+   "stem": "Insertion sort (ascending) runs on `[7, 3, 5, 1]`. What is the array after the first **two** insertions (inserting 3, then 5, into the sorted part on their left)?",
+   "options": [
+    "[3, 7, 5, 1]",
+    "[1, 3, 5, 7]",
+    "[3, 5, 1, 7]",
+    "[3, 5, 7, 1]"
+   ],
+   "answer": 3,
+   "explanation": "Insert 3: 7 shifts right, giving [3, 7, 5, 1]. Insert 5: 7 shifts right and 3 < 5 stops the shifting, giving [3, 5, 7, 1]. The 1 has not been touched yet; the third insertion places it. [3, 7, 5, 1] is only one insertion, and [3, 5, 1, 7] is one pass of bubble sort.",
+   "difficulty": 1,
+   "aid": "sorting-practice"
+  },
+  {
+   "key": "sorting-p02",
+   "pool": "drill",
+   "stem": "The merge step of merge sort combines `[2, 9, 14]` and `[3, 4, 20]` by repeatedly comparing the front items of the two lists. How many comparisons does it make?",
+   "options": [
+    "5",
+    "6",
+    "3",
+    "9"
+   ],
+   "answer": 0,
+   "explanation": "2 vs 3 takes 2; 9 vs 3 takes 3; 9 vs 4 takes 4; 9 vs 20 takes 9; 14 vs 20 takes 14. The left list is now empty, so 20 is copied without a comparison: 5 in total. 6 counts that final copy as a comparison; a merge of n items never needs more than n - 1 comparisons.",
+   "difficulty": 2,
+   "aid": "sorting-practice"
+  },
+  {
+   "key": "sorting-p03",
+   "pool": "drill",
+   "stem": "This quicksort partition uses the last element as the pivot. What is `a` after `partition(a, 0, 4)` with `a = [6, 3, 8, 1, 4]`?\n\n```python\ndef partition(a, lo, hi):\n    pivot = a[hi]\n    i = lo - 1\n    for j in range(lo, hi):\n        if a[j] <= pivot:\n            i += 1\n            a[i], a[j] = a[j], a[i]\n    a[i + 1], a[hi] = a[hi], a[i + 1]\n    return i + 1\n```",
+   "options": [
+    "[1, 3, 4, 6, 8]",
+    "[3, 1, 4, 8, 6]",
+    "[3, 1, 4, 6, 8]",
+    "[4, 3, 1, 6, 8]"
+   ],
+   "answer": 2,
+   "explanation": "The pivot is 4. Scanning j = 0 to 3, the items ≤ 4 (3, then 1) are swapped to the front: [3, 6, 8, 1, 4], then [3, 1, 8, 6, 4]. Finally the pivot swaps into position i + 1 = 2: [3, 1, 4, 6, 8]. Partitioning only puts smaller items left of the pivot and larger ones right; it does not sort each side, so [1, 3, 4, 6, 8] is too much.",
+   "difficulty": 3,
+   "aid": "sorting-practice"
+  },
+  {
+   "key": "sorting-p04",
+   "pool": "drill",
+   "stem": "A list of `(name, grade)` pairs is already in alphabetical order by name. You sort it by grade with a **stable** sort, such as `sorted(pairs, key=lambda p: p[1])`. Within each grade, what order are the names in?",
+   "options": [
+    "Reverse alphabetical, because sorting swaps the order of equal items",
+    "Arbitrary, because a sort makes no promise about how ties end up",
+    "Alphabetical only if the list is short enough for insertion sort",
+    "Alphabetical, because a stable sort keeps the earlier order of equal grades"
+   ],
+   "answer": 3,
+   "explanation": "A stable sort never reorders items with equal keys, so students with the same grade stay in the alphabetical order they already had. This is the standard way to sort by several keys: sort by the secondary key first, then stable-sort by the primary key. 'No promise about ties' is true of unstable sorts such as selection sort, not of Python's sorted().",
+   "difficulty": 2,
+   "aid": "sorting-practice"
+  },
+  {
+   "key": "sorting-p05",
+   "pool": "drill",
+   "stem": "How many comparisons does selection sort make on an array of 5 items, whether the array starts sorted or not?",
+   "options": [
+    "4",
+    "10",
+    "5",
+    "25"
+   ],
+   "answer": 1,
+   "explanation": "Finding each minimum scans the whole unsorted part: 4 + 3 + 2 + 1 = 10 comparisons, which is n(n - 1)/2. It never stops early, even on sorted input, which is why selection sort is O(n²) in every case. 4 is the number of passes (swaps), and 25 is n².",
+   "difficulty": 2,
+   "aid": "sorting-practice"
+  }
+ ]
+}

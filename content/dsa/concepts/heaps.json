@@ -1,0 +1,325 @@
+{
+ "slug": "heaps",
+ "name": "Heaps and priority queues",
+ "description": "A complete binary tree kept in an array so the smallest (or largest) item is always at the front, giving fast priority queues and heapsort.",
+ "prerequisites": [
+  "trees"
+ ],
+ "aids": [
+  {
+   "slug": "heaps-notes",
+   "title": "Heaps and priority queues: shape, heap property and operations",
+   "type": "notes",
+   "delivery": "native_md",
+   "body": "heaps-notes.md",
+   "source": "AdaptAid",
+   "description": "What a priority queue needs, how a binary heap stores a complete tree in an array, sift up and sift down, build-heap, heapsort and Python's heapq.",
+   "difficulty": 2,
+   "duration": 12,
+   "order": 1
+  },
+  {
+   "slug": "heaps-worked-example",
+   "title": "Worked example: a triage queue as a min-heap",
+   "type": "worked_example",
+   "delivery": "native_md",
+   "body": "heaps-worked-example.md",
+   "source": "AdaptAid",
+   "description": "Build a heap from a list of patients, insert a new arrival and extract the most urgent, tracing every swap in the array.",
+   "difficulty": 2,
+   "duration": 15,
+   "order": 2
+  },
+  {
+   "slug": "heaps-video",
+   "title": "Data Structures: Heaps (HackerRank)",
+   "type": "video",
+   "delivery": "external_url",
+   "url": "https://www.youtube.com/watch?v=t0Cq6tVNRBA",
+   "source": "HackerRank (YouTube)",
+   "description": "Gayle Laakmann McDowell explains min-heaps, how insert and remove-min bubble elements up and down, and how the tree is stored in an array, then codes it.",
+   "difficulty": 2,
+   "duration": 11,
+   "order": 3
+  },
+  {
+   "slug": "heaps-animation",
+   "title": "Binary heap animated (VisuAlgo)",
+   "type": "animation",
+   "delivery": "external_url",
+   "url": "https://visualgo.net/en/heap",
+   "source": "VisuAlgo",
+   "description": "Step through insert, extract, both ways of building a heap (O(n log n) and O(n)) and heapsort; VisuAlgo uses a max-heap, so the comparisons are flipped.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 4
+  },
+  {
+   "slug": "heaps-cheat-sheet",
+   "title": "Heaps cheat sheet",
+   "type": "cheat_sheet",
+   "delivery": "native_md",
+   "body": "heaps-cheat-sheet.md",
+   "source": "AdaptAid",
+   "description": "Index formulas, every operation with its cost, the heapq functions, and when a heap beats a list or a BST.",
+   "difficulty": 2,
+   "duration": 5,
+   "order": 5
+  },
+  {
+   "slug": "heaps-practice",
+   "title": "Practice: heap arrays, sifting and heapq",
+   "type": "practice",
+   "delivery": "native_md",
+   "body": "heaps-practice.md",
+   "source": "AdaptAid",
+   "description": "Five questions with explanations: index arithmetic, build-heap by hand, a top-k pattern with heapq, heapsort and heap height.",
+   "difficulty": 3,
+   "duration": 12,
+   "order": 6
+  },
+  {
+   "slug": "heaps-article",
+   "title": "Heap Data Structure (Programiz)",
+   "type": "article",
+   "delivery": "external_url",
+   "url": "https://www.programiz.com/dsa/heap-data-structure",
+   "source": "Programiz",
+   "description": "Min- and max-heaps with heapify, insert, delete, peek and extract illustrated step by step, and max-heap code in Python, Java, C and C++.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 7
+  }
+ ],
+ "questions": [
+  {
+   "key": "heaps-d01",
+   "pool": "diagnostic",
+   "stem": "Which of these arrays is a valid **min-heap** (0-based, children of index `i` at `2i + 1` and `2i + 2`)?",
+   "options": [
+    "[2, 5, 3, 4, 6, 1]",
+    "[5, 2, 3, 9, 6, 4]",
+    "[2, 5, 3, 9, 6, 4]",
+    "[2, 3, 5, 9, 1, 4]"
+   ],
+   "answer": 2,
+   "explanation": "In [2, 5, 3, 9, 6, 4] every parent is ≤ its children: 2 ≤ 5, 3; 5 ≤ 9, 6; 3 ≤ 4. In [2, 5, 3, 4, 6, 1] the 1 at index 5 is below its parent 3; in [2, 3, 5, 9, 1, 4] the 1 at index 4 is below its parent 3; and [5, 2, ...] does not have the minimum at the root.",
+   "difficulty": 2
+  },
+  {
+   "key": "heaps-c01",
+   "pool": "check",
+   "stem": "A heap is stored in a 0-based array. At which indexes are the **children of index 4**?",
+   "options": [
+    "9 and 10",
+    "8 and 9",
+    "5 and 6",
+    "10 and 11"
+   ],
+   "answer": 0,
+   "explanation": "With 0-based indexes the children of i are 2i + 1 and 2i + 2, so 9 and 10. 8 and 9 come from the 1-based formulas 2i and 2i + 1, which are off by one when the root is at index 0.",
+   "difficulty": 1
+  },
+  {
+   "key": "heaps-c02",
+   "pool": "check",
+   "stem": "A heap is stored in a 0-based array. What is the index of the **parent of index 8**?",
+   "options": [
+    "4",
+    "3",
+    "7",
+    "2"
+   ],
+   "answer": 1,
+   "explanation": "The parent of i is (i − 1) // 2 = 7 // 2 = 3. Check: the children of 3 are 7 and 8. Using i // 2 = 4 is the 1-based formula; index 4's children are 9 and 10.",
+   "difficulty": 1
+  },
+  {
+   "key": "heaps-c03",
+   "pool": "check",
+   "stem": "Which statement is **always** true for a min-heap?",
+   "options": [
+    "The array is sorted in ascending order",
+    "Every left child is ≤ its right sibling",
+    "Every leaf is larger than every internal node",
+    "Every parent is ≤ its children"
+   ],
+   "answer": 3,
+   "explanation": "The heap property only orders each parent against its own children. Siblings can be in either order, and [1, 10, 2, 11, 12, 3] is a valid min-heap where the leaf 3 is smaller than the internal node 10, so the array is not sorted either.",
+   "difficulty": 1
+  },
+  {
+   "key": "heaps-c04",
+   "pool": "check",
+   "stem": "You insert **1** into the min-heap `[2, 5, 3, 9, 6, 4]` (append, then sift up). What is the array afterwards?",
+   "options": [
+    "[1, 2, 5, 3, 9, 6, 4]",
+    "[2, 5, 3, 9, 6, 4, 1]",
+    "[1, 5, 2, 9, 6, 4, 3]",
+    "[1, 5, 3, 9, 6, 4, 2]"
+   ],
+   "answer": 2,
+   "explanation": "1 goes to index 6, whose parent is index 2 (value 3): swap. Now at index 2 its parent is index 0 (value 2): swap again. Result [1, 5, 2, 9, 6, 4, 3]. Inserting at the front and shifting everything would be O(n) and does not even give a valid heap; swapping straight with the root skips the path.",
+   "difficulty": 2
+  },
+  {
+   "key": "heaps-c05",
+   "pool": "check",
+   "stem": "You extract the minimum from the min-heap `[1, 3, 2, 7, 4, 5]` (move the last element to the root, then sift down). What is the array afterwards?",
+   "options": [
+    "[3, 2, 7, 4, 5]",
+    "[5, 3, 2, 7, 4]",
+    "[3, 5, 2, 7, 4]",
+    "[2, 3, 5, 7, 4]"
+   ],
+   "answer": 3,
+   "explanation": "5 moves to the root. Its children are 3 and 2; it swaps with the smaller one, 2, landing at index 2, which has no children. Result [2, 3, 5, 7, 4]. Swapping with the left child (3) leaves 3 above 2, which breaks the heap property; stopping before sifting leaves 5 at the root.",
+   "difficulty": 2
+  },
+  {
+   "key": "heaps-c06",
+   "pool": "check",
+   "stem": "In a binary heap with *n* items, what are the **worst-case** costs of **insert** and **extract-min**?",
+   "options": [
+    "O(log n) and O(log n)",
+    "O(1) and O(1)",
+    "O(log n) and O(n)",
+    "O(n) and O(n log n)"
+   ],
+   "answer": 0,
+   "explanation": "Both operations move one element along a single path between the root and a leaf, and a complete tree has height ⌊log₂ n⌋. Extract-min does not need to search the array: the minimum is always at index 0.",
+   "difficulty": 1
+  },
+  {
+   "key": "heaps-c07",
+   "pool": "check",
+   "stem": "What is the time complexity of **building** a heap from *n* unordered items by sifting down every internal node, from the last one back to the root?",
+   "options": [
+    "O(n log n)",
+    "O(n)",
+    "O(log n)",
+    "O(n²)"
+   ],
+   "answer": 1,
+   "explanation": "A node can only sift down as far as its own height. About n/2 nodes are leaves (0 swaps), n/4 have height 1, n/8 height 2, and so on; the total n/4·1 + n/8·2 + n/16·3 + ... is less than n. O(n log n) is a correct upper bound but not tight: it assumes every sift-down travels the full height.",
+   "difficulty": 3
+  },
+  {
+   "key": "heaps-c08",
+   "pool": "check",
+   "stem": "What does this print?\n\n```python\nimport heapq\nh = []\nfor x in [5, 1, 8, 3]:\n    heapq.heappush(h, x)\nprint(heapq.heappop(h), heapq.heappop(h))\n```",
+   "options": [
+    "8 5",
+    "5 8",
+    "1 3",
+    "5 1"
+   ],
+   "answer": 2,
+   "explanation": "heapq is a min-heap, so each heappop returns the smallest remaining item: 1, then 3. 8 5 assumes a max-heap; 5 8 confuses heappop with list.pop, which removes the last element of the list ([1, 3, 8, 5] after the pushes).",
+   "difficulty": 2
+  },
+  {
+   "key": "heaps-c09",
+   "pool": "check",
+   "stem": "Python's `heapq` only provides a min-heap. How do you use it to always get the **largest** number first?",
+   "options": [
+    "Call heapq.heapify(h, reverse=True) to switch to max-heap mode",
+    "Push -x instead of x, and negate each value you pop",
+    "Use h.pop(), because the largest item is always at the end of a min-heap",
+    "Call heapq.heappop on a reversed copy of the list"
+   ],
+   "answer": 1,
+   "explanation": "Negating flips the order, so the smallest negated value is the largest original. heapify has no reverse parameter. The last element of a min-heap is just some leaf, not necessarily the largest, and a reversed heap array is not a heap.",
+   "difficulty": 2
+  },
+  {
+   "key": "heaps-c10",
+   "pool": "check",
+   "stem": "A min-heap holds *n* ≥ 2 distinct keys in a 0-based array. Where can the **largest** key be?",
+   "options": [
+    "In any leaf, that is at one of the indexes n // 2 to n − 1",
+    "Always at the last index, n − 1",
+    "Always at index 1 or 2",
+    "At the root, if it was inserted first"
+   ],
+   "answer": 0,
+   "explanation": "The largest key cannot be a parent (it would be larger than its child), so it is a leaf, but the heap property does not say which leaf. Finding it means checking about n/2 leaves: O(n). Heaps make only the minimum fast.",
+   "difficulty": 3
+  },
+  {
+   "key": "heaps-p01",
+   "pool": "drill",
+   "stem": "A heap is stored in a 0-based array. What is the index of the **parent of index 10**?",
+   "options": [
+    "5",
+    "9",
+    "20",
+    "4"
+   ],
+   "answer": 3,
+   "explanation": "(10 − 1) // 2 = 4. Check: the children of 4 are 2·4 + 1 = 9 and 2·4 + 2 = 10. 5 comes from the 1-based formula i // 2.",
+   "difficulty": 1,
+   "aid": "heaps-practice"
+  },
+  {
+   "key": "heaps-p02",
+   "pool": "drill",
+   "stem": "What is the array after building a min-heap from `[9, 4, 7, 1, 8, 2]` by sifting down indexes 2, 1 and 0 in that order?",
+   "options": [
+    "[1, 4, 2, 9, 8, 7]",
+    "[1, 2, 4, 7, 8, 9]",
+    "[1, 9, 2, 4, 8, 7]",
+    "[4, 1, 2, 9, 8, 7]"
+   ],
+   "answer": 0,
+   "explanation": "Index 2: 7 swaps with its child 2 → [9, 4, 2, 1, 8, 7]. Index 1: 4 swaps with 1 → [9, 1, 2, 4, 8, 7]. Index 0: 9 swaps with 1, then keeps going and swaps with 4 → [1, 4, 2, 9, 8, 7]. Stopping after one swap leaves 9 above 4; a heap is not the same as a sorted array.",
+   "difficulty": 3,
+   "aid": "heaps-practice"
+  },
+  {
+   "key": "heaps-p03",
+   "pool": "drill",
+   "stem": "What does this print?\n\n```python\nimport heapq\nscores = [42, 17, 93, 58, 71, 35, 88]\nh = []\nfor s in scores:\n    heapq.heappush(h, s)\n    if len(h) > 3:\n        heapq.heappop(h)\nprint(h[0])\n```",
+   "options": [
+    "17",
+    "93",
+    "71",
+    "58"
+   ],
+   "answer": 2,
+   "explanation": "Whenever the heap grows past 3 items, the smallest is popped, so at the end it holds the 3 largest scores: 71, 88 and 93. h[0] is the smallest of those, the third-largest score: 71. This top-k pattern costs O(n log k).",
+   "difficulty": 3,
+   "aid": "heaps-practice"
+  },
+  {
+   "key": "heaps-p04",
+   "pool": "drill",
+   "stem": "What are the time and extra space of **heapsort** on *n* items?",
+   "options": [
+    "O(n) time, because building the heap is O(n)",
+    "O(n log n) time and O(1) extra space",
+    "O(n log n) time and O(n) extra space",
+    "O(n²) time in the worst case"
+   ],
+   "answer": 1,
+   "explanation": "Building the heap is O(n), but the n extractions that follow cost O(log n) each, so the total is O(n log n), even in the worst case. It works inside the input array, so it needs only O(1) extra space, unlike merge sort's O(n).",
+   "difficulty": 2,
+   "aid": "heaps-practice"
+  },
+  {
+   "key": "heaps-p05",
+   "pool": "drill",
+   "stem": "A binary heap holds **100** items. What is its height, counting edges from the root to the deepest leaf?",
+   "options": [
+    "7",
+    "99",
+    "50",
+    "6"
+   ],
+   "answer": 3,
+   "explanation": "A complete tree has height ⌊log₂ n⌋ = ⌊log₂ 100⌋ = 6, because 2⁶ = 64 ≤ 100 < 128 = 2⁷. 7 is the number of levels, not edges. 99 would need a chain, which a complete tree can never be.",
+   "difficulty": 2,
+   "aid": "heaps-practice"
+  }
+ ]
+}

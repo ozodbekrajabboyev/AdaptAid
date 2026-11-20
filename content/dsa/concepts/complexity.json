@@ -1,0 +1,335 @@
+{
+ "slug": "complexity",
+ "name": "Time and space complexity",
+ "description": "How to measure how an algorithm's running time and memory grow with its input, using Big-O notation.",
+ "prerequisites": [],
+ "aids": [
+  {
+   "slug": "complexity-notes",
+   "title": "Time and space complexity: Big-O, growth rates and cases",
+   "type": "notes",
+   "delivery": "native_md",
+   "body": "complexity-notes.md",
+   "source": "AdaptAid",
+   "description": "What Big-O means, how to count steps, the common growth rates, best, worst and average case, and space.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 1
+  },
+  {
+   "slug": "complexity-worked-example",
+   "title": "Worked example: finding duplicates in O(n²), then in O(n)",
+   "type": "worked_example",
+   "delivery": "native_md",
+   "body": "complexity-worked-example.md",
+   "source": "AdaptAid",
+   "description": "Count the comparisons of a nested-loop duplicate check, simplify to Big-O, then trade memory for time with a set.",
+   "difficulty": 2,
+   "duration": 12,
+   "order": 2
+  },
+  {
+   "slug": "complexity-video",
+   "title": "Big O Notation (HackerRank, with Gayle Laakmann McDowell)",
+   "type": "video",
+   "delivery": "external_url",
+   "url": "https://www.youtube.com/watch?v=v4cd1O4zkGw",
+   "source": "HackerRank (YouTube)",
+   "description": "A whiteboard introduction to Big-O as the way running time scales with the input, from HackerRank's Cracking the Coding Interview series.",
+   "difficulty": 2,
+   "duration": 9,
+   "order": 3
+  },
+  {
+   "slug": "complexity-animation",
+   "title": "Analysis of algorithms, visualised (VisuAlgo)",
+   "type": "animation",
+   "delivery": "external_url",
+   "url": "https://visualgo.net/en/sorting?slide=6",
+   "source": "VisuAlgo",
+   "description": "VisuAlgo's e-lecture on counting operations, dropping constants and comparing growth terms; then animate an O(n²) and an O(n log n) sort on the same data.",
+   "difficulty": 2,
+   "duration": 12,
+   "order": 4,
+   "style": [
+    0.3,
+    0.2,
+    0.6,
+    0.6
+   ]
+  },
+  {
+   "slug": "complexity-cheat-sheet",
+   "title": "Complexity cheat sheet",
+   "type": "cheat_sheet",
+   "delivery": "native_md",
+   "body": "complexity-cheat-sheet.md",
+   "source": "AdaptAid",
+   "description": "Growth rates with real numbers, counting rules, the cost of common Python operations and the three cases on one page.",
+   "difficulty": 2,
+   "duration": 6,
+   "order": 5
+  },
+  {
+   "slug": "complexity-practice",
+   "title": "Practice: counting steps and finding Big-O",
+   "type": "practice",
+   "delivery": "native_md",
+   "body": "complexity-practice.md",
+   "source": "AdaptAid",
+   "description": "Five questions with explanations: counting loop iterations, simplifying to Big-O and finding the worst-case input.",
+   "difficulty": 2,
+   "duration": 10,
+   "order": 6
+  },
+  {
+   "slug": "complexity-article",
+   "title": "Asymptotic notations: Big-O, Omega and Theta (Programiz)",
+   "type": "article",
+   "delivery": "external_url",
+   "url": "https://www.programiz.com/dsa/asymptotic-notations",
+   "source": "Programiz",
+   "description": "A short written tutorial that defines Big-O, Omega and Theta formally, with graphs, for when you want the precise definitions.",
+   "difficulty": 3,
+   "duration": 10,
+   "order": 7,
+   "style": [
+    -0.4,
+    -0.6,
+    -0.7,
+    0.3
+   ]
+  }
+ ],
+ "questions": [
+  {
+   "key": "complexity-d01",
+   "pool": "diagnostic",
+   "stem": "What is the time complexity (tightest Big-O) of this function, where n = `len(a)`?\n\n```python\ndef count_pairs(a):\n    count = 0\n    for x in a:\n        for y in a:\n            count += 1\n    return count\n```",
+   "options": [
+    "O(n)",
+    "O(2n)",
+    "O(n²)",
+    "O(log n)"
+   ],
+   "answer": 2,
+   "explanation": "The inner loop runs n times for each of the n passes of the outer loop, so `count += 1` runs n × n times: O(n²). O(2n) would describe two loops one *after* the other (and simplifies to O(n)); nested loops multiply, they do not add.",
+   "difficulty": 2
+  },
+  {
+   "key": "complexity-c01",
+   "pool": "check",
+   "stem": "Which line orders these growth rates from slowest-growing (best) to fastest-growing (worst) for large n?",
+   "options": [
+    "O(1) < O(n) < O(log n) < O(n log n) < O(2ⁿ) < O(n²)",
+    "O(1) < O(log n) < O(n log n) < O(n) < O(n²) < O(2ⁿ)",
+    "O(log n) < O(1) < O(n) < O(n²) < O(n log n) < O(2ⁿ)",
+    "O(1) < O(log n) < O(n) < O(n log n) < O(n²) < O(2ⁿ)"
+   ],
+   "answer": 3,
+   "explanation": "Constant does not grow at all; log n grows very slowly (about 20 for a million items); then n; then n log n, which is n multiplied by a growing factor and so is *larger* than n; then n²; and 2ⁿ, which doubles with every extra item and overtakes any power of n. Putting n log n before n is the usual slip.",
+   "difficulty": 1
+  },
+  {
+   "key": "complexity-c02",
+   "pool": "check",
+   "stem": "What is the time complexity of `stats(a)`, where n = `len(a)`?\n\n```python\ndef stats(a):\n    total = 0\n    for x in a:\n        total += x\n    biggest = a[0]\n    for x in a:\n        if x > biggest:\n            biggest = x\n    return total, biggest\n```",
+   "options": [
+    "O(n²), because there are two loops",
+    "O(n), because the two loops run one after the other",
+    "O(log n), because each loop does very little work",
+    "O(1), because it only returns two numbers"
+   ],
+   "answer": 1,
+   "explanation": "Each loop visits the n items once, so the total is n + n = 2n steps, which is O(n). Loops only multiply when one is *inside* the other; here they run in sequence, so they add.",
+   "difficulty": 1
+  },
+  {
+   "key": "complexity-c03",
+   "pool": "check",
+   "stem": "What is the time complexity (tightest Big-O) of `steps(n)`?\n\n```python\ndef steps(n):\n    count = 0\n    while n > 1:\n        n = n // 2\n        count += 1\n    return count\n```",
+   "options": [
+    "O(n)",
+    "O(n log n)",
+    "O(log n)",
+    "O(1)"
+   ],
+   "answer": 2,
+   "explanation": "n is halved on every iteration, so the number of iterations is about log₂ n: 64 needs 6 halvings, and doubling n to 128 adds only one more. O(n) would need n to go down by a fixed amount each time (n - 1, n - 2, ...), not by half.",
+   "difficulty": 2
+  },
+  {
+   "key": "complexity-c04",
+   "pool": "check",
+   "stem": "Linear search checks the items of an unsorted list one by one until it finds the target. Which describes its best, average and worst case for n items?",
+   "options": [
+    "Best O(1), average O(n), worst O(n)",
+    "Best O(1), average O(log n), worst O(n)",
+    "Best O(n), average O(n), worst O(n)",
+    "Best O(1), average O(1), worst O(n)"
+   ],
+   "answer": 0,
+   "explanation": "Best case: the target is first, 1 comparison. Worst case: it is last or missing, n comparisons. On average it checks about n/2 items, and n/2 is still O(n): dropping the constant ½ does not make it logarithmic. The loop can stop early, so the best case is not O(n).",
+   "difficulty": 2
+  },
+  {
+   "key": "complexity-c05",
+   "pool": "check",
+   "stem": "How much extra space does this function use (tightest Big-O)?\n\n```python\ndef squares(n):\n    result = []\n    for i in range(n):\n        result.append(i * i)\n    return result\n```",
+   "options": [
+    "O(n), because the list it builds holds n values",
+    "O(1), because it only uses two variables, result and i",
+    "O(n²), because each stored value is i squared",
+    "It depends on how fast the computer is"
+   ],
+   "answer": 0,
+   "explanation": "Space complexity measures how memory grows with n. `result` ends up holding n numbers, so the extra space is O(n). Counting variable *names* is the trap: one name can refer to a list of n items. Storing i² instead of i does not change how many values are stored, and complexity never depends on the machine.",
+   "difficulty": 2
+  },
+  {
+   "key": "complexity-c06",
+   "pool": "check",
+   "stem": "How does the number of calls to `work()` grow with n?\n\n```python\nfor i in range(n):\n    for j in range(i):\n        work()\n```",
+   "options": [
+    "O(n log n), because the inner loop runs fewer than n times",
+    "O(n), because the inner loop runs i times, not n times",
+    "O(2ⁿ), because the inner loop grows on every pass",
+    "O(n²), because it runs 0 + 1 + … + (n − 1) times in total"
+   ],
+   "answer": 3,
+   "explanation": "The inner loop runs i times, so the total is 0 + 1 + 2 + … + (n − 1) = n(n − 1)/2, about n²/2. Dropping the ½ gives O(n²). A shorter inner loop halves the work but does not change the growth rate; O(n log n) would need the inner loop to run only about log n times.",
+   "difficulty": 2
+  },
+  {
+   "key": "complexity-c07",
+   "pool": "check",
+   "stem": "What is the time complexity (tightest Big-O) of this code?\n\n```python\nfor i in range(n):\n    j = 1\n    while j < n:\n        j = j * 2\n```",
+   "options": [
+    "O(n²)",
+    "O(n log n)",
+    "O(n)",
+    "O(log n)"
+   ],
+   "answer": 1,
+   "explanation": "The inner `while` doubles j, so it runs about log₂ n times. It runs once for each of the n outer iterations, giving n × log n. It is not O(n²), because the inner loop jumps 1, 2, 4, 8, ... instead of stepping through every value up to n.",
+   "difficulty": 3
+  },
+  {
+   "key": "complexity-c08",
+   "pool": "check",
+   "stem": "An O(n²) algorithm takes 2 seconds on 1,000 items. Roughly how long should it take on 2,000 items?",
+   "options": [
+    "4 seconds",
+    "8 seconds",
+    "6 seconds",
+    "16 seconds"
+   ],
+   "answer": 1,
+   "explanation": "With n² growth, doubling n multiplies the work by 2² = 4, so 2 s × 4 = 8 s. 4 seconds is what a *linear* algorithm would take (double the input, double the time); 16 seconds would be cubic growth (2³ = 8 times as long).",
+   "difficulty": 2
+  },
+  {
+   "key": "complexity-c09",
+   "pool": "check",
+   "stem": "In Python, what does the test `x in items` cost when `items` holds n values?",
+   "options": [
+    "O(1) for both a list and a set",
+    "O(n) for a list, O(1) on average for a set",
+    "O(log n) for a list, O(1) for a set",
+    "O(n) for both a list and a set"
+   ],
+   "answer": 1,
+   "explanation": "A list has to be scanned item by item until x is found: O(n). A set is a hash table: it computes where x would be stored and looks only there, O(1) on average. A list is not kept sorted, so there is no O(log n) shortcut.",
+   "difficulty": 2
+  },
+  {
+   "key": "complexity-c10",
+   "pool": "check",
+   "stem": "Algorithm A takes 100n steps and algorithm B takes n² steps on an input of size n. Which statement is true?",
+   "options": [
+    "A is faster for every input size, because O(n) beats O(n²)",
+    "They are equally fast, because Big-O ignores constants",
+    "B is always faster, because 100 is a large constant",
+    "B is faster when n < 100, and A is faster when n > 100"
+   ],
+   "answer": 3,
+   "explanation": "At n = 100 both take 10,000 steps. Below that n² is smaller (n = 50: 2,500 versus 5,000), so B wins; above it n² grows faster (n = 200: 40,000 versus 20,000), so A wins. Big-O says which algorithm wins *for large enough n*, not for every n.",
+   "difficulty": 3
+  },
+  {
+   "key": "complexity-p01",
+   "pool": "drill",
+   "stem": "How many times does `print` run?\n\n```python\nfor i in range(3):\n    for j in range(4):\n        print(i, j)\n```",
+   "options": [
+    "7",
+    "12",
+    "16",
+    "9"
+   ],
+   "answer": 1,
+   "explanation": "The inner loop runs 4 times for each of the 3 outer iterations: 3 × 4 = 12. Adding (3 + 4 = 7) is the rule for loops one *after* another, not for nested loops.",
+   "difficulty": 1,
+   "aid": "complexity-practice"
+  },
+  {
+   "key": "complexity-p02",
+   "pool": "drill",
+   "stem": "What does `steps(64)` return?\n\n```python\ndef steps(n):\n    count = 0\n    while n > 1:\n        n = n // 2\n        count += 1\n    return count\n```",
+   "options": [
+    "32",
+    "7",
+    "6",
+    "64"
+   ],
+   "answer": 2,
+   "explanation": "64 → 32 → 16 → 8 → 4 → 2 → 1 is six halvings, so `count` is 6 = log₂ 64. The loop stops as soon as n is 1, so there is no seventh step. 32 is n/2, the answer you get if you think the loop runs half as many times as n.",
+   "difficulty": 2,
+   "aid": "complexity-practice"
+  },
+  {
+   "key": "complexity-p03",
+   "pool": "drill",
+   "stem": "What is the time complexity (tightest Big-O) of `show(a)`, where n = `len(a)`?\n\n```python\ndef show(a):\n    for x in a:\n        for k in range(10):\n            print(x + k)\n```",
+   "options": [
+    "O(n)",
+    "O(n²)",
+    "O(10ⁿ)",
+    "O(log n)"
+   ],
+   "answer": 0,
+   "explanation": "The inner loop always runs exactly 10 times, whatever n is, so `print` runs 10n times: O(n). Nested loops only give O(n²) when *both* loops depend on n.",
+   "difficulty": 2,
+   "aid": "complexity-practice"
+  },
+  {
+   "key": "complexity-p04",
+   "pool": "drill",
+   "stem": "How many times does `work()` run when n = 5?\n\n```python\nfor i in range(n):\n    for j in range(i, n):\n        work()\n```",
+   "options": [
+    "25",
+    "10",
+    "20",
+    "15"
+   ],
+   "answer": 3,
+   "explanation": "j runs from i to n − 1, which is n − i values: 5 + 4 + 3 + 2 + 1 = 15. In general that is n(n + 1)/2, which is O(n²). 25 would be a full n × n grid of iterations, and 10 is the total for n = 4.",
+   "difficulty": 3,
+   "aid": "complexity-practice"
+  },
+  {
+   "key": "complexity-p05",
+   "pool": "drill",
+   "stem": "For lists of 1,000 numbers, which input makes this function do the most work?\n\n```python\ndef has_negative(a):\n    for x in a:\n        if x < 0:\n            return True\n    return False\n```",
+   "options": [
+    "A list with no negative numbers",
+    "A list whose first number is negative",
+    "A list whose middle number is negative",
+    "Every list of 1,000 numbers takes the same time"
+   ],
+   "answer": 0,
+   "explanation": "The loop returns at the first negative number. With no negatives at all it must check all 1,000 numbers before returning False: the worst case, O(n). A negative first number is the best case, O(1). Inputs of the same size can take very different amounts of work.",
+   "difficulty": 2,
+   "aid": "complexity-practice"
+  }
+ ]
+}
