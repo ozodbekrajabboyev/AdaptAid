@@ -1,0 +1,6 @@
+# pyBKT 1.4.x only works with these pins (verified on macOS, Python 3.11, Nov 2026):
+# newer scikit-learn breaks its import; numpy 2 breaks fitting.
+numpy==1.26.4
+pandas==2.2.3
+scikit-learn==1.5.2
+pyBKT==1.4.3
