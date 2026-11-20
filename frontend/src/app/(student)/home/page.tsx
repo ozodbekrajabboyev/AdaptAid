@@ -12,7 +12,9 @@ import { StyleProfile } from "@/components/learning/style-profile";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { api } from "@/lib/api/client";
+import { useQuery } from "@tanstack/react-query";
+
+import { api, unwrap } from "@/lib/api/client";
 import { useMe } from "@/lib/auth";
 import { pct, useRecs, useRefreshRecs, useSummary } from "@/lib/learning";
 
@@ -31,6 +33,7 @@ export default function StudentHome() {
   const refresh = useRefreshRecs();
   const seen = useRef<number | null>(null);
 
+  const study = useQuery({ queryKey: ["study", "status"], queryFn: async () => (await unwrap(api.GET("/api/study/status"))) as unknown as { posttest_open: boolean; posttest_done: boolean; survey_done: boolean } });
   const needsOnboarding = summary.data && summary.data.onboarding.next_step !== "done";
   useEffect(() => {
     if (needsOnboarding) router.replace("/onboarding");
@@ -70,6 +73,12 @@ export default function StudentHome() {
           <Badge variant="outline">{PHASE_LABEL[list?.phase ?? s.phase] ?? s.phase}</Badge>
         </div>
       </div>
+
+      {study.data?.posttest_open && !(study.data.posttest_done && study.data.survey_done) ? (
+        <Link href="/study" className="rounded-lg border border-highlight bg-highlight/30 p-4 text-sm hover:bg-highlight/50">
+          <strong>Pilot study:</strong> the final test and a short survey are open. They take about 15 minutes.
+        </Link>
+      ) : null}
 
       {s.focus && top ? (
         <section className="flex flex-wrap items-center justify-between gap-4 rounded-lg border border-primary bg-accent p-5">

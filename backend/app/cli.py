@@ -202,6 +202,73 @@ def reset_demo_cmd(force: bool = typer.Option(False, "--force", help="Required: 
     typer.echo(f"Removed {n} demo users and all model runs.")
 
 
+RESEARCH_OUT = BACKEND_DIR.parent / "research" / "outputs"
+
+
+@cli.command("import-research")
+def import_research() -> None:
+    """Load research/outputs/*.json into the admin model report."""
+    import json
+
+    from app.core.db import SessionLocal
+    from app.models import ResearchReport
+
+    files = {"simulation": "simulation.json", "simulation_dsa": "simulation_dsa.json", "bkt_eval": "bkt_eval.json",
+             "risk": "risk.json", "personas": "personas.json", "cf_offline": "cf_offline.json"}
+    with SessionLocal() as db:
+        for kind, name in files.items():
+            path = RESEARCH_OUT / name
+            if not path.exists():
+                typer.echo(f"skip {kind}: {name} not found (run `make research`)")
+                continue
+            payload = json.loads(path.read_text())
+            if kind == "simulation_dsa":  # shown as a table next to the synthetic-catalogue study
+                payload = {"note": "Same simulation on the real DSA course (13 concepts, 94 aids): paired differences "
+                                   "in area under the learning curve, 95% CI over reporting seeds.",
+                           "table": [{"comparison": f"{d['a']} - {d['b']}", "format_effect": d["affinity_level"],
+                                      "difference": d["mean_diff"], "ci_low": d["ci95"][0], "ci_high": d["ci95"][1]}
+                                     for d in payload["paired_differences"]],
+                           "checks": payload.get("checks", {})}
+            row = db.get(ResearchReport, kind) or ResearchReport(kind=kind)
+            row.payload = payload
+            db.add(row)
+            typer.echo(f"imported {kind}")
+        db.commit()
+
+
+@cli.command("apply-research")
+def apply_research(
+    bkt_priors: bool = typer.Option(False, help="Also use ASSISTments median learn/guess/slip for concepts still on defaults"),
+) -> None:
+    """Apply the research-validated recommender weights and style-update settings."""
+    import json
+
+    from app.core.db import SessionLocal
+    from app.models import Concept
+    from app.services import settings as settings_svc
+
+    sim = json.loads((RESEARCH_OUT / "simulation.json").read_text())
+    with SessionLocal() as db:
+        tuning = sim["tuning"]
+        source = "simulation: tuned weights adopted" if tuning["adopted"] else "simulation: blueprint weights kept (tuned set did not pass the rule)"
+        current, _ = settings_svc.get(db, settings_svc.WEIGHTS)
+        v = settings_svc.put(db, settings_svc.WEIGHTS, {**current, "weights": tuning["chosen_weights"], "source": source})
+        typer.echo(f"recommender weights -> version {v} ({source})")
+        style = sim["style_tuning"]["best"]
+        current_style, _ = settings_svc.get(db, settings_svc.STYLE_UPDATE)
+        v = settings_svc.put(db, settings_svc.STYLE_UPDATE, {**current_style, **style})
+        typer.echo(f"style update settings -> version {v} {style}")
+        if bkt_priors:
+            med = json.loads((RESEARCH_OUT / "bkt_eval.json").read_text())["median_params"]
+            n = 0
+            for c in db.query(Concept).filter(Concept.params_source == "default"):
+                c.bkt_learn, c.bkt_guess, c.bkt_slip = med["learn"], med["guess"], med["slip"]
+                c.params_source, c.params_version = "assistments-median", c.params_version + 1
+                n += 1
+            typer.echo(f"BKT learn/guess/slip from ASSISTments medians applied to {n} concepts (priors kept)")
+        db.commit()
+
+
 def main() -> None:
     cli()
 

@@ -1,6 +1,7 @@
 """Student-facing learning loop: onboarding, recommendations, aid events, quizzes, own progress."""
 
-from fastapi import APIRouter, Depends, status
+from fastapi import APIRouter, Depends, HTTPException, status
+from pydantic import BaseModel, Field
 from sqlalchemy.orm import Session
 
 from app.core.db import get_db
@@ -129,6 +130,54 @@ def quiz_finish(attempt_id: int, db: Session = Depends(get_db), user: User = Dep
     out = quiz_svc.finish(db, user, attempt_id)
     db.commit()
     return out
+
+
+# ---------------------------------------------------------------- pilot study
+
+
+class SurveyIn(BaseModel):
+    sus: list[int] = Field(min_length=10, max_length=10)
+    satisfaction: list[int] = Field(min_length=5, max_length=5)
+    comment: str = Field(default="", max_length=2000)
+
+
+@router.get("/study/status")
+def study_status(db: Session = Depends(get_db), user: User = Depends(require_student)) -> dict:
+    return study_svc.status(db, user)
+
+
+@router.get("/study/survey")
+def study_survey(db: Session = Depends(get_db), _: User = Depends(require_student)) -> dict:
+    from app.services import settings as settings_svc
+
+    value, _v = settings_svc.get(db, settings_svc.SUS)
+    return value
+
+
+@router.post("/study/posttest", response_model=AttemptOut, status_code=status.HTTP_201_CREATED)
+def start_posttest(db: Session = Depends(get_db), user: User = Depends(require_student)) -> AttemptOut:
+    s = study_svc.status(db, user)
+    if not s["posttest_open"]:
+        raise HTTPException(status.HTTP_409_CONFLICT, "The post-test is not open for you.")
+    if s["posttest_done"]:
+        raise HTTPException(status.HTTP_409_CONFLICT, "You have already taken the post-test.")
+    from app.models.base import AttemptKind
+
+    out = quiz_svc.start(db, user, AttemptKind.posttest)
+    db.commit()
+    return out
+
+
+@router.post("/study/survey", status_code=status.HTTP_201_CREATED)
+def submit_survey(body: SurveyIn, db: Session = Depends(get_db), user: User = Depends(require_student)) -> dict:
+    if study_svc.status(db, user)["survey_done"]:
+        raise HTTPException(status.HTTP_409_CONFLICT, "You have already answered the survey.")
+    try:
+        score = study_svc.save_survey(db, user, body.sus, body.satisfaction, body.comment)
+    except ValueError as e:
+        raise HTTPException(status.HTTP_422_UNPROCESSABLE_CONTENT, str(e)) from e
+    db.commit()
+    return {"sus": score}
 
 
 # ---------------------------------------------------------------- me

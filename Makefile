@@ -4,7 +4,7 @@ PY    := backend/.venv/bin
 API_PORT ?= 8000
 WEB_PORT ?= 3000
 
-.PHONY: help install db db-down api web dev migrate test lint typecheck contract e2e gen-api check-api check-migrations ci
+.PHONY: help install db db-down api web dev migrate test lint typecheck contract e2e gen-api check-api check-migrations ci research demo screenshots
 
 help:
 	@grep -E '^[a-zA-Z_-]+:.*?## ' $(MAKEFILE_LIST) | awk 'BEGIN {FS = ":.*?## "}; {printf "  %-14s %s\n", $$1, $$2}'
@@ -30,11 +30,11 @@ web: ## Run the Next.js dev server
 dev: db ## Run database, API and web together (Ctrl+C stops both servers)
 	$(MAKE) -j2 api web
 
-test: ## Backend tests (engine + API)
-	cd backend && .venv/bin/pytest
+test: ## Backend tests (engine, API, integration) and research tests
+	cd backend && .venv/bin/pytest tests ../research/tests
 
 lint: ## Ruff + ESLint
-	$(PY)/ruff check backend
+	$(PY)/ruff check backend research
 	cd frontend && npm run lint
 
 typecheck: ## TypeScript check
@@ -58,6 +58,16 @@ check-migrations: ## Fail if models and Alembic migrations disagree
 
 migrate: ## Apply database migrations
 	cd backend && .venv/bin/python -m app.cli migrate
+
+research: ## Regenerate every offline result and figure, then load them into the app
+	$(PY)/python -m research.src.run_all
+	cd backend && .venv/bin/python -m app.cli import-research
+
+demo: ## Load content, simulate a demo semester, run jobs, import research results
+	cd backend && .venv/bin/python -m app.cli seed && .venv/bin/python -m app.cli seed-demo && .venv/bin/python -m app.cli import-research
+
+screenshots: ## Capture report screenshots from running dev servers (make dev + make demo first)
+	cd frontend && PW_NO_SERVER=1 PW_BASE_URL=http://localhost:$(WEB_PORT) npx playwright test --project=screens
 
 ci: lint typecheck test check-migrations check-api ## Everything CI runs
 	cd frontend && npm run build

@@ -2921,6 +2921,40 @@
     "title": "SummaryOut",
     "type": "object"
    },
+   "SurveyIn": {
+    "properties": {
+     "comment": {
+      "default": "",
+      "maxLength": 2000,
+      "title": "Comment",
+      "type": "string"
+     },
+     "satisfaction": {
+      "items": {
+       "type": "integer"
+      },
+      "maxItems": 5,
+      "minItems": 5,
+      "title": "Satisfaction",
+      "type": "array"
+     },
+     "sus": {
+      "items": {
+       "type": "integer"
+      },
+      "maxItems": 10,
+      "minItems": 10,
+      "title": "Sus",
+      "type": "array"
+     }
+    },
+    "required": [
+     "sus",
+     "satisfaction"
+    ],
+    "title": "SurveyIn",
+    "type": "object"
+   },
    "UserCreate": {
     "properties": {
      "email": {
@@ -3217,6 +3251,25 @@
      }
     },
     "summary": "Put Study",
+    "tags": [
+     "admin"
+    ]
+   }
+  },
+  "/api/admin/study/export.csv": {
+   "get": {
+    "operationId": "study_export_api_admin_study_export_csv_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {}
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Study Export",
     "tags": [
      "admin"
     ]
@@ -4985,6 +5038,114 @@
      }
     },
     "summary": "Refresh",
+    "tags": [
+     "learning"
+    ]
+   }
+  },
+  "/api/study/posttest": {
+   "post": {
+    "operationId": "start_posttest_api_study_posttest_post",
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AttemptOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Start Posttest",
+    "tags": [
+     "learning"
+    ]
+   }
+  },
+  "/api/study/status": {
+   "get": {
+    "operationId": "study_status_api_study_status_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Study Status Api Study Status Get",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Study Status",
+    "tags": [
+     "learning"
+    ]
+   }
+  },
+  "/api/study/survey": {
+   "get": {
+    "operationId": "study_survey_api_study_survey_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Study Survey Api Study Survey Get",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Study Survey",
+    "tags": [
+     "learning"
+    ]
+   },
+   "post": {
+    "operationId": "submit_survey_api_study_survey_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/SurveyIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Submit Survey Api Study Survey Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Submit Survey",
     "tags": [
      "learning"
     ]

@@ -25,8 +25,6 @@ def status_for(db: Session, user: User) -> OnboardingStatus:
     q_done = db.get(StyleProfile, user.id) is not None
     diag_done = db.scalar(select(Attempt.id).where(Attempt.user_id == user.id, Attempt.kind == AttemptKind.diagnostic,
                                                    Attempt.finished_at.is_not(None))) is not None
-    if study and not diag_done:
-        diag_done = not pretest_needed  # in the pilot the pre-test doubles as the diagnostic
     if consent_needed:
         step = "consent"
     elif pretest_needed:

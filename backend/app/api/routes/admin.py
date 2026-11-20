@@ -83,6 +83,24 @@ class StudySettings(BaseModel):
     consent_text: str = Field(min_length=20)
 
 
+@router.get("/study/export.csv")
+def study_export(db: Session = Depends(get_db), _: User = Depends(require_admin)):
+    import csv
+    import io
+
+    from fastapi.responses import PlainTextResponse
+
+    from app.services import study as study_svc
+
+    buf = io.StringIO()
+    w = csv.DictWriter(buf, fieldnames=study_svc.EXPORT_FIELDS)
+    w.writeheader()
+    for row in study_svc.export_rows(db):
+        w.writerow(row)
+    return PlainTextResponse(buf.getvalue(), media_type="text/csv",
+                             headers={"Content-Disposition": 'attachment; filename="pilot_study.csv"'})
+
+
 @router.get("/settings/study", response_model=StudySettings)
 def get_study(db: Session = Depends(get_db), _: User = Depends(require_admin)) -> StudySettings:
     value, _v = settings_svc.get(db, settings_svc.STUDY)
