@@ -1,0 +1,59 @@
+[build-system]
+requires = ["setuptools>=70"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "adaptaid"
+version = "0.1.0"
+description = "AdaptAid: an intelligent adaptive learning framework for teaching-aid recommendation"
+requires-python = ">=3.11,<3.13"
+dependencies = [
+  "fastapi>=0.165,<0.200",
+  "uvicorn[standard]>=0.54",
+  "sqlalchemy>=2.1,<2.2",
+  "alembic>=1.20",
+  "pydantic>=2.14",
+  "pydantic-settings>=2.16",
+  "psycopg[binary]>=3.3",
+  "pyjwt>=2.15",
+  "pwdlib[argon2]>=0.4",
+  "python-multipart>=0.0.20",
+  "apscheduler>=3.11,<4",
+  "numpy>=2.0",
+  "scipy>=1.13",
+  "scikit-learn>=1.6",
+  "implicit>=0.7.3",
+  "joblib>=1.4",
+  "typer>=0.15",
+  "httpx>=0.28",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=9", "ruff>=0.9"]
+research = [
+  "pandas>=2.2",
+  "matplotlib>=3.9",
+  "statsmodels>=0.14",
+  "jupyter>=1.1",
+  "nbconvert>=7.16",
+  "lightfm-next>=1.19",
+]
+
+[project.scripts]
+adaptaid = "app.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["app*", "engine*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+filterwarnings = ["ignore::DeprecationWarning"]
+
+[tool.ruff]
+line-length = 110
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP", "SIM"]
+ignore = ["E501", "B008"]

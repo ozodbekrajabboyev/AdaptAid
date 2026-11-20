@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Node / Next
+node_modules/
+.next/
+out/
+frontend/test-results/
+frontend/playwright-report/
+frontend/blob-report/
+*.tsbuildinfo
+
+# Env & secrets
+.env
+.env.*
+!.env.example
+
+# Research data (downloaded, licensed separately)
+research/data/
+research/.venv-pybkt/
+
+# OS / editors
+.DS_Store
+.idea/
+.vscode/

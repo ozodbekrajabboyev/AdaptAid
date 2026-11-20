@@ -1,0 +1,22 @@
+name: adaptaid
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-adaptaid}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-adaptaid}
+      POSTGRES_DB: ${POSTGRES_DB:-adaptaid}
+    ports:
+      - "${DB_PORT:-5434}:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./backend/scripts/init-db.sql:/docker-entrypoint-initdb.d/10-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-adaptaid} -d ${POSTGRES_DB:-adaptaid}"]
+      interval: 3s
+      timeout: 3s
+      retries: 20
+
+volumes:
+  pgdata:
