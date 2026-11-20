@@ -1,6 +1,73 @@
 {
  "components": {
   "schemas": {
+   "ActiveIn": {
+    "properties": {
+     "active": {
+      "title": "Active",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "active"
+    ],
+    "title": "ActiveIn",
+    "type": "object"
+   },
+   "AdminUser": {
+    "properties": {
+     "created_at": {
+      "title": "Created At",
+      "type": "string"
+     },
+     "email": {
+      "title": "Email",
+      "type": "string"
+     },
+     "full_name": {
+      "title": "Full Name",
+      "type": "string"
+     },
+     "id": {
+      "title": "Id",
+      "type": "integer"
+     },
+     "is_active": {
+      "title": "Is Active",
+      "type": "boolean"
+     },
+     "is_synthetic": {
+      "title": "Is Synthetic",
+      "type": "boolean"
+     },
+     "last_active_at": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Last Active At"
+     },
+     "role": {
+      "$ref": "#/components/schemas/Role"
+     }
+    },
+    "required": [
+     "id",
+     "email",
+     "full_name",
+     "role",
+     "is_active",
+     "is_synthetic",
+     "created_at",
+     "last_active_at"
+    ],
+    "title": "AdminUser",
+    "type": "object"
+   },
    "AidDetail": {
     "properties": {
      "aid_type": {
@@ -360,6 +427,37 @@
     "title": "AidType",
     "type": "string"
    },
+   "AltGroupOut": {
+    "properties": {
+     "aid_id": {
+      "title": "Aid Id",
+      "type": "integer"
+     },
+     "format_label": {
+      "title": "Format Label",
+      "type": "string"
+     },
+     "students": {
+      "items": {
+       "type": "string"
+      },
+      "title": "Students",
+      "type": "array"
+     },
+     "title": {
+      "title": "Title",
+      "type": "string"
+     }
+    },
+    "required": [
+     "aid_id",
+     "title",
+     "format_label",
+     "students"
+    ],
+    "title": "AltGroupOut",
+    "type": "object"
+   },
    "AnswerIn": {
     "properties": {
      "chosen_index": {
@@ -690,6 +788,34 @@
     "title": "ConceptOut",
     "type": "object"
    },
+   "ConceptShare": {
+    "properties": {
+     "concept_id": {
+      "title": "Concept Id",
+      "type": "integer"
+     },
+     "mean_mastery": {
+      "title": "Mean Mastery",
+      "type": "number"
+     },
+     "name": {
+      "title": "Name",
+      "type": "string"
+     },
+     "share_below": {
+      "title": "Share Below",
+      "type": "number"
+     }
+    },
+    "required": [
+     "concept_id",
+     "name",
+     "share_below",
+     "mean_mastery"
+    ],
+    "title": "ConceptShare",
+    "type": "object"
+   },
    "CourseOut": {
     "properties": {
      "code": {
@@ -749,6 +875,97 @@
     ],
     "title": "Delivery",
     "type": "string"
+   },
+   "EffectivenessRow": {
+    "properties": {
+     "aid_id": {
+      "title": "Aid Id",
+      "type": "integer"
+     },
+     "aid_type": {
+      "title": "Aid Type",
+      "type": "string"
+     },
+     "completion_rate": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Completion Rate"
+     },
+     "concept_name": {
+      "title": "Concept Name",
+      "type": "string"
+     },
+     "improved_share": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Improved Share"
+     },
+     "mean_gain": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Mean Gain"
+     },
+     "mean_rating": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Mean Rating"
+     },
+     "n_checked": {
+      "title": "N Checked",
+      "type": "integer"
+     },
+     "n_uses": {
+      "title": "N Uses",
+      "type": "integer"
+     },
+     "smoothed_gain": {
+      "title": "Smoothed Gain",
+      "type": "number"
+     },
+     "title": {
+      "title": "Title",
+      "type": "string"
+     }
+    },
+    "required": [
+     "aid_id",
+     "title",
+     "aid_type",
+     "concept_name",
+     "n_uses",
+     "n_checked",
+     "improved_share",
+     "mean_gain",
+     "smoothed_gain",
+     "completion_rate",
+     "mean_rating"
+    ],
+    "title": "EffectivenessRow",
+    "type": "object"
    },
    "EventIn": {
     "properties": {
@@ -983,6 +1200,82 @@
     "title": "HTTPValidationError",
     "type": "object"
    },
+   "HeatStudent": {
+    "properties": {
+     "id": {
+      "title": "Id",
+      "type": "integer"
+     },
+     "name": {
+      "title": "Name",
+      "type": "string"
+     },
+     "persona": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Persona"
+     },
+     "risk_level": {
+      "title": "Risk Level",
+      "type": "string"
+     },
+     "synthetic": {
+      "title": "Synthetic",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "id",
+     "name",
+     "risk_level",
+     "persona",
+     "synthetic"
+    ],
+    "title": "HeatStudent",
+    "type": "object"
+   },
+   "HeatmapOut": {
+    "properties": {
+     "concepts": {
+      "items": {
+       "additionalProperties": true,
+       "type": "object"
+      },
+      "title": "Concepts",
+      "type": "array"
+     },
+     "students": {
+      "items": {
+       "$ref": "#/components/schemas/HeatStudent"
+      },
+      "title": "Students",
+      "type": "array"
+     },
+     "values": {
+      "items": {
+       "items": {
+        "type": "number"
+       },
+       "type": "array"
+      },
+      "title": "Values",
+      "type": "array"
+     }
+    },
+    "required": [
+     "concepts",
+     "students",
+     "values"
+    ],
+    "title": "HeatmapOut",
+    "type": "object"
+   },
    "HistoryItem": {
     "properties": {
      "aid_id": {
@@ -1202,6 +1495,51 @@
     "title": "JoinIn",
     "type": "object"
    },
+   "Kpis": {
+    "properties": {
+     "active_this_week": {
+      "title": "Active This Week",
+      "type": "integer"
+     },
+     "aids_used_week": {
+      "title": "Aids Used Week",
+      "type": "integer"
+     },
+     "at_risk": {
+      "title": "At Risk",
+      "type": "integer"
+     },
+     "avg_gain_week": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Avg Gain Week"
+     },
+     "avg_mastery": {
+      "title": "Avg Mastery",
+      "type": "number"
+     },
+     "n_students": {
+      "title": "N Students",
+      "type": "integer"
+     }
+    },
+    "required": [
+     "n_students",
+     "active_this_week",
+     "avg_mastery",
+     "aids_used_week",
+     "avg_gain_week",
+     "at_risk"
+    ],
+    "title": "Kpis",
+    "type": "object"
+   },
    "LoginIn": {
     "properties": {
      "email": {
@@ -1303,6 +1641,81 @@
      "next_step"
     ],
     "title": "OnboardingStatus",
+    "type": "object"
+   },
+   "OverviewOut": {
+    "properties": {
+     "class_id": {
+      "title": "Class Id",
+      "type": "integer"
+     },
+     "class_name": {
+      "title": "Class Name",
+      "type": "string"
+     },
+     "concepts": {
+      "items": {
+       "$ref": "#/components/schemas/ConceptShare"
+      },
+      "title": "Concepts",
+      "type": "array"
+     },
+     "course_title": {
+      "title": "Course Title",
+      "type": "string"
+     },
+     "join_code": {
+      "title": "Join Code",
+      "type": "string"
+     },
+     "kpis": {
+      "$ref": "#/components/schemas/Kpis"
+     },
+     "personas": {
+      "items": {
+       "$ref": "#/components/schemas/PersonaCount"
+      },
+      "title": "Personas",
+      "type": "array"
+     },
+     "updated_at": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Updated At"
+     }
+    },
+    "required": [
+     "class_id",
+     "class_name",
+     "course_title",
+     "join_code",
+     "kpis",
+     "concepts",
+     "personas",
+     "updated_at"
+    ],
+    "title": "OverviewOut",
+    "type": "object"
+   },
+   "PasswordIn": {
+    "properties": {
+     "password": {
+      "maxLength": 128,
+      "minLength": 8,
+      "title": "Password",
+      "type": "string"
+     }
+    },
+    "required": [
+     "password"
+    ],
+    "title": "PasswordIn",
     "type": "object"
    },
    "PathNode": {
@@ -1413,6 +1826,24 @@
      "projected"
     ],
     "title": "PathOut",
+    "type": "object"
+   },
+   "PersonaCount": {
+    "properties": {
+     "count": {
+      "title": "Count",
+      "type": "integer"
+     },
+     "label": {
+      "title": "Label",
+      "type": "string"
+     }
+    },
+    "required": [
+     "label",
+     "count"
+    ],
+    "title": "PersonaCount",
     "type": "object"
    },
    "ProgressOut": {
@@ -2072,6 +2503,54 @@
     "title": "RegisterIn",
     "type": "object"
    },
+   "RiskRow": {
+    "properties": {
+     "id": {
+      "title": "Id",
+      "type": "integer"
+     },
+     "last_active": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Last Active"
+     },
+     "level": {
+      "title": "Level",
+      "type": "string"
+     },
+     "name": {
+      "title": "Name",
+      "type": "string"
+     },
+     "reasons": {
+      "items": {
+       "type": "string"
+      },
+      "title": "Reasons",
+      "type": "array"
+     },
+     "score": {
+      "title": "Score",
+      "type": "number"
+     }
+    },
+    "required": [
+     "id",
+     "name",
+     "level",
+     "score",
+     "reasons",
+     "last_active"
+    ],
+    "title": "RiskRow",
+    "type": "object"
+   },
    "Role": {
     "enum": [
      "student",
@@ -2080,6 +2559,108 @@
     ],
     "title": "Role",
     "type": "string"
+   },
+   "RunOut": {
+    "properties": {
+     "finished_at": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Finished At"
+     },
+     "has_artifact": {
+      "title": "Has Artifact",
+      "type": "boolean"
+     },
+     "id": {
+      "title": "Id",
+      "type": "integer"
+     },
+     "kind": {
+      "title": "Kind",
+      "type": "string"
+     },
+     "metrics": {
+      "additionalProperties": true,
+      "title": "Metrics",
+      "type": "object"
+     },
+     "notes": {
+      "title": "Notes",
+      "type": "string"
+     },
+     "run_date": {
+      "title": "Run Date",
+      "type": "string"
+     },
+     "started_at": {
+      "title": "Started At",
+      "type": "string"
+     },
+     "status": {
+      "title": "Status",
+      "type": "string"
+     },
+     "triggered_by": {
+      "title": "Triggered By",
+      "type": "string"
+     }
+    },
+    "required": [
+     "id",
+     "kind",
+     "status",
+     "triggered_by",
+     "run_date",
+     "started_at",
+     "finished_at",
+     "metrics",
+     "notes",
+     "has_artifact"
+    ],
+    "title": "RunOut",
+    "type": "object"
+   },
+   "StudySettings": {
+    "properties": {
+     "active": {
+      "title": "Active",
+      "type": "boolean"
+     },
+     "consent_text": {
+      "minLength": 20,
+      "title": "Consent Text",
+      "type": "string"
+     },
+     "consent_version": {
+      "maxLength": 16,
+      "minLength": 1,
+      "title": "Consent Version",
+      "type": "string"
+     },
+     "frozen": {
+      "title": "Frozen",
+      "type": "boolean"
+     },
+     "posttest_open": {
+      "title": "Posttest Open",
+      "type": "boolean"
+     }
+    },
+    "required": [
+     "active",
+     "frozen",
+     "posttest_open",
+     "consent_version",
+     "consent_text"
+    ],
+    "title": "StudySettings",
+    "type": "object"
    },
    "StyleOut": {
     "properties": {
@@ -2131,6 +2712,122 @@
      "labels"
     ],
     "title": "StyleOut",
+    "type": "object"
+   },
+   "SuggestedAid": {
+    "properties": {
+     "aid_id": {
+      "title": "Aid Id",
+      "type": "integer"
+     },
+     "aid_type": {
+      "title": "Aid Type",
+      "type": "string"
+     },
+     "class_score": {
+      "title": "Class Score",
+      "type": "number"
+     },
+     "format_label": {
+      "title": "Format Label",
+      "type": "string"
+     },
+     "mean_gain": {
+      "anyOf": [
+       {
+        "type": "number"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Mean Gain"
+     },
+     "n_checked": {
+      "title": "N Checked",
+      "type": "integer"
+     },
+     "share_poor_fit": {
+      "title": "Share Poor Fit",
+      "type": "number"
+     },
+     "title": {
+      "title": "Title",
+      "type": "string"
+     }
+    },
+    "required": [
+     "aid_id",
+     "title",
+     "aid_type",
+     "format_label",
+     "class_score",
+     "share_poor_fit",
+     "mean_gain",
+     "n_checked"
+    ],
+    "title": "SuggestedAid",
+    "type": "object"
+   },
+   "SuggestionOut": {
+    "properties": {
+     "aids": {
+      "items": {
+       "$ref": "#/components/schemas/SuggestedAid"
+      },
+      "title": "Aids",
+      "type": "array"
+     },
+     "alternatives": {
+      "items": {
+       "$ref": "#/components/schemas/AltGroupOut"
+      },
+      "title": "Alternatives",
+      "type": "array"
+     },
+     "class_lean": {
+      "anyOf": [
+       {
+        "type": "string"
+       },
+       {
+        "type": "null"
+       }
+      ],
+      "title": "Class Lean"
+     },
+     "concept_id": {
+      "title": "Concept Id",
+      "type": "integer"
+     },
+     "concept_name": {
+      "title": "Concept Name",
+      "type": "string"
+     },
+     "n_below": {
+      "title": "N Below",
+      "type": "integer"
+     },
+     "n_students": {
+      "title": "N Students",
+      "type": "integer"
+     },
+     "share_below": {
+      "title": "Share Below",
+      "type": "number"
+     }
+    },
+    "required": [
+     "concept_id",
+     "concept_name",
+     "share_below",
+     "n_below",
+     "n_students",
+     "class_lean",
+     "aids",
+     "alternatives"
+    ],
+    "title": "SuggestionOut",
     "type": "object"
    },
    "SummaryOut": {
@@ -2206,6 +2903,38 @@
      "onboarding"
     ],
     "title": "SummaryOut",
+    "type": "object"
+   },
+   "UserCreate": {
+    "properties": {
+     "email": {
+      "format": "email",
+      "title": "Email",
+      "type": "string"
+     },
+     "full_name": {
+      "maxLength": 120,
+      "minLength": 2,
+      "title": "Full Name",
+      "type": "string"
+     },
+     "password": {
+      "maxLength": 128,
+      "minLength": 8,
+      "title": "Password",
+      "type": "string"
+     },
+     "role": {
+      "$ref": "#/components/schemas/Role"
+     }
+    },
+    "required": [
+     "email",
+     "full_name",
+     "role",
+     "password"
+    ],
+    "title": "UserCreate",
     "type": "object"
    },
    "UserOut": {
@@ -2295,6 +3024,396 @@
  },
  "openapi": "3.1.0",
  "paths": {
+  "/api/admin/jobs": {
+   "get": {
+    "operationId": "jobs_api_admin_jobs_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/RunOut"
+         },
+         "title": "Response Jobs Api Admin Jobs Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Jobs",
+    "tags": [
+     "admin"
+    ]
+   }
+  },
+  "/api/admin/jobs/{kind}": {
+   "post": {
+    "operationId": "run_job_api_admin_jobs__kind__post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "kind",
+      "required": true,
+      "schema": {
+       "enum": [
+        "all",
+        "personas",
+        "risk",
+        "aid_stats",
+        "cf",
+        "bkt"
+       ],
+       "title": "Kind",
+       "type": "string"
+      }
+     }
+    ],
+    "responses": {
+     "202": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Run Job Api Admin Jobs  Kind  Post",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Run Job",
+    "tags": [
+     "admin"
+    ]
+   }
+  },
+  "/api/admin/model-report": {
+   "get": {
+    "operationId": "model_report_api_admin_model_report_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "include_synthetic",
+      "required": false,
+      "schema": {
+       "default": true,
+       "title": "Include Synthetic",
+       "type": "boolean"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Model Report Api Admin Model Report Get",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Model Report",
+    "tags": [
+     "admin"
+    ]
+   }
+  },
+  "/api/admin/settings/study": {
+   "get": {
+    "operationId": "get_study_api_admin_settings_study_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/StudySettings"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Get Study",
+    "tags": [
+     "admin"
+    ]
+   },
+   "put": {
+    "operationId": "put_study_api_admin_settings_study_put",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/StudySettings"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/StudySettings"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Put Study",
+    "tags": [
+     "admin"
+    ]
+   }
+  },
+  "/api/admin/users": {
+   "get": {
+    "operationId": "users_api_admin_users_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "role",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "$ref": "#/components/schemas/Role"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Role"
+      }
+     },
+     {
+      "in": "query",
+      "name": "q",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "string"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Q"
+      }
+     },
+     {
+      "in": "query",
+      "name": "include_synthetic",
+      "required": false,
+      "schema": {
+       "default": false,
+       "title": "Include Synthetic",
+       "type": "boolean"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/AdminUser"
+         },
+         "title": "Response Users Api Admin Users Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Users",
+    "tags": [
+     "admin"
+    ]
+   },
+   "post": {
+    "operationId": "create_user_api_admin_users_post",
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/UserCreate"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "201": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/AdminUser"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Create User",
+    "tags": [
+     "admin"
+    ]
+   }
+  },
+  "/api/admin/users/{user_id}/active": {
+   "post": {
+    "operationId": "set_active_api_admin_users__user_id__active_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "user_id",
+      "required": true,
+      "schema": {
+       "title": "User Id",
+       "type": "integer"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/ActiveIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Set Active",
+    "tags": [
+     "admin"
+    ]
+   }
+  },
+  "/api/admin/users/{user_id}/password": {
+   "post": {
+    "operationId": "reset_password_api_admin_users__user_id__password_post",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "user_id",
+      "required": true,
+      "schema": {
+       "title": "User Id",
+       "type": "integer"
+      }
+     }
+    ],
+    "requestBody": {
+     "content": {
+      "application/json": {
+       "schema": {
+        "$ref": "#/components/schemas/PasswordIn"
+       }
+      }
+     },
+     "required": true
+    },
+    "responses": {
+     "204": {
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Reset Password",
+    "tags": [
+     "admin"
+    ]
+   }
+  },
   "/api/aids": {
    "get": {
     "operationId": "aids_api_aids_get",
@@ -3852,6 +4971,311 @@
     "summary": "Refresh",
     "tags": [
      "learning"
+    ]
+   }
+  },
+  "/api/teacher/aid-effectiveness": {
+   "get": {
+    "operationId": "effectiveness_api_teacher_aid_effectiveness_get",
+    "parameters": [
+     {
+      "in": "query",
+      "name": "course_id",
+      "required": false,
+      "schema": {
+       "anyOf": [
+        {
+         "type": "integer"
+        },
+        {
+         "type": "null"
+        }
+       ],
+       "title": "Course Id"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/EffectivenessRow"
+         },
+         "title": "Response Effectiveness Api Teacher Aid Effectiveness Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Effectiveness",
+    "tags": [
+     "teacher"
+    ]
+   }
+  },
+  "/api/teacher/classes/{class_id}/at-risk": {
+   "get": {
+    "operationId": "at_risk_api_teacher_classes__class_id__at_risk_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "class_id",
+      "required": true,
+      "schema": {
+       "title": "Class Id",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/RiskRow"
+         },
+         "title": "Response At Risk Api Teacher Classes  Class Id  At Risk Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "At Risk",
+    "tags": [
+     "teacher"
+    ]
+   }
+  },
+  "/api/teacher/classes/{class_id}/heatmap": {
+   "get": {
+    "operationId": "heatmap_api_teacher_classes__class_id__heatmap_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "class_id",
+      "required": true,
+      "schema": {
+       "title": "Class Id",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HeatmapOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Heatmap",
+    "tags": [
+     "teacher"
+    ]
+   }
+  },
+  "/api/teacher/classes/{class_id}/overview": {
+   "get": {
+    "operationId": "overview_api_teacher_classes__class_id__overview_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "class_id",
+      "required": true,
+      "schema": {
+       "title": "Class Id",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/OverviewOut"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Overview",
+    "tags": [
+     "teacher"
+    ]
+   }
+  },
+  "/api/teacher/classes/{class_id}/students/{student_id}": {
+   "get": {
+    "operationId": "student_api_teacher_classes__class_id__students__student_id__get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "class_id",
+      "required": true,
+      "schema": {
+       "title": "Class Id",
+       "type": "integer"
+      }
+     },
+     {
+      "in": "path",
+      "name": "student_id",
+      "required": true,
+      "schema": {
+       "title": "Student Id",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Student Api Teacher Classes  Class Id  Students  Student Id  Get",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Student",
+    "tags": [
+     "teacher"
+    ]
+   }
+  },
+  "/api/teacher/classes/{class_id}/suggestions": {
+   "get": {
+    "operationId": "suggestions_api_teacher_classes__class_id__suggestions_get",
+    "parameters": [
+     {
+      "in": "path",
+      "name": "class_id",
+      "required": true,
+      "schema": {
+       "title": "Class Id",
+       "type": "integer"
+      }
+     }
+    ],
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "items": {
+          "$ref": "#/components/schemas/SuggestionOut"
+         },
+         "title": "Response Suggestions Api Teacher Classes  Class Id  Suggestions Get",
+         "type": "array"
+        }
+       }
+      },
+      "description": "Successful Response"
+     },
+     "422": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "$ref": "#/components/schemas/HTTPValidationError"
+        }
+       }
+      },
+      "description": "Validation Error"
+     }
+    },
+    "summary": "Suggestions",
+    "tags": [
+     "teacher"
+    ]
+   }
+  },
+  "/api/teacher/personas": {
+   "get": {
+    "operationId": "personas_api_teacher_personas_get",
+    "responses": {
+     "200": {
+      "content": {
+       "application/json": {
+        "schema": {
+         "additionalProperties": true,
+         "title": "Response Personas Api Teacher Personas Get",
+         "type": "object"
+        }
+       }
+      },
+      "description": "Successful Response"
+     }
+    },
+    "summary": "Personas",
+    "tags": [
+     "teacher"
     ]
    }
   }

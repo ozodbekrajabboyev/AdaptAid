@@ -138,6 +138,64 @@ def check_links(
     typer.echo("All links work.")
 
 
+@cli.command("run-job")
+def run_job_cmd(
+    kind: str = typer.Argument("all", help="personas | risk | aid_stats | cf | bkt | all"),
+    force: bool = typer.Option(True, help="Run even if a scheduled run already succeeded today"),
+) -> None:
+    """Run background jobs now and print their results."""
+    from app.core.db import SessionLocal
+    from app.jobs.runner import run_all, run_job
+    from app.models import ModelRun
+
+    ids = run_all("cli", force) if kind == "all" else {kind: run_job(kind, "cli", force)}
+    with SessionLocal() as db:
+        for k, run_id in ids.items():
+            run = db.get(ModelRun, run_id) if run_id else None
+            if run is None:
+                typer.echo(f"{k:10} skipped")
+                continue
+            summary = {key: v for key, v in (run.metrics or {}).items() if key not in ("centroids", "concepts", "names")}
+            typer.echo(f"{k:10} {run.status.value:8} {summary}")
+            if run.notes:
+                typer.echo(run.notes[:400])
+
+
+@cli.command("seed-demo")
+def seed_demo_cmd(
+    students: int = typer.Option(60, help="Number of synthetic students"),
+    days: int = typer.Option(28, help="Days of simulated activity"),
+    seed: int = typer.Option(2026),
+    password: str = typer.Option("demo-pass-2026", help="Password for the demo accounts"),
+) -> None:
+    """Create a demo class and simulate weeks of activity through the real services."""
+    from app.demo import DemoExists, seed_demo
+
+    typer.echo(f"Simulating {days} days for {students} students (this takes a few minutes)...")
+    try:
+        r = seed_demo(students, days, seed, password, progress=typer.echo)
+    except DemoExists as e:
+        raise typer.BadParameter(str(e)) from e
+    typer.echo(f"Done: {r['students']} synthetic students, {r['sessions']} study sessions.")
+    typer.echo(f"Demo accounts (password {r['password']!r}): {', '.join(r['accounts'])}")
+    typer.echo(f"Class join code: {r['class_code']}")
+
+
+@cli.command("reset-demo")
+def reset_demo_cmd(force: bool = typer.Option(False, "--force", help="Required: deletes demo data")) -> None:
+    """Remove demo accounts, synthetic students, model runs and aid statistics (content is kept)."""
+    if not force:
+        raise typer.BadParameter("Pass --force to confirm.")
+    if get_settings().app_env == "prod":
+        raise typer.BadParameter("reset-demo is disabled when APP_ENV=prod.")
+    from app.core.db import SessionLocal
+    from app.demo import reset_demo
+
+    with SessionLocal() as db:
+        n = reset_demo(db)
+    typer.echo(f"Removed {n} demo users and all model runs.")
+
+
 def main() -> None:
     cli()
 

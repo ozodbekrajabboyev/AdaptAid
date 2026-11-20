@@ -13,9 +13,10 @@ class ModelRun(Base):
 
     __tablename__ = "model_runs"
     __table_args__ = (
-        # At most one successful run per job kind per day (jobs skip if one exists).
+        # At most one successful *scheduled* run per job kind per day. Manual runs from the
+        # admin page ("Run now") are always allowed.
         Index("uq_model_runs_success_per_day", "kind", "run_date", unique=True,
-              postgresql_where=text("status = 'success'")),
+              postgresql_where=text("status = 'success' AND triggered_by = 'scheduler'")),
     )
 
     id: Mapped[int] = mapped_column(primary_key=True)

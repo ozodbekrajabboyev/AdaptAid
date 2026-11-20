@@ -5,13 +5,22 @@ from contextlib import asynccontextmanager
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.gzip import GZipMiddleware
 
-from app.api.routes import auth, classes, content, contract, health, learning
+from app.api.routes import admin, auth, classes, content, contract, health, learning, teacher
 from app.core.config import get_settings
 
 
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
+    settings = get_settings()
+    if settings.scheduler_enabled:
+        from app.jobs import scheduler
+
+        scheduler.start()
     yield
+    if settings.scheduler_enabled:
+        from app.jobs import scheduler
+
+        scheduler.stop()
 
 
 def create_app() -> FastAPI:
@@ -34,6 +43,8 @@ def create_app() -> FastAPI:
     api.include_router(classes.router)
     api.include_router(content.router)
     api.include_router(learning.router)
+    api.include_router(teacher.router)
+    api.include_router(admin.router)
     if settings.enable_contract_routes:
         api.include_router(contract.router)
     app.include_router(api)

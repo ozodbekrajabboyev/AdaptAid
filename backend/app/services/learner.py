@@ -49,7 +49,31 @@ def arm_for(db: Session, user: User) -> Arm:
     return e.arm if e and e.arm else Arm.adaptive
 
 
+_catalogue_cache: dict[int, tuple[tuple, Catalogue]] = {}
+
+
+def _catalogue_token(db: Session, course_id: int) -> tuple:
+    from sqlalchemy import func
+
+    aid_row = db.execute(select(func.count(TeachingAid.id), func.max(TeachingAid.updated_at))
+                         .where(TeachingAid.course_id == course_id, TeachingAid.is_active)).one()
+    concept_row = db.execute(select(func.count(Concept.id), func.sum(Concept.params_version))
+                             .where(Concept.course_id == course_id)).one()
+    return (tuple(aid_row), tuple(concept_row))
+
+
 def load_catalogue(db: Session, course_id: int) -> Catalogue:
+    """The engine's view of a course, cached until aids or BKT parameters change."""
+    token = _catalogue_token(db, course_id)
+    hit = _catalogue_cache.get(course_id)
+    if hit and hit[0] == token:
+        return hit[1]
+    cat = _load_catalogue(db, course_id)
+    _catalogue_cache[course_id] = (token, cat)
+    return cat
+
+
+def _load_catalogue(db: Session, course_id: int) -> Catalogue:
     concepts = sorted(db.scalars(select(Concept).where(Concept.course_id == course_id)), key=lambda c: c.order_index)
     ids = [c.id for c in concepts]
     prereqs: dict[int, set[int]] = {c: set() for c in ids}
