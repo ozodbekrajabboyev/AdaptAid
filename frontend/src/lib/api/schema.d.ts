@@ -1122,6 +1122,8 @@ export interface components {
             name: string;
             /** Share Below */
             share_below: number;
+            /** Share Locked */
+            share_locked: number;
         };
         /** CourseOut */
         CourseOut: {

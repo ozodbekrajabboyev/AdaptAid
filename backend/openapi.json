@@ -805,12 +805,17 @@
      "share_below": {
       "title": "Share Below",
       "type": "number"
+     },
+     "share_locked": {
+      "title": "Share Locked",
+      "type": "number"
      }
     },
     "required": [
      "concept_id",
      "name",
      "share_below",
+     "share_locked",
      "mean_mastery"
     ],
     "title": "ConceptShare",

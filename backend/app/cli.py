@@ -56,11 +56,17 @@ def create_admin(
     password: str = typer.Option(..., prompt=True, hide_input=True, confirmation_prompt=True),
 ) -> None:
     """Create an administrator account (admins cannot self-register)."""
+    from pydantic import EmailStr, TypeAdapter, ValidationError
+
     from app.core.db import SessionLocal
     from app.core.security import hash_password
     from app.models import User
     from app.models.base import Role
 
+    try:  # same rule as the sign-in form, so the account can actually log in
+        email = TypeAdapter(EmailStr).validate_python(email)
+    except ValidationError as e:
+        raise typer.BadParameter(f"{email!r} is not a usable email address.") from e
     with SessionLocal() as db:
         if db.scalar(select(User).where(User.email == email.lower())):
             raise typer.BadParameter("A user with that email already exists.")

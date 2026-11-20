@@ -176,7 +176,7 @@ def seed_demo(n_students: int = 60, days: int = 28, seed: int = 2026, password: 
         cfg = WorldConfig(affinity_effect=0.6)
         sims = make_learners(n_students, cat, cfg, rng)
         actors: list[Session_] = []
-        used_names: set[str] = set()
+        used_names: set[str] = {"Diya Kapoor"}  # the hero's name
         for i, sim in enumerate(sims):
             while True:
                 name = f"{FIRST[int(rng.integers(len(FIRST)))]} {LAST[int(rng.integers(len(LAST)))]}"

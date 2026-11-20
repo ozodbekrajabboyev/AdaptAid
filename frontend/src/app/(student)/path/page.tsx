@@ -2,7 +2,7 @@
 
 import "@xyflow/react/dist/style.css";
 
-import { Background, type Edge, MarkerType, type Node, Position, ReactFlow } from "@xyflow/react";
+import { Background, type Edge, Handle, MarkerType, type Node, Position, ReactFlow } from "@xyflow/react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
 import { useMemo, useState } from "react";
@@ -32,12 +32,15 @@ const STATUS_LABEL: Record<string, string> = {
 
 function ConceptNode({ data }: { data: PNode }) {
   return (
-    <div className={cn("grid w-44 gap-1.5 rounded-lg border-2 px-3 py-2 text-left shadow-sm", STATUS_STYLE[data.status],
+    <div className={cn("grid w-48 min-w-0 gap-1.5 rounded-lg border-2 px-3 py-2 text-left shadow-sm", STATUS_STYLE[data.status],
       data.projected_rank === 1 && "ring-2 ring-highlight ring-offset-2 ring-offset-background")}>
-      <div className="flex items-center justify-between gap-2">
-        <span className="truncate text-sm font-bold">{data.name}</span>
+      {/* Custom nodes need handles for edges to attach to; they are invisible. */}
+      <Handle type="target" position={Position.Left} className="!size-1 !min-w-0 !border-0 !bg-transparent" isConnectable={false} />
+      <Handle type="source" position={Position.Right} className="!size-1 !min-w-0 !border-0 !bg-transparent" isConnectable={false} />
+      <div className="flex min-w-0 items-center justify-between gap-2">
+        <span className="min-w-0 truncate text-sm font-bold" title={data.name}>{data.name}</span>
         {data.projected_rank ? (
-          <span className="rounded bg-highlight px-1.5 font-mono text-[10px] text-highlight-foreground">next {data.projected_rank}</span>
+          <span className="shrink-0 rounded bg-highlight px-1.5 font-mono text-[10px] whitespace-nowrap text-highlight-foreground">next {data.projected_rank}</span>
         ) : null}
       </div>
       <MasteryBar p={data.p} locked={data.status === "locked"} />
@@ -66,7 +69,7 @@ export default function PathPage() {
       list.forEach((n, i) => {
         nodes.push({
           id: String(n.id), type: "concept", data: n, draggable: false,
-          position: { x: layer * 230, y: (i - (list.length - 1) / 2) * 110 },
+          position: { x: layer * 260, y: (i - (list.length - 1) / 2) * 110 },
           sourcePosition: Position.Right, targetPosition: Position.Left,
         });
       });
@@ -97,7 +100,9 @@ export default function PathPage() {
         </ReactFlow>
       </div>
       <p className="text-sm text-muted-foreground">
-        Your route so far: {path.data.route.length ? path.data.route.map((id) => path.data.nodes.find((n) => n.id === id)?.name).join(" → ") : "not started yet"}.
+        Your recent route: {path.data.route.length
+          ? `${path.data.route.length > 8 ? "… → " : ""}${path.data.route.slice(-8).map((id) => path.data.nodes.find((n) => n.id === id)?.name).join(" → ")}`
+          : "not started yet"}.
         Click a concept to see its teaching aids.
       </p>
       <ConceptSheet node={selected} onClose={() => setSelected(null)} />

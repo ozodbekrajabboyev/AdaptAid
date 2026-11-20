@@ -42,7 +42,8 @@ class Kpis(BaseModel):
 class ConceptShare(BaseModel):
     concept_id: int
     name: str
-    share_below: float
+    share_below: float  # unlocked for the student but below 60%: stuck
+    share_locked: float  # prerequisites not reached yet
     mean_mastery: float
 
 
@@ -151,10 +152,17 @@ def overview(db: Session, klass: SchoolClass) -> OverviewOut:
     gains = [u.gain for u in uses if u.gain is not None]
     feats = {lf.user_id: lf for lf in db.scalars(select(LearnerFeatures).where(LearnerFeatures.user_id.in_(ids or [0])))}
     all_p = [p for row in matrix.values() for p in row.values()]
+    from engine.bkt import UNLOCK
+
+    def unlocked(sid: int, c: int) -> bool:
+        return all(matrix[sid].get(p, 0.0) >= UNLOCK for p in cat.prereqs.get(c, set()))
+
+    n = len(ids) or 1
     concepts = [
         ConceptShare(concept_id=c, name=cat.names[c],
-                     share_below=round(sum(1 for s in ids if matrix[s][c] < BELOW) / len(ids), 3) if ids else 0.0,
-                     mean_mastery=round(sum(matrix[s][c] for s in ids) / len(ids), 4) if ids else 0.0)
+                     share_below=round(sum(1 for s in ids if unlocked(s, c) and matrix[s][c] < BELOW) / n, 3),
+                     share_locked=round(sum(1 for s in ids if not unlocked(s, c)) / n, 3),
+                     mean_mastery=round(sum(matrix[s][c] for s in ids) / n, 4) if ids else 0.0)
         for c in cat.syllabus
     ]
     persona_counts = Counter(lf.persona_label for lf in feats.values() if lf.persona_label)

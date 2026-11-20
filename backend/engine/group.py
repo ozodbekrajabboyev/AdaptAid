@@ -1,6 +1,7 @@
 """Class-level teaching-aid suggestions for teachers (group recommendation).
 
-For each concept where a meaningful share of the class is below the target, aids are
+For each concept where a meaningful share of the class is stuck (the concept is unlocked
+for them but still below the target), aids are
 scored for every student and combined with "average without misery" (Masthoff, 2011):
 rank by the class average, but drop any aid that would suit more than a quarter of the
 class poorly. Students who are better served by a different format are listed so the
@@ -14,6 +15,7 @@ from dataclasses import dataclass, field
 
 import numpy as np
 
+from engine.bkt import UNLOCK
 from engine.signals import level_fit, percentile_ranks
 from engine.style import dominant_pole, similarity
 from engine.types import AidInfo, Catalogue
@@ -78,7 +80,13 @@ def class_suggestions(
         aids = catalogue.aids_by_concept.get(concept, [])
         if not aids:
             continue
-        struggling = [s for s in students if s.mastery.get(concept, 0.0) < below]
+        # "Stuck" = the concept is unlocked for the student (prerequisites at the unlock level)
+        # but still below the target. Students who have not reached it yet are not stuck.
+        prereqs = catalogue.prereqs.get(concept, set())
+        struggling = [
+            s for s in students
+            if s.mastery.get(concept, 0.0) < below and all(s.mastery.get(p, 0.0) >= UNLOCK for p in prereqs)
+        ]
         share = len(struggling) / len(students)
         if share < min_share or not struggling:
             continue

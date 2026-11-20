@@ -158,6 +158,12 @@ def _class(n_visual, n_verbal):
     return s + [StudentView(100 + i, f"R{i}", {1: 0.3, 2: 0.0}, (-0.3, 0.0, -0.8, 0.3)) for i in range(n_verbal)]
 
 
+def test_locked_concepts_are_not_counted_as_stuck():
+    # Concept 2 needs concept 1 at 0.70; nobody is there yet, so nobody is "stuck" on 2.
+    out = class_suggestions(_class(8, 2), _group_cat(), aid_gain={})
+    assert {c.concept_id for c in out} == {1}
+
+
 def test_class_suggestions_average_without_misery():
     out = class_suggestions(_class(8, 2), _group_cat(), aid_gain={1: 0.2, 2: 0.1, 3: 0.0})
     rec = next(c for c in out if c.concept_id == 1)
