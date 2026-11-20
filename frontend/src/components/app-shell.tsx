@@ -152,7 +152,10 @@ export function AppShell({
           </div>
         </header>
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-6 lg:px-8 lg:py-8">
-          {me && allowed.includes(me.role) ? children : <PageSkeleton />}
+          {/* Always render the page so it is part of the prerendered shell (pages show their own
+              loading states). Access is enforced by proxy.ts and by the API; the effect above
+              only redirects a signed-in user who opened another role's area. */}
+          {me && !allowed.includes(me.role) ? <PageSkeleton /> : children}
         </main>
       </div>
     </div>

@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import { useParams } from "next/navigation";
+import { Suspense } from "react";
 
 import { PageHeader, PageSkeleton } from "@/components/app-shell";
 import { AidForm } from "@/components/teacher/aid-form";
@@ -9,6 +10,10 @@ import { api, unwrap } from "@/lib/api/client";
 import { useAid, useConcepts } from "@/lib/learning";
 
 export default function EditAidPage() {
+  return <Suspense fallback={<PageSkeleton />}><EditAid /></Suspense>;
+}
+
+function EditAid() {
   const { aidId } = useParams<{ aidId: string }>();
   const aid = useAid(Number(aidId));
   const courses = useQuery({ queryKey: ["courses"], queryFn: () => unwrap(api.GET("/api/courses")) });

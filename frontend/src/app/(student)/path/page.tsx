@@ -94,7 +94,7 @@ export default function PathPage() {
         description="Concepts unlock when their prerequisites reach 70% mastery. The highlighted concepts are where AdaptAid would take you next, based on what you still need and what each concept unlocks." />
       <div className="h-[560px] overflow-hidden rounded-lg border bg-card" data-testid="path-graph">
         <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView minZoom={0.3} maxZoom={1.5}
-          forceColorMode={resolvedTheme === "dark" ? "dark" : "light"} nodesConnectable={false} proOptions={{ hideAttribution: true }}
+          forceColorMode={resolvedTheme === "dark" ? "dark" : "light"} nodesConnectable={false}
           onNodeClick={(_, n) => setSelected(n.data as PNode)}>
           <Background gap={24} />
         </ReactFlow>
