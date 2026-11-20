@@ -1,0 +1,16 @@
+# Build context is the repo root; keep it small and free of secrets.
+.git
+**/node_modules
+**/.next
+**/__pycache__
+**/.pytest_cache
+**/.ruff_cache
+backend/.venv
+research/.venv-pybkt
+research/data
+frontend/test-results
+frontend/playwright-report
+docs/report-assets/screenshots
+.env
+.env.*
+!.env.example

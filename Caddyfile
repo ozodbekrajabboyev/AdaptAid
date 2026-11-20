@@ -1,0 +1,6 @@
+# SITE_ADDRESS=":80" serves plain HTTP (local production test).
+# SITE_ADDRESS="adaptaid.example.com" gets a free Let's Encrypt certificate automatically.
+{$SITE_ADDRESS} {
+	encode zstd gzip
+	reverse_proxy web:3000
+}

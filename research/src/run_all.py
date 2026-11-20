@@ -32,10 +32,12 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--quick", action="store_true", help="smaller runs for a smoke test")
     ap.add_argument("--skip-bkt", action="store_true", help="keep the existing bkt_eval.json (slow step)")
+    ap.add_argument("--skip-sim", action="store_true", help="keep the existing simulation outputs")
     args = ap.parse_args()
     q = ["--quick"] if args.quick else []
-    step("simulation (synthetic catalogue)", ["research.src.simulation", *q])
-    step("simulation (DSA catalogue)", ["research.src.simulation", "--catalogue", "dsa", *q])
+    if not args.skip_sim:
+        step("simulation (synthetic catalogue)", ["research.src.simulation", *q])
+        step("simulation (DSA catalogue)", ["research.src.simulation", "--catalogue", "dsa", *q])
     if not args.skip_bkt:
         step("knowledge tracing (ASSISTments)", ["research.src.bkt_eval", *(["--skills", "5"] if args.quick else [])])
     step("OULAD: risk, personas, CF", ["research.src.oulad_eval"])

@@ -50,8 +50,9 @@ def main() -> None:
         sim_figures.main("simulation.json")
     bkt = _load("bkt_eval")
     if bkt:
-        bars("bkt_auc", bkt["table"], "model", "auc", "ROC-AUC, next-answer prediction (ASSISTments 2009, 5-fold by student)",
-             colors=[MUTED, MUTED, INK, VIOLET][: len(bkt["table"])], xlim=(0.4, 0.8))
+        rows = [{**r, "label": f"{r['model']} ({r.get('scope', '')})"} for r in bkt["table"]]
+        bars("bkt_auc", rows, "label", "auc", "ROC-AUC, next-answer prediction (ASSISTments 2009, 5-fold by student)",
+             colors=[MUTED, MUTED, INK, INK, VIOLET][: len(rows)], xlim=(0.4, 0.8))
     risk = _load("risk")
     if risk:
         bars("risk_roc_auc", risk["table"], "model", "roc_auc", "ROC-AUC, at-risk after 6 weeks (OULAD, train 2013 / test 2014)",

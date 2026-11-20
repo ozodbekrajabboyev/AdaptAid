@@ -56,6 +56,8 @@ def main() -> None:
     ap = argparse.ArgumentParser()
     ap.add_argument("--skills", type=int, default=40, help="evaluate the N skills with the most students")
     ap.add_argument("--no-pybkt", action="store_true")
+    ap.add_argument("--pybkt-skills", type=int, default=10,
+                    help="run the pyBKT comparison on the N largest skills (its EM is slow)")
     ap.add_argument("--workers", type=int, default=max(1, (os.cpu_count() or 2) - 1))
     args = ap.parse_args()
     t0 = time.time()
@@ -101,28 +103,34 @@ def main() -> None:
                              "global": global_mean, "skill_mean": skill_mean.get(res["skill"], global_mean)})
 
         if use_pybkt:
+            sub = set(skills[: args.pybkt_skills])
             with tempfile.TemporaryDirectory() as tmp:
                 trp, tep, outp = Path(tmp) / "train.csv", Path(tmp) / "test.csv", Path(tmp) / "pred.csv"
-                train.to_csv(trp, index=False)
-                test.to_csv(tep, index=False)
+                train[train["skill_name"].isin(sub)].to_csv(trp, index=False)
+                test[test["skill_name"].isin(sub)].to_csv(tep, index=False)
                 subprocess.run([str(PYBKT_PY), "-I", str(ROOT / "research" / "pybkt" / "fit_predict.py"),
                                 str(trp), str(tep), str(outp)], check=True)
                 pred = pd.read_csv(outp).set_index("order_id")["correct_predictions"]
                 for r in rows:
                     if r["fold"] == fold:
                         r["pybkt"] = float(pred.get(r["order_id"], np.nan))
-        print(f"fold {fold + 1}/{FOLDS} done ({time.time() - t0:.0f}s)")
+        print(f"fold {fold + 1}/{FOLDS} done ({time.time() - t0:.0f}s)", flush=True)
 
     res = pd.DataFrame(rows)
-    models = {"Global mean": "global", "Per-skill mean": "skill_mean", "BKT, brute force (ours)": "bkt"}
-    if use_pybkt and "pybkt" in res:
-        models["BKT, EM (pyBKT)"] = "pybkt"
-    table = []
-    for name, col in models.items():
-        sub = res.dropna(subset=[col])
+
+    def score(name: str, col: str, frame: pd.DataFrame, scope: str) -> dict:
+        sub = frame.dropna(subset=[col])
         auc = roc_auc_score(sub["y"], sub[col]) if sub["y"].nunique() > 1 and sub[col].nunique() > 1 else 0.5
-        table.append({"model": name, "auc": round(float(auc), 4), "rmse": round(rmse(sub["y"], sub[col]), 4),
-                      "predictions": len(sub)})
+        return {"model": name, "scope": scope, "auc": round(float(auc), 4), "rmse": round(rmse(sub["y"], sub[col]), 4),
+                "predictions": len(sub)}
+
+    scope_all = f"{len(skills)} skills"
+    table = [score("Global mean", "global", res, scope_all), score("Per-skill mean", "skill_mean", res, scope_all),
+             score("BKT, brute force (ours)", "bkt", res, scope_all)]
+    if use_pybkt and "pybkt" in res:
+        head = res.dropna(subset=["pybkt"])
+        scope_sub = f"{args.pybkt_skills} largest skills"
+        table += [score("BKT, brute force (ours)", "bkt", head, scope_sub), score("BKT, EM (pyBKT)", "pybkt", head, scope_sub)]
 
     per_skill = []
     for skill, g in res.groupby("skill"):
@@ -135,21 +143,23 @@ def main() -> None:
     params = pd.DataFrame(params_all)
     median = {k: round(float(params[k].median()), 4) for k in ("prior", "learn", "guess", "slip")}
 
-    bkt_auc = next(r["auc"] for r in table if r["model"].startswith("BKT, brute"))
+    bkt_auc = table[2]["auc"]
     tripwires = {
         "bkt_auc_in_plausible_range_0.6_0.8": 0.6 <= bkt_auc <= 0.8,
         "no_model_above_0.9": all(r["auc"] <= 0.9 for r in table),
-        "bkt_beats_per_skill_mean": bkt_auc > next(r["auc"] for r in table if r["model"] == "Per-skill mean"),
+        "bkt_beats_per_skill_mean": bkt_auc > table[1]["auc"],
     }
     out = {
         "note": (f"ASSISTments 2009 skill builder, {len(skills)} skills with the most students, "
                  f"{res['order_id'].nunique()} answers. 5-fold cross-validation by student; parameters fitted on "
-                 "training folds only; one-step-ahead predictions."),
+                 "training folds only; one-step-ahead predictions. pyBKT is compared head to head on the largest skills "
+                 "(its EM is slow), with our BKT scored on exactly the same predictions."),
         "table": table,
         "per_skill": per_skill,
         "median_params": median,
         "cleaning": cleaning,
-        "config": {"skills": len(skills), "folds": FOLDS, "max_fit_len": MAX_FIT_LEN, "pybkt": use_pybkt},
+        "config": {"skills": len(skills), "folds": FOLDS, "max_fit_len": MAX_FIT_LEN, "pybkt": use_pybkt,
+                   "pybkt_skills": args.pybkt_skills if use_pybkt else 0},
         "tripwires": tripwires,
         "runtime_s": round(time.time() - t0, 1),
     }

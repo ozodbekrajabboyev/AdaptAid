@@ -269,6 +269,65 @@ def apply_research(
         db.commit()
 
 
+@cli.command("demo-check")
+def demo_check() -> None:
+    """Check that everything the viva demo relies on is in place (run after `make demo`)."""
+    from sqlalchemy import func
+
+    from app.core.db import SessionLocal
+    from app.models import LearnerFeatures, ResearchReport, SchoolClass, User
+    from app.models.base import RiskLevel
+    from app.services import admin as admin_svc
+    from app.services import me as me_svc
+    from app.services import model_store
+    from app.services import recommend as rec_svc
+    from app.services import teacher as teacher_svc
+
+    checks: list[tuple[str, bool, str]] = []
+    with SessionLocal() as db:
+        def user(email: str) -> User | None:
+            return db.scalar(select(User).where(User.email == email))
+
+        accounts = [user(f"{r}@adaptaid.demo") for r in ("admin", "teacher", "student")]
+        checks.append(("demo accounts exist", all(accounts), ", ".join(u.email for u in accounts if u)))
+        hero = accounts[2]
+        if hero:
+            s = me_svc.summary(db, hero)
+            rec = next((m for m in s.mastery if m.slug == "recursion"), None)
+            locked = [m.name for m in s.mastery if m.status == "locked"]
+            checks.append(("hero is in the established phase", s.phase == "established", f"{s.n_uses} aid uses"))
+            checks.append(("hero's recursion mastery is 30-60%", bool(rec and 0.3 <= rec.p <= 0.6),
+                           f"{rec.p:.0%}" if rec else "missing"))
+            checks.append(("recursion-dependent concepts are locked", "Trees and traversals" in locked, ", ".join(locked)))
+            checks.append(("hero's style was learned from quick checks", s.style.n_updates >= 10, f"{s.style.n_updates} updates"))
+            items = rec_svc.to_out(db, hero, rec_svc.current(db, hero)).items
+            checks.append(("hero has 5 explained recommendations", len(items) == 5 and all(i.explanation for i in items),
+                           f"{len(items)} cards"))
+        klass = db.scalar(select(SchoolClass).where(SchoolClass.join_code == "DEMO26"))
+        if klass:
+            sugg = teacher_svc.suggestions(db, klass)
+            checks.append(("teacher sees class aid suggestions", bool(sugg), ", ".join(c.concept_name for c in sugg)))
+        flagged = db.scalar(select(func.count()).select_from(LearnerFeatures).where(LearnerFeatures.risk_level == RiskLevel.high))
+        checks.append(("some students are flagged high risk with reasons", (flagged or 0) > 0, f"{flagged} high"))
+        p = model_store.latest_run(db, "personas")
+        checks.append(("personas trained (k >= 3)", bool(p and p.metrics.get("k", 0) >= 3),
+                       f"k={p.metrics.get('k')} silhouette={p.metrics.get('silhouette')}" if p else "no run"))
+        model, _ = model_store.latest_cf(db)
+        checks.append(("collaborative-filtering model stored", model is not None, model.kind if model else "none"))
+        kinds = {r.kind for r in db.scalars(select(ResearchReport))}
+        checks.append(("offline research imported", {"simulation", "bkt_eval", "risk", "cf_offline"} <= kinds, ", ".join(sorted(kinds))))
+        live = admin_svc.live_metrics(db, include_synthetic=True)
+        checks.append(("live metrics have recommendation outcomes", bool(live["policies"].get("adaptive", {}).get("ctr")),
+                       f"CTR {live['policies'].get('adaptive', {}).get('ctr')}"))
+    bad = 0
+    for name, ok, detail in checks:
+        bad += 0 if ok else 1
+        typer.echo(f"{'PASS' if ok else 'FAIL'}  {name}  ({detail})")
+    if bad:
+        raise typer.Exit(1)
+    typer.echo("Demo is ready.")
+
+
 def main() -> None:
     cli()
 
