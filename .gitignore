@@ -32,3 +32,7 @@ research/.venv-pybkt/
 
 # Scratch logs from research runs
 research/outputs/run_all_log.txt
+
+# Submission documents (kept out of the public repo until graded)
+docs/report/
+docs/AdaptAid-How-the-Platform-Works.pdf
