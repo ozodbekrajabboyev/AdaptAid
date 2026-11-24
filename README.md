@@ -39,7 +39,7 @@ screens and aids, only in course-plan order.
 |---|---|
 | Simulated learners, adaptive vs fixed course plan | Area under the learning curve **+0.03 to +0.05**, 95% CI above zero at every level of "how much format matters" (8 paired seeds, synthetic and real course) |
 | Style-matching signal alone | Not distinguishable from zero unless format truly matters a lot, consistent with the learning-styles literature, so it is treated as a preference, not a label |
-| Knowledge tracing, ASSISTments 2009 (40 skills, 5-fold by student) | Our BKT ROC-AUC **0.71** vs 0.60 for the per-skill baseline. Head to head with pyBKT's EM fit (5 largest skills): 0.687 vs 0.693 |
+| Knowledge tracing, ASSISTments 2009 (40 skills, 5-fold by student) | Our BKT ROC-AUC **0.71** vs 0.60 for the per-skill baseline. Head to head with pyBKT's EM fit (10 largest skills, 94k predictions): 0.700 vs 0.703, RMSE 0.438 for both |
 | At-risk after 6 weeks, OULAD (train 2013 / test 2014) | Random forest ROC-AUC **0.77**, PR-AUC 0.75 |
 | Next course materials, OULAD (time split) | Item-kNN NDCG@5 **0.30** vs popular 0.24 and random 0.07 |
 

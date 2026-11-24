@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import textwrap
 from pathlib import Path
 
 import matplotlib
@@ -28,7 +29,7 @@ def _style(ax) -> None:
 
 
 def bars(name: str, rows: list[dict], label: str, value: str, xlabel: str, colors=None, xlim=None) -> None:
-    fig, ax = plt.subplots(figsize=(7, 0.55 * len(rows) + 1.2))
+    fig, ax = plt.subplots(figsize=(8.5, 0.55 * len(rows) + 1.4))
     names = [r[label] for r in rows]
     vals = [r[value] for r in rows]
     ax.barh(names, vals, color=colors or [MUTED] * (len(rows) - 1) + [INK])
@@ -37,7 +38,7 @@ def bars(name: str, rows: list[dict], label: str, value: str, xlabel: str, color
     ax.invert_yaxis()
     if xlim:
         ax.set_xlim(*xlim)
-    ax.set_xlabel(xlabel)
+    ax.set_xlabel(textwrap.fill(xlabel, 46))
     _style(ax)
     fig.tight_layout()
     fig.savefig(FIG / f"{name}.png", dpi=160)

@@ -1,5 +1,5 @@
 {
- "generated_at": "2026-11-20T20:01:06",
+ "generated_at": "2026-11-24T14:37:27",
  "checks": {
   "bkt_eval": {
    "bkt_auc_in_plausible_range_0.6_0.8": true,

@@ -21,6 +21,20 @@
    "auc": 0.7111,
    "rmse": 0.4381,
    "predictions": 205546
+  },
+  {
+   "model": "BKT, brute force (ours)",
+   "scope": "10 largest skills",
+   "auc": 0.7001,
+   "rmse": 0.4382,
+   "predictions": 94350
+  },
+  {
+   "model": "BKT, EM (pyBKT)",
+   "scope": "10 largest skills",
+   "auc": 0.7033,
+   "rmse": 0.4376,
+   "predictions": 94350
   }
  ],
  "per_skill": [
@@ -28,61 +42,71 @@
    "skill": "Addition and Subtraction Fractions",
    "students": 1353,
    "answers": 11334,
-   "auc_bkt": 0.7365
+   "auc_bkt": 0.7365,
+   "auc_pybkt": 0.7352
   },
   {
    "skill": "Addition and Subtraction Integers",
    "students": 1226,
    "answers": 12741,
-   "auc_bkt": 0.6864
+   "auc_bkt": 0.6864,
+   "auc_pybkt": 0.6921
   },
   {
    "skill": "Conversion of Fraction Decimals Percents",
    "students": 1225,
    "answers": 18740,
-   "auc_bkt": 0.6464
+   "auc_bkt": 0.6464,
+   "auc_pybkt": 0.666
   },
   {
    "skill": "Equation Solving Two or Fewer Steps",
    "students": 961,
    "answers": 17311,
-   "auc_bkt": 0.6582
+   "auc_bkt": 0.6582,
+   "auc_pybkt": 0.6525
   },
   {
    "skill": "Ordering Positive Decimals",
    "students": 942,
    "answers": 7317,
-   "auc_bkt": 0.6932
+   "auc_bkt": 0.6932,
+   "auc_pybkt": 0.7047
   },
   {
    "skill": "Subtraction Whole Numbers",
    "students": 903,
    "answers": 5770,
-   "auc_bkt": 0.7108
+   "auc_bkt": 0.7108,
+   "auc_pybkt": 0.7085
   },
   {
    "skill": "Multiplication and Division Integers",
    "students": 900,
    "answers": 6874,
-   "auc_bkt": 0.6691
+   "auc_bkt": 0.6691,
+   "auc_pybkt": 0.6724
   },
   {
    "skill": "Probability of a Single Event",
    "students": 885,
    "answers": 6148,
-   "auc_bkt": 0.6519
+   "auc_bkt": 0.6519,
+   "auc_pybkt": 0.6513
   },
   {
    "skill": "Percent Of",
    "students": 874,
    "answers": 4240,
-   "auc_bkt": 0.6923
+   "auc_bkt": 0.6923,
+   "auc_pybkt": 0.6919
   },
   {
    "skill": "Addition Whole Numbers",
    "students": 861,
    "answers": 3875,
-   "auc_bkt": 0.673
+   "auc_bkt": 0.673,
+   "auc_pybkt": 0.6704
   },
   {
    "skill": "Ordering Fractions",
@@ -280,14 +304,14 @@
   "skills": 40,
   "folds": 5,
   "max_fit_len": 50,
-  "pybkt": false,
-  "pybkt_scope": null,
-  "pybkt_source": null
+  "pybkt": true,
+  "pybkt_scope": "10 largest skills",
+  "pybkt_source": "Colab (Linux, C++ extension)"
  },
  "tripwires": {
   "bkt_auc_in_plausible_range_0.6_0.8": true,
   "no_model_above_0.9": true,
   "bkt_beats_per_skill_mean": true
  },
- "runtime_s": 100.1
+ "runtime_s": 108.8
 }

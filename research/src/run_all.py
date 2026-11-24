@@ -3,7 +3,8 @@
     backend/.venv/bin/python -m research.src.run_all [--quick]
 
 Steps: simulation study (synthetic catalogue and the real DSA catalogue), knowledge tracing
-on ASSISTments (with pyBKT if its venv exists), OULAD risk/personas/CF, figures, summary.
+on ASSISTments (pyBKT predictions from research/outputs/pybkt_predictions.csv, made on Colab,
+or a local pyBKT venv if that file is missing), OULAD risk/personas/CF, figures, summary.
 Exits non-zero if any tripwire fails (an implausible result usually means leakage or a bug).
 """
 
@@ -39,7 +40,9 @@ def main() -> None:
         step("simulation (synthetic catalogue)", ["research.src.simulation", *q])
         step("simulation (DSA catalogue)", ["research.src.simulation", "--catalogue", "dsa", *q])
     if not args.skip_bkt:
-        step("knowledge tracing (ASSISTments)", ["research.src.bkt_eval", *(["--skills", "5"] if args.quick else [])])
+        pybkt_csv = OUT / "pybkt_predictions.csv"
+        step("knowledge tracing (ASSISTments)", ["research.src.bkt_eval", *(["--skills", "5"] if args.quick else []),
+                                                 *(["--pybkt-csv", str(pybkt_csv)] if pybkt_csv.exists() else [])])
     step("OULAD: risk, personas, CF", ["research.src.oulad_eval"])
     step("figures", ["research.src.figures"])
 

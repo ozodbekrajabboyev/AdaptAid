@@ -126,7 +126,7 @@ def main() -> None:
         ext = pd.read_csv(args.pybkt_csv)
         lookup = {(int(f), int(o)): float(p) for f, o, p in ext[["fold", "order_id", "pybkt"]].itertuples(index=False)}
         res["pybkt"] = [lookup.get((int(f), int(o)), np.nan) for f, o in zip(res["fold"], res["order_id"], strict=True)]
-        pybkt_scope = f"{ext['skill_name'].nunique()} largest skills"
+        pybkt_scope = f"{res.loc[res['pybkt'].notna(), 'skill'].nunique()} largest skills"
         missing = res.loc[res["skill"].isin(set(ext["skill_name"])), "pybkt"].isna().sum()
         print(f"merged {res['pybkt'].notna().sum()} pyBKT predictions from {args.pybkt_csv.name} ({missing} unmatched)")
         use_pybkt = True

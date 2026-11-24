@@ -135,6 +135,8 @@ ASSISTments 2009 skill builder, 40 skills with the most students, 205546 answers
 | Global mean | 40 skills | 0.4901 | 0.4714 | 205546 |
 | Per-skill mean | 40 skills | 0.604 | 0.4641 | 205546 |
 | BKT, brute force (ours) | 40 skills | 0.7111 | 0.4381 | 205546 |
+| BKT, brute force (ours) | 10 largest skills | 0.7001 | 0.4382 | 94350 |
+| BKT, EM (pyBKT) | 10 largest skills | 0.7033 | 0.4376 | 94350 |
 
 Median fitted parameters: {'prior': 0.7167, 'learn': 0.11, 'guess': 0.2192, 'slip': 0.1983}. Cleaning: {'raw_rows': 525534, 'after_original': 449220, 'final_rows': 251405}.
 
